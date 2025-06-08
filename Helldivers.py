@@ -389,14 +389,14 @@ if True: #hides all the stats, remove before release
     ## enemies
     # Enemy = ["Enemy Name", "Abbr.", Melee, Melee Damage, Melee AP, Ranged, Ranged Damage, Ranged AP, Range, Distance Moveable, LOS distance, health, armor, max hp]
     Scavenger = ["Scavenger", "SV", True, 5, 0, False, 0, 0, 0, 5, 5, 10, 0, 10]
-    Pouncer = ["Pouncer", "PC", True, 5, 0, False, 0, 0, 0, 5, 10, 15, 0]
-    Hunter = ["Hunter", "HT", True, 10, 1, False, 0, 0, 0, 5, 5, 10, 5]
-    Hive_Guard = ["Hive Guard", "HG", True, 5, 0, False, 0, 0, 0, 2, 5, 15, 30]
-    Chargers = ["Charger", "CR", True, 30, 20, False, 0, 0, 0, 10, 5, 50, 50]
-    Shreikers = ["Shreikers", "SR", True, 10, False, 0, 0, 0, 10, 10, 10, 0]
-    Bile_Spewers = ["Bile Spewers", "BS", True, 5, True, 15, 2, 10, 2, 10, 15, 0]
-    Stalkers = ["Stalkers", "SK", True, 15, 10, False, 0, 0, 0, 3, 5, 20, 10]
-    Bile_Titan = ["Bile Titan", "BT", True, 100, 100, True, 75, 100, 2, 5, 5, 50, 75]
+    Pouncer = ["Pouncer", "PC", True, 5, 0, False, 0, 0, 0, 5, 10, 15, 0, 15]
+    Hunter = ["Hunter", "HT", True, 10, 1, False, 0, 0, 0, 5, 5, 10, 5, 10]
+    Hive_Guard = ["Hive Guard", "HG", True, 5, 0, False, 0, 0, 0, 2, 5, 15, 30, 15]
+    Chargers = ["Charger", "CR", True, 30, 20, False, 0, 0, 0, 10, 5, 50, 50, 50]
+    Shreikers = ["Shreikers", "SR", True, 10, False, 0, 0, 0, 10, 10, 10, 0, 10]
+    Bile_Spewers = ["Bile Spewers", "BS", True, 5, True, 15, 2, 10, 2, 10, 15, 0, 15]
+    Stalkers = ["Stalkers", "SK", True, 15, 10, False, 0, 0, 0, 3, 5, 20, 10, 20]
+    Bile_Titan = ["Bile Titan", "BT", True, 100, 100, True, 75, 100, 2, 5, 5, 50, 75, 50]
 
     Trooper = ["Trooper", "TR", False, 0, 0, True, 5, 0, 2, 5, 10, 10, 0, 10]
     Comissar = ["Comissar", "CM", True, 10, 5, True, 5, 0, 3, 2, 5, 10, 0, 10]
@@ -931,7 +931,6 @@ hide_cursor()
 
 while True:
     actionItem = ""
-    print(level[0][5][0][0][1], level[0][5][0][0][0])
     print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
     if level[0][3].startswith("player "):
         playerIndexTurn = int(level[0][3][-1])
@@ -1039,6 +1038,7 @@ while True:
                             print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                             while True:
                                 if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                    actionItem = ""
                                     keyPressed = keyboard.read_event().name
                                     if keyPressed == "up" or keyPressed == "right":
                                         level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 10
@@ -1046,13 +1046,13 @@ while True:
                                             targetIndex = 0
                                         else:
                                             targetIndex += 1
-                                        clear()
                                         level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 11
                                         for target in targets:
                                             if target is targets[targetIndex]:
                                                 actionItem += f"\033[33m✓ {target[0][0]} ✓\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}\033[0m\n"
                                             else:
                                                 actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}\033[0m\n"
+                                        clear()
                                         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                                     elif keyPressed == "down" or keyPressed == "left":
                                         level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 10
@@ -1060,14 +1060,14 @@ while True:
                                             targetIndex = len(targets) - 1
                                         else:
                                             targetIndex -= 1
-                                        clear()
                                         level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 11
-                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                                         for target in targets:
                                             if target is targets[targetIndex]:
                                                 actionItem += f"\033[33m✓ {target[0][0]} ✓\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}\033[0m\n"
                                             else:
                                                 actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}\033[0m\n"
+                                        clear()
+                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                                     elif keyPressed == "enter" or keyPressed == "space":
                                         clear()
                                         actionItem = ""
