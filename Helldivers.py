@@ -978,8 +978,8 @@ while True:
                 else:
                     actionItem += f"\n\033[33mPress E to interact\033[0m"
         clear()
+        print(level[0][6][0][0][1], level[0][6][0][0][0])
         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-        print(level[0][3])
         while True:
             if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                 keyPressed = keyboard.read_event().name
