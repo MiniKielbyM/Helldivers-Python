@@ -332,7 +332,7 @@ def find_path(grid, start, goal):
 
     # If no path to goal, return path to closest reachable tile
     return reconstruct_path(came_from, closest)
-def parseActions(gridMap, action, conditions):
+def parseActions(levelMeta, gridMap, action, conditions):
     if action[0] == "clear":
         for clearpos in action[1]:
             gridMap[clearpos[0]][clearpos[1]] = 0
@@ -340,7 +340,7 @@ def parseActions(gridMap, action, conditions):
             print_centered(f"{parse_level([level[0],gridMap],level[0][0])}")
             time.sleep(0.3)
         action[0] = "set"
-        return[gridMap, action, conditions]
+        return[gridMap, action, conditions, levelMeta]
     elif action[0] == "set":
         for setpos in reversed(action[1]):
             gridMap[setpos[0]][setpos[1]] = action[2]
@@ -348,40 +348,43 @@ def parseActions(gridMap, action, conditions):
             print_centered(f"{parse_level([level[0],gridMap],level[0][0])}")
             time.sleep(0.3)
         action[0] = "clear"
-        return[gridMap, action, conditions]
+        return[gridMap, action, conditions, levelMeta]
+    elif action[0] == "damage":
+        levelMeta[0][6][playerIndexTurn][5] = 50
+        return[gridMap, action, conditions, levelMeta] 
     elif action[0] == "condition":
         if action[1][1] == "set":
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     conditions[conditions.index(condition)][1] = action[1][2]
-            return[gridMap, action, conditions]
+            return[gridMap, action, conditions, levelMeta]
         elif action[1][1] == "add": 
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     conditions[conditions.index(condition)][1] += action[1][2]
-            return[gridMap, action, conditions]
+            return[gridMap, action, conditions, levelMeta]
         elif action[1][1] == "sub":
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     conditions[conditions.index(condition)][1] -= action[1][2]
-            return[gridMap, action, conditions]
+            return[gridMap, action, conditions, levelMeta]
         elif action[1][1] == "mult":
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     conditions[conditions.index(condition)][1] *= action[1][2]
-            return[gridMap, action, conditions]
+            return[gridMap, action, conditions, levelMeta]
         elif action[1][1] == "div":
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     if action[1][2] != 0:
                         conditions[conditions.index(condition)][1] /= action[1][2]
-            return[gridMap, action, conditions]
+            return[gridMap, action, conditions, levelMeta]
         elif action[1][1] == "check":
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     if conditions[conditions.index(condition)][1] == action[1][2]:
                         action = parseActions(gridMap, action[1][3], conditions)[1]
-            return[gridMap, action, conditions]
+            return[gridMap, action, conditions, levelMeta]
 def exponential_weighted_choice(arr, decay=0.7):
     weights = [decay ** i for i in range(len(arr))]
     total = sum(weights)
@@ -411,7 +414,7 @@ if True: #hides all the stats, remove before release
     Hunter = ["Hunter", "HT", True, 10, 1, False, 0, 0, 0, 5, 5, 10, 5, 10]
     Hive_Guard = ["Hive Guard", "HG", True, 5, 0, False, 0, 0, 0, 2, 5, 15, 30, 15]
     Charger = ["Charger", "CR", True, 30, 20, False, 0, 0, 0, 10, 5, 50, 50, 50]
-    Shreiker = ["Shreiker", "SR", True, 10, False, 0, 0, 0, 10, 10, 10, 0, 10]
+    Shreiker = ["Shreiker", "SR", True, 10, 5, False, 0, 0, 0, 10, 10, 10, 0, 10]
     Bile_Spewer = ["Bile Spewer", "BS", True, 5, 51, True, 15, 2, 10, 2, 10, 15, 0, 15]
     Stalkers = ["Stalkers", "SK", True, 15, 10, False, 0, 0, 0, 3, 5, 20, 10, 20]
     Bile_Titan = ["Bile Titan", "BT", True, 100, 100, True, 75, 100, 2, 5, 5, 50, 75, 50]
@@ -428,7 +431,7 @@ if True: #hides all the stats, remove before release
     bots = [Trooper, Comissar, Scout_Strider, Beserker, Devistator, Hulk, Tank, Factory_Strider]
 
     Voteless = ["Voteless", "VT", True, 5, 0, False, 0, 0, 0, 5, 5, 5, 0, 5]
-    Watcher = ["Watcher", "WC", False, 0, 0, True, 20, 5, 2, 5, 10, 10, 5, 5, 5]
+    Watcher = ["Watcher", "WC", False, 0, 0, True, 20, 5, 2, 5, 10, 5, 5, 5]
     Overseer = ["Overseer", "OS", True, 50, 0, False, 0, 0, 0, 5, 7, 20, 30, 20]
     Elevated_Overseer = ["Elevated Overseer", "EO", False, 0, 0, True, 20, 5, 5, 1, 5, 20, 15, 20]
     Cresent_Overseer = ["Cresent Overseer", "CO", False, 0, 0, True, 50, 25, 10, 10, 3, 20, 15, 20]
@@ -460,7 +463,7 @@ if True: #hides all the stats, remove before release
     G_16_Impact = ["G-16 Impact", 25, 15, 1, 0, 0]
     G_4_Gas = ["G-4 Gas", 10, math.inf , 3, 10, 3]
     G_10_Incindiary = ["G-10 Incendiary", 5, math.inf , 3, 5, 6]
-    G_123_Thermite = ["G-123 Thermite", 30, 100, 0, 0, 0]
+    G_123_Thermite = ["G-123 Thermite", 30, 100, 1, 0, 0]
 
     ## Armor
     # Armor = [Armor Name, Movement Mod, Armor Stat, Armor Passive]
@@ -953,28 +956,46 @@ level = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
         ## []
-        [[list(Bile_Spewer.copy()), 13, 8, ["condition", ["killedBug1", "set", True]]],[list(Scavenger.copy()), 9, 2],[list(Scavenger.copy()), 11, 2]], ##enemies
-        [["killedBug1", False]], ## conditions
-        [[["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]], [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]], [["spawner",["condition", [""]]], [1,10]]], ## points of interest
+        [[list(Scavenger.copy()), 13, 8, ["condition", ["killedBug1", "set", True]]],[list(Scavenger.copy()), 9, 2],[list(Scavenger.copy()), 11, 2]], ##enemies
+        [["killedBug1", False], ["closedHole1", False]], ## conditions
+        [[["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]], [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]], [["spawner",["condition", ["closedHole1", "set", True]]], [1,10]], [["condition", ["closedHole1", "check", True, ["clear", [[5, 2],[5, 3]], 7]]], [4, 1]]], ## points of interest
         "player 0", ##turn
         math.inf, ##base moves
         "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| 1/2 to change weapon |", ## header
         [ ##players
-            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())] 
+            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
         ],
         bugs
     ],
     list(copy.deepcopy(training_1_2_3))
 ]
+level_evac_1 = [
+    [
+        ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
+        ##[]
+        [[list(Scavenger.copy()), 4, 14,],[list(Hunter.copy()), 12, 6],[list(Scavenger.copy()), 10, 6],[list(Scavenger.copy()), 11, 5],[list(Pouncer.copy()), 11, 7],[list(Stalkers.copy()), 9, 20],[list(Charger.copy()), 10, 20],[list(Scavenger.copy()), 11, 19],[list(Bile_Titan.copy()), 8, 26],[list(Scavenger.copy()), 9, 26],[list(Shreiker.copy()), 16, 20],[list(Shreiker.copy()), 17, 20],[list(Shreiker.copy()), 17, 21],[list(Scavenger.copy()), 27, 27],[list(Scavenger.copy()), 27, 29],[list(Scavenger.copy()), 27, 29],[list(Hunter.copy()), 29, 28]], ##enemies
+
+        [["evacedCivs", False]], ## conditions
+        [[["condition", ["evacedCivs", "check", True, ["extraction"],]], [2, 2]],[["spawner"], [10,15]],[["spawner"], [8,28]],[["spawner"], [19,9]],[["spawner"], [24,21]],[["civ enter"], [24,28]],[["civ enter button"], [27,30]],[["civ enter button"], [24,27]],[["civ enter"], [28,30]],[["civ exit"], [30,26]],[["hellbomb"], [15,26]]], ## points of interest
+        "player 0", ##turn
+        math.inf, ##base moves
+        "", ## header
+        [ ##players
+
+        ],
+        bugs
+    ],
+    list(copy.deepcopy(Evac_Civs_1))
+]
 level_ex_1 = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
-        ##[[list(Hive_Guard.copy()), 3, 2, ["condition", ["killedEnemy1", "set", True]]],[list(Hunter.copy()), 4, 6],[list(Chargers.copy()), 3, 9],[list(Bile_Titan.copy()), 2, 11],[list(Pouncer.copy()), 5, 13],[list(Hive_Guard.copy()), 10, 11],[list(Bile_Titan.copy()), 12, 12],[list(Scavenger.copy()), 6, 4],[list(Chargers.copy()), 9, 3],[list(Bile_Titan.copy()), 13, 2]], ##enemies
-        ##[[list(Devistator.copy()), 3, 2, ["condition", ["killedEnemy1", "set", True]]],[list(Beserker.copy()), 4, 6],[list(Hulk.copy()), 3, 9],[list(Factory_Strider.copy()), 2, 11],[list(Scout_Strider.copy()), 5, 13],[list(Devistator.copy()), 10, 11],[list(Factory_Strider.copy()), 12, 12],[list(Trooper.copy()), 6, 4],[list(Hulk.copy()), 9, 3],[list(Factory_Strider.copy()), 13, 2]], ##enemies
-        ##[[list(Cresent_Overseer.copy()), 3, 2, ["condition", ["killedEnemy1", "set", True]]],[list(Overseer.copy()), 4, 6],[list(Flesh_Mob.copy()), 3, 9],[list(Harvester.copy()), 2, 11],[list(Elevated_Overseer.copy()), 5, 13],[list(Watcher.copy()), 10, 11],[list(Harvester.copy()), 12, 12],[list(Voteless.copy()), 6, 4],[list(Flesh_Mob.copy()), 9, 3],[list(Harvester.copy()), 13, 2]], ##enemies
+        [[list(Hive_Guard.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Pouncer.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Hive_Guard.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
+        ##[[list(Devistator.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Beserker.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Hulk.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Scout_Strider.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Devistator.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Trooper.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Hulk.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
+        ##[[list(Cresent_Overseer.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Overseer.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Flesh_Mob.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Elevated_Overseer.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Watcher.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Voteless.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Flesh_Mob.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
         [None],
-        [["killedEnemy1", False]], ## conditions
-        [[["hellbomb"], [2,11]], [["condition", ["killedEnemy1", "check", True, ["extraction"],]], [6, 7]],[["spawner"], [2,8]],[["spawner"], [3,5]],[["spawner"], [4,12]],[["spawner"], [5,2]],[["spawner"], [8,2]],[["spawner"], [8,11]],[["spawner"], [11,5]],[["spawner"], [11,13]],[["spawner"], [13,9]]], ## points of interest
+        [["killedEnemies", 0]], ## conditions
+        [[["hellbomb"], [2,11]], [["condition", ["killedEnemies", "check", 10, ["extraction"],]], [6, 7]],[["spawner"], [2,8]],[["spawner"], [3,5]],[["spawner"], [4,12]],[["spawner"], [5,2]],[["spawner"], [8,2]],[["spawner"], [8,11]],[["spawner"], [11,5]],[["spawner"], [11,13]],[["spawner"], [13,9]]], ## points of interest
         "player 0", ##turn
         5, ##base moves
         "", ## header
@@ -989,10 +1010,10 @@ level_ex_2 = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
         ##[]
-        [[list(Scavenger.copy()), 6, 5, ["condition", ["killedEnemy1", "set", True]]],[list(Scavenger.copy()), 7, 5],[list(Scavenger.copy()), 8, 5],[list(Scavenger.copy()), 9, 5],[list(Scavenger.copy()), 10, 5],[list(Charger.copy()), 7, 12],[list(Hunter.copy()), 10, 14],[list(Bile_Titan.copy()), 13, 7],[list(Scavenger.copy()), 4, 13],[list(Scavenger.copy()), 2, 12],[list(Scavenger.copy()), 2, 13],[list(Bile_Spewer.copy()), 3, 10],[list(Bile_Spewer.copy()), 2, 8],[list(Scavenger.copy()), 4, 6],[list(Bile_Spewer.copy()), 3, 4],[list(Charger.copy()), 8, 2],[list(Hunter.copy()), 5, 1]], ##enemies
+        [[list(Scavenger.copy()), 6, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 7, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 8, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 9, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 10, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 7, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 10, 14, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 13, 7, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 4, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 2, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 2, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 3, 10, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 2, 8, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 3, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 8, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 5, 1, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
 
-        [["killedEnemy1", False]], ## conditions
-        [[["condition", ["killedEnemy1", "check", True, ["extraction"],]], [6, 8]],[["spawner"], [13,3]],[["spawner"], [7,2]],[["spawner"], [4,8]],[["spawner"], [2,12]],[["spawner"], [9,13]]], ## points of interest
+        [["killedEnemies", 0]], ## conditions
+        [[["condition", ["killedEnemies", "check", 17, ["extraction"],]], [6, 8]],[["spawner"], [13,3]],[["spawner"], [7,2]],[["spawner"], [4,8]],[["spawner"], [2,12]],[["spawner"], [9,13]]], ## points of interest
         "player 0", ##turn
         5, ##base moves
         "", ## header
@@ -1131,7 +1152,6 @@ while True:
                                 for target in targets:
                                     actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
                                 print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-
                         if len(targets) is not 0:
                             clear()
                             actionItem = ""
@@ -1272,7 +1292,7 @@ while True:
                                                                                     
                                                                                     level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 0
                                                                                     if len(targets[targetIndex]) > 3:
-                                                                                        i = parseActions(level[1], targets[targetIndex][3], level[0][1])
+                                                                                        i = parseActions(level[0], level[1], targets[targetIndex][3], level[0][1])
                                                                                         level[1] = i[0]
                                                                                         targets[targetIndex][3] = i[1]
                                                                                         level[0][1] = i[2]
@@ -1333,7 +1353,7 @@ while True:
                                                                     if targets[targetIndex][0][11] <= 0:
                                                                         level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 0
                                                                         if len(targets[targetIndex]) > 3:
-                                                                            i = parseActions(level[1], targets[targetIndex][3], level[0][1])
+                                                                            i = parseActions(level[0], level[1], targets[targetIndex][3], level[0][1])
                                                                             level[1] = i[0]
                                                                             targets[targetIndex][3] = i[1]
                                                                             level[0][1] = i[2]
@@ -1359,7 +1379,7 @@ while True:
                             if (poi[1][1] is level[0][6][playerIndexTurn][0][0]+1 and poi[1][0] is level[0][6][playerIndexTurn][0][1]) or (poi[1][1] is level[0][6][playerIndexTurn][0][0]-1 and poi[1][0] is level[0][6][playerIndexTurn][0][1]) or (poi[1][0] is level[0][6][playerIndexTurn][0][1]+1 and poi[1][1] is level[0][6][playerIndexTurn][0][0]) or (poi[1][0] is level[0][6][playerIndexTurn][0][1]-1 and poi[1][1] is level[0][6][playerIndexTurn][0][0]):
                                 if poi[0][0] == "hellbomb" or poi[0][0] == "spawner":
                                     break
-                                i = parseActions(level[1], poi[0], level[0][1])
+                                i = parseActions(level[0], level[1], poi[0], level[0][1])
                                 level[1] = i[0]
                                 poi[0] = i[1]
                                 level[0][1] = i[2]
@@ -1384,106 +1404,113 @@ while True:
                             else:
                                 break
                 elif keyPressed == "g":
-
-                    grenadeX = level[0][6][playerIndexTurn][0][0]
-                    grenadeY = level[0][6][playerIndexTurn][0][1]-1
-                    if level[1][grenadeY][grenadeX] not in [0, 1, 3, 4, 5, 8, 9]:
-                        print("You cannot move the grenade there!")
-                        time.sleep(100)
-                    actual = level[1][grenadeY][grenadeX]
-                    level[1][grenadeY][grenadeX] = 12
-                    actionItem = "\033[33mpress Enter to confirm\033[0m"
-                    r = 3.99
-                    if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
-                        r = 4.99
-                    clear()
-                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                    while True:
-                        if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                            keyPressed = keyboard.read_event().name
-                            if keyPressed == "up" or keyPressed == "w":
-                                if grenadeY <= 0 or level[1][grenadeY-1][grenadeX] in [0, 1, 3, 4, 5, 8, 9]:
-                                    if hypotenuse_los(level[1], [grenadeX, grenadeY-1], level[0][6][playerIndexTurn][0], r):
-                                        level[1][grenadeY][grenadeX] = actual
-                                        grenadeY -= 1
-                                        actual = level[1][grenadeY][grenadeX]
-                                        level[1][grenadeY][grenadeX] = 12
-                            elif keyPressed == "down" or keyPressed == "s":
-                                if grenadeY >= len(level[1])-1 or level[1][grenadeY+1][grenadeX] in [0, 1, 3, 4, 5, 8, 9]:
-                                    if hypotenuse_los(level[1], [grenadeX, grenadeY+1], level[0][6][playerIndexTurn][0], r):
-                                        level[1][grenadeY][grenadeX] = actual
-                                        grenadeY += 1
-                                        actual = level[1][grenadeY][grenadeX]
-                                        level[1][grenadeY][grenadeX] = 12
-                            elif keyPressed == "left" or keyPressed == "a":
-                                if grenadeX <= 0 or level[1][grenadeY][grenadeX-1] in [0, 1, 3, 4, 5, 8, 9]:
-                                    if hypotenuse_los(level[1], [grenadeX-1, grenadeY], level[0][6][playerIndexTurn][0], r):
-                                        level[1][grenadeY][grenadeX] = actual
-                                        grenadeX -= 1
-                                        actual = level[1][grenadeY][grenadeX]
-                                        level[1][grenadeY][grenadeX] = 12
-                            elif keyPressed == "right" or keyPressed == "d":
-                                if grenadeX >= len(level[1][0])-1 or level[1][grenadeY][grenadeX+1] in [0, 1, 3, 4, 5, 8, 9]:
-                                    if hypotenuse_los(level[1], [grenadeX+1, grenadeY], level[0][6][playerIndexTurn][0], r):
-                                        level[1][grenadeY][grenadeX] = actual
-                                        grenadeX += 1
-                                        actual = level[1][grenadeY][grenadeX]
-                                        level[1][grenadeY][grenadeX] = 12
-                            elif keyPressed == "enter" or keyPressed == "space":
-                                level[1][grenadeY][grenadeX] = actual
-                                if actual == 4:
-                                    for poi in level[0][2]:
-                                        if poi[1][1] == grenadeX and poi[1][0] == grenadeY:
-                                            level[0][2].remove(poi)
-                                            level[1][grenadeY][grenadeX] = 0
-                                for enemy in list(level[0][0].copy()):
-                                    if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
-                                        enemy[0][11] -= level[0][6][playerIndexTurn][14][2]
-                                        if enemy[0][12] <= 0:
-                                            enemy[0][12] = 0
-                                        if enemy[0][12] - level[0][6][playerIndexTurn][14][1] < 0:
-                                            enemy[0][11] -= level[0][6][playerIndexTurn][14][1] - enemy[0][12]
-                                        if enemy[0][11] <= 0:
-                                            level[1][enemy[2]][enemy[1]] = 0
-                                            if len(enemy) > 3:
-                                                i = parseActions(level[1], enemy[3], level[0][1])
+                    if level[0][6][playerIndexTurn][7] is not 0:
+                        level[0][6][playerIndexTurn][7] -= 1
+                        grenadeX = level[0][6][playerIndexTurn][0][0]
+                        grenadeY = level[0][6][playerIndexTurn][0][1]-1
+                        if level[1][grenadeY][grenadeX] not in [0, 1, 3, 4, 5, 8, 9]:
+                            print("You cannot move the grenade there!")
+                            time.sleep(100)
+                        actual = level[1][grenadeY][grenadeX]
+                        level[1][grenadeY][grenadeX] = 12
+                        actionItem = "\033[33mpress Enter to confirm\033[0m"
+                        r = 3.99
+                        if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
+                            r = 4.99
+                        clear()
+                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                        while True:
+                            if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                keyPressed = keyboard.read_event().name
+                                if keyPressed == "up" or keyPressed == "w":
+                                    if grenadeY <= 0 or level[1][grenadeY-1][grenadeX] in [0, 1, 3, 4, 5, 8, 9]:
+                                        if hypotenuse_los(level[1], [grenadeX, grenadeY-1], level[0][6][playerIndexTurn][0], r):
+                                            level[1][grenadeY][grenadeX] = actual
+                                            grenadeY -= 1
+                                            actual = level[1][grenadeY][grenadeX]
+                                            level[1][grenadeY][grenadeX] = 12
+                                elif keyPressed == "down" or keyPressed == "s":
+                                    if grenadeY >= len(level[1])-1 or level[1][grenadeY+1][grenadeX] in [0, 1, 3, 4, 5, 8, 9]:
+                                        if hypotenuse_los(level[1], [grenadeX, grenadeY+1], level[0][6][playerIndexTurn][0], r):
+                                            level[1][grenadeY][grenadeX] = actual
+                                            grenadeY += 1
+                                            actual = level[1][grenadeY][grenadeX]
+                                            level[1][grenadeY][grenadeX] = 12
+                                elif keyPressed == "left" or keyPressed == "a":
+                                    if grenadeX <= 0 or level[1][grenadeY][grenadeX-1] in [0, 1, 3, 4, 5, 8, 9]:
+                                        if hypotenuse_los(level[1], [grenadeX-1, grenadeY], level[0][6][playerIndexTurn][0], r):
+                                            level[1][grenadeY][grenadeX] = actual
+                                            grenadeX -= 1
+                                            actual = level[1][grenadeY][grenadeX]
+                                            level[1][grenadeY][grenadeX] = 12
+                                elif keyPressed == "right" or keyPressed == "d":
+                                    if grenadeX >= len(level[1][0])-1 or level[1][grenadeY][grenadeX+1] in [0, 1, 3, 4, 5, 8, 9]:
+                                        if hypotenuse_los(level[1], [grenadeX+1, grenadeY], level[0][6][playerIndexTurn][0], r):
+                                            level[1][grenadeY][grenadeX] = actual
+                                            grenadeX += 1
+                                            actual = level[1][grenadeY][grenadeX]
+                                            level[1][grenadeY][grenadeX] = 12
+                                elif keyPressed == "enter" or keyPressed == "space":
+                                    level[1][grenadeY][grenadeX] = actual
+                                    if actual == 4:
+                                        for poi in level[0][2]:
+                                            if poi[1][1] == grenadeX and poi[1][0] == grenadeY:
+                                                i = parseActions(level[0], level[1], poi[0][1], level[0][1])
                                                 level[1] = i[0]
-                                                enemy[3] = i[1]
-                                                level[0][1] = i[2]
-                                            level[1][enemy[2]][enemy[1]] = 0
-                                            level[0][0].remove(enemy)
-                                for player in level[0][6]:
-                                    if hypotenuse_los(level[1], [player[0][0], player[0][1]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
-                                        player[3][2] -= level[0][6][playerIndexTurn][14][2]
-                                        if player[3][2] >= 0:
-                                            player[3][2] = 0
-                                        if player[3][2] - level[0][6][playerIndexTurn][14][1] < 0:
-                                            player[5] +=  player[3][2] - level[0][6][playerIndexTurn][14][1]
-                                        if player[5] <= 0:
-                                            if player[3][3].lower() == "democracy protects" and random.randint(1, 100) <= 50:
-                                                player[5] = 1
-                                            else:
-                                                player[5] = 0
-                                                if player[3][3].lower() == "integrated explosives":
-                                                    for enemy in list(level[0][0].copy()):
-                                                        if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], 1, grenade=True):
-                                                            enemy[0][12] -= 10
-                                                            if enemy[0][12] <= 0:
-                                                                enemy[0][12] = 0
-                                                                enemy[0][11] -= 20
-                                                            if enemy[0][11] <= 0:
-                                                                level[1][enemy[2]][enemy[1]] = 0
-                                                                if len(enemy) > 3:
-                                                                    i = parseActions(level[1], enemy[3], level[0][1])
-                                                                    level[1] = i[0]
-                                                                    enemy[3] = i[1]
-                                                                    level[0][1] = i[2]
-                                                                level[1][enemy[2]][enemy[1]] = 0
-                                                                level[0][0].remove(enemy)
-                                                sys.exit(0)
-                                break
-                            clear()
-                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                                try:
+                                                    poi[0][1] = i[1]
+                                                finally:
+                                                    level[0][1] = i[2]
+                                                    level[0][2].remove(poi)
+                                                    level[1][grenadeY][grenadeX] = 0
+                                    for enemy in list(level[0][0].copy()):
+                                        if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
+                                            enemy[0][11] -= level[0][6][playerIndexTurn][14][2]
+                                            if enemy[0][12] <= 0:
+                                                enemy[0][12] = 0
+                                            if enemy[0][12] - level[0][6][playerIndexTurn][14][1] < 0:
+                                                enemy[0][11] -= level[0][6][playerIndexTurn][14][1] - enemy[0][12]
+                                            if enemy[0][11] <= 0:
+                                                level[1][enemy[2]][enemy[1]] = 0
+                                                if len(enemy) > 3:
+                                                    i = parseActions(level[0], level[1], enemy[3], level[0][1])
+                                                    level[1] = i[0]
+                                                    enemy[3] = i[1]
+                                                    level[0][1] = i[2]
+                                                level[1][enemy[2]][enemy[1]] = 0
+                                                level[0][0].remove(enemy)
+                                    for player in level[0][6]:
+                                        if hypotenuse_los(level[1], [player[0][0], player[0][1]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
+                                            player[3][2] -= level[0][6][playerIndexTurn][14][2]
+                                            if player[3][2] >= 0:
+                                                player[3][2] = 0
+                                            if player[3][2] - level[0][6][playerIndexTurn][14][1] < 0:
+                                                player[5] +=  player[3][2] - level[0][6][playerIndexTurn][14][1]
+                                            if player[5] <= 0:
+                                                if player[3][3].lower() == "democracy protects" and random.randint(1, 100) <= 50:
+                                                    player[5] = 1
+                                                else:
+                                                    player[5] = 0
+                                                    if player[3][3].lower() == "integrated explosives":
+                                                        for enemy in list(level[0][0].copy()):
+                                                            if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], 1, grenade=True):
+                                                                enemy[0][12] -= 10
+                                                                if enemy[0][12] <= 0:
+                                                                    enemy[0][12] = 0
+                                                                    enemy[0][11] -= 20
+                                                                if enemy[0][11] <= 0:
+                                                                    level[1][enemy[2]][enemy[1]] = 0
+                                                                    if len(enemy) > 3:
+                                                                        i = parseActions(level[0], level[1], enemy[3], level[0][1])
+                                                                        level[1] = i[0]
+                                                                        enemy[3] = i[1]
+                                                                        level[0][1] = i[2]
+                                                                    level[1][enemy[2]][enemy[1]] = 0
+                                                                    level[0][0].remove(enemy)
+                                                    sys.exit(0)
+                                    break
+                                clear()
+                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                 elif keyPressed == "r":
                     level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][4]
                     level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][11] += -1
@@ -1525,8 +1552,10 @@ while True:
     elif level[0][3] == "enemy":
         for enemy in level[0][0]:
             visMod = 0
+            if Ship_Mods[3] is 1 or 2 or 3 or 4:
+                visMod = 1
             if level[0][6][playerIndexTurn][3][3].lower() == "scout":
-                visMod = Fraction(30, 100) * enemy[0][9]
+                visMod += Fraction(30, 100) * enemy[0][9]
             if hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], enemy[0][9]-visMod):
                 path = find_path(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0])
                 if len(path) > enemy[0][10]:
@@ -1541,11 +1570,42 @@ while True:
                     clear()
                     print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                     time.sleep(0.5)
-            if enemy[0][5] == True:
+            if enemy[0][2] == True and hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], 1.59):
+                trueDmg = 0
+                dmg = enemy[0][3]
+                maxArmor = level[0][6][playerIndexTurn][3][2] - enemy[0][7]
+                tempArmor = maxArmor - dmg
+                if maxArmor < 0:
+                    maxArmor = 0
+                if tempArmor < 0:
+                    trueDmg = dmg - maxArmor
+                    tempArmor = 0
+                if trueDmg >= level[0][6][playerIndexTurn][5]:
+                    trueDmg = level[0][6][playerIndexTurn][5]
+                level[0][6][playerIndexTurn][3][2] = tempArmor
+                level[0][6][playerIndexTurn][5] -= trueDmg
+                if level[0][6][playerIndexTurn][5] <= 0:
+                    if level[0][6][playerIndexTurn] [3][3].lower() == "democracy protects" and random.randint(0, 100) < 50:
+                        level[0][6][playerIndexTurn][5] = 1
+                    else:
+                        actionItem = f"\033[31mYou have been hit for {trueDmg} damage!\033[0m\n"
+                        actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
+                        actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
+                        actionItem += "\033[31mYou have been killed by an enemy\033[0m"
+                        clear()
+                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                        sys.exit()
+                actionItem = f"\033[31mYou have been hit for {trueDmg} damage!\033[0m\n"
+                actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
+                actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
+                clear()
+                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                time.sleep(2)                
+            elif enemy[0][5] == True:
                 if hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], enemy[0][8]):
                     trueDmg = 0
-                    dmg = enemy[0][6]
-                    maxArmor = level[0][6][playerIndexTurn][3][2] - enemy[0][7]
+                    dmg = enemy[0][3]
+                    maxArmor = level[0][6][playerIndexTurn][3][2] - enemy[0][4]
                     tempArmor = maxArmor - dmg
                     if maxArmor < 0:
                         maxArmor = 0
@@ -1586,6 +1646,7 @@ while True:
                                 if level[1][yS][xS] == 0:
                                     level[1][yS][xS] = 3
                                     level[0][0].append(list((enemy, xS, yS)))
+                                    clear()
                                     print_centered(f"{parse_level(level=level,enemies=level[0][0], actionItem = actionItem)}")
                                     time.sleep(1)
                                     break
@@ -1633,7 +1694,7 @@ while True:
                             os.system('color 06')
                             if(Ship_Mods[0] is 0):
                                 next_mod = "Donation Access License"
-                                print_centered("\nDonation Access License: Support Weapons deploy with maximum ammo reserves.")
+                                print_centered("\nDonation Access License: Support Weapons deploy with an extra magazine.")
                                 print_centered("\nStreamlined Request Process: Reduces Support Weapon Stratagem cooldown")
                                 print_centered("\nHand Carts: Reduces Backpack Stratagem cooldown")
                                 print_centered("\nSuperior Packing Methodology: Resupply Boxes fill support weapons to maximum ammo")
@@ -1641,34 +1702,34 @@ while True:
                                 
                             elif(Ship_Mods[0] is 1):
                                 next_mod = "Streamlined Request Process"
-                                print_centered("\n✓ Donation Access License: Support Weapons deploy with maximum ammo reserves. ✓")
+                                print_centered("\n✓ Donation Access License: Support Weapons deploy with an extra magazine. ✓")
                                 print_centered("\nStreamlined Request Process: Reduces Support Weapon Stratagem cooldown")
                                 print_centered("\nHand Carts: Reduces Backpack Stratagem cooldown")
                                 print_centered("\nSuperior Packing Methodology: Resupply Boxes fill support weapons to maximum ammo")
                                 print_centered("\nPayroll Management System: Reduces reload time for Support Weapons")
                             elif(Ship_Mods[0] is 2):
                                 next_mod = "Hand Carts"
-                                print_centered("\n✓ Donation Access License: Support Weapons deploy with maximum ammo reserves. ✓")
+                                print_centered("\n✓ Donation Access License: Support Weapons deploy with an extra magazine. ✓")
                                 print_centered("\n✓ Streamlined Request Process: Reduces Support Weapon Stratagem cooldown ✓")
                                 print_centered("\nHand Carts: Reduces Backpack Stratagem cooldown")
                                 print_centered("\nSuperior Packing Methodology: Resupply Boxes fill support weapons to maximum ammo")
                                 print_centered("\nPayroll Management System: Reduces reload time for Support Weapons")
                             elif(Ship_Mods[0] is 3):
                                 next_mod = "Superior Packing Methodology"
-                                print_centered("\n✓ Donation Access License: Support Weapons deploy with maximum ammo reserves. ✓")
+                                print_centered("\n✓ Donation Access License: Support Weapons deploy with an extra magazine. ✓")
                                 print_centered("\n✓ Streamlined Request Process: Reduces Support Weapon Stratagem cooldown ✓")
                                 print_centered("\n✓ Hand Carts: Reduces Backpack Stratagem cooldown ✓")
                                 print_centered("\nSuperior Packing Methodology: Resupply Boxes fill support weapons to maximum ammo")
                                 print_centered("\nPayroll Management System: Reduces reload time for Support Weapons")
                             elif(Ship_Mods[0] is 4):
                                 next_mod = "Payroll Management System"
-                                print_centered("\n✓ Donation Access License: Support Weapons deploy with maximum ammo reserves. ✓")
+                                print_centered("\n✓ Donation Access License: Support Weapons deploy with an extra magazine. ✓")
                                 print_centered("\n✓ Streamlined Request Process: Reduces Support Weapon Stratagem cooldown ✓")
                                 print_centered("\n✓ Hand Carts: Reduces Backpack Stratagem cooldown ✓")
                                 print_centered("\n✓ Superior Packing Methodology: Resupply Boxes fill support weapons to maximum ammo ✓")
                                 print_centered("\nPayroll Management System: Reduces reload time for Support Weapons")
                             elif(Ship_Mods[0] is 5):
-                                print_centered("\n✓ Donation Access License: Support Weapons deploy with maximum ammo reserves. ✓")
+                                print_centered("\n✓ Donation Access License: Support Weapons deploy with an extra magazine. ✓")
                                 print_centered("\n✓ Streamlined Request Process: Reduces Support Weapon Stratagem cooldown ✓")
                                 print_centered("\n✓ Hand Carts: Reduces Backpack Stratagem cooldown ✓")
                                 print_centered("\n✓ Superior Packing Methodology: Resupply Boxes fill support weapons to maximum ammo ✓")
@@ -1911,7 +1972,7 @@ while True:
                                 print_centered("\nEnhanced Combustion: Fire damage from Stratagems increased")
                                 print_centered('\nMorale Augmentation: Reduces cooldown time for all Stratagems')
                             elif(Ship_Mods[3] is 3):
-                                next_mod = "Enhanced Combustion"
+                                next_mod = "Enhanced Combustion"                                                                                                                                                                                                                                                                                                                                                                                                                       
                                 print_centered("\n✓ Targeting Software Upgrade: Reduces cooldown of all Orbital Stratagems ✓")
                                 print_centered("\n✓ Nuclear Radar: Increases accuracy of Orbital Stratagems ✓")
                                 print_centered("\n✓ Power Steering: Decreases call-in time of all Eagle Stratagems ✓")
@@ -2202,95 +2263,106 @@ while n<4:
     # Weapon type key; 1 = weapon; 2 = backpack; 3 = weapon and backpack; 4 = offensive; 5 = defensive
     Chosen_Stratagems = input("")
     if Chosen_Stratagems is 1:
-        Stratagem = [1, "Quasar", 100, 10, True, math.inf, 1, 1, 5, 1, False]
+        Stratagem = list(copy.deepcopy(Quasar))
     elif Chosen_Stratagems is 2:
-        Stratagem = [1, "Expendible Anti Tank", 50, 100, True, 2, 0, 0, 5, 1, False]
+        Stratagem = list(copy.deepcopy(Expendible_Anti_Tank))
     elif Chosen_Stratagems is 3:
-        Stratagem = [3, "Recoilless Rifle", 100, 30, True, 7, 2, 0, 5, 1, False]
+        Stratagem = list(copy.deepcopy(Recoilless_Rifle))
     elif Chosen_Stratagems is 4:
-        Stratagem = [3, "Spear", 50, 100, True, 3, 2, 0, 5, 1, False]
+        Stratagem = list(copy.deepcopy(Spear))
     elif Chosen_Stratagems is 5:
-        Stratagem = [1, "Machine gun", 50, 5, False, 4, 0, 0, 3, 30, False]
+        Stratagem = list(copy.deepcopy(Machine_gun))
     elif Chosen_Stratagems is 6:
-        Stratagem = [1, "Grenade Launcher", 50, 10, True, 4, 0, 1, 3, 10, False]
+        Stratagem = list(copy.deepcopy(Grenade_Launcher))
     elif Chosen_Stratagems is 7:
-        Stratagem = [1, "Flamethrower", 10, 0, True, 4, 0, 1, 2, 10, False]
-        if(Ship_Mods[3] is 4):
+        Stratagem = list(copy.deepcopy(Flamethrower))
+        if Ship_Mods[3] is 4 :
             Stratagem[2] = 12.5
     elif Chosen_Stratagems is 8:
-        Stratagem = [1, "Arcthrower", 15, math.inf, False, math.inf, 1, 0, 4, 1, True]
+        Stratagem = list(copy.deepcopy(Arcthrower))
     elif Chosen_Stratagems is 9:
-        Stratagem = [4, "500kg", 150, 50, True, 1, 2, 2, 0, 0, 0]
-        if(Ship_Mods[2] is 3):
+        Stratagem = list(copy.deepcopy(bomb_500kg))
+        if Ship_Mods[2] is 3:
             Stratagem[5] = 2
-        elif(Ship_Mods[2] is 0):
+        elif Ship_Mods[2] is 0:
             Stratagem[5] = 1
     elif Chosen_Stratagems is 10:
-        Stratagem = [4, "380mm Barrage", 100, 50, True, math.inf, 5, 3, 100, 50, 3]
+        Stratagem = list(copy.deepcopy(Barrage_380mm))
     elif Chosen_Stratagems is 33:
-        Stratagem = [4, "Orbital Precision Strike", 25, 50, True, math.inf, 2, 1, 0, 0, 0]
-        if(Ship_Mods[3] is 0):
+        Stratagem = list(copy.deepcopy(Orbital_Precision_Strike))
+        if Ship_Mods[3] is 0:
             Stratagem[6] = 2  
     elif Chosen_Stratagems is 11:
-        Stratagem = [4, "Cluster bomb", 30, 10, True, 3, 1, 2, 0, 0, 0]
+        Stratagem = list(copy.deepcopy(Cluster_bomb))
     elif Chosen_Stratagems is 12:
-        Stratagem = [4, "Strafing run", 30, 20, False, 3, 1, 1, 0, 0, 0]
+        Stratagem = list(copy.deepcopy(Strafing_run))
     elif Chosen_Stratagems is 13:
-        Stratagem = [4, "Eagle airstrike", 50, 10, True, 2, 1, 1, 0, 0, 0]
+        Stratagem = list(copy.deepcopy(Eagle_airstrike))
     elif Chosen_Stratagems is 14:
-        Stratagem = [4, "Rocket pods", 35, 30, True, 4, 1, 1, 0, 0, 0]
+        Stratagem = list(copy.deepcopy(Rocket_pods))
         
     elif Chosen_Stratagems is 15:
-        Stratagem = [4, "Orbital Gatling", 50, 10, False, math.inf, 3, 1, 0, 0, 0]
-        if(Ship_Mods[3] is 0):
+        Stratagem = list(copy.deepcopy(Orbital_Gatling))
+        if Ship_Mods[3] is 0:
             Stratagem[6] = 2  
     elif Chosen_Stratagems is 16:
-        Stratagem = [4, "Orbital Gas", 25, 100, False, math.inf, 3, 2, 10, math.inf, 2]
-        if(Ship_Mods[3] is 0):
+        Stratagem = list(copy.deepcopy(Orbital_Gas))
+        if Ship_Mods[3] is 0:
             Stratagem[6] = 2  
     elif Chosen_Stratagems is 17:
-        Stratagem = [5, "Gatling Sentry", 10, 0, False, math.inf, 1, False, 3, 50, 25, False, 0]
-        if(Ship_Mods[4] is 1 or 2 or 3 or 4):
+        Stratagem = list(copy.deepcopy(Gatling_Sentry))
+        if Ship_Mods[4] is 1 or 2 or 3 or 4:
             Stratagem[9] = 100               
     elif Chosen_Stratagems is 18:
-        Stratagem = [5, "Machine Gun Sentry", 5, 2, False, math.inf, 2, False, 3, 50, 25, False, 0]
-        if(Ship_Mods[4] is 1 or 2 or 3 or 4):
+        Stratagem = list(copy.deepcopy(Machine_Gun_Sentry))
+        if Ship_Mods[4] is 1 or 2 or 3 or 4:
             Stratagem[9] = 100 
     elif Chosen_Stratagems is 19:
-        Stratagem = [5, "Rocket Sentry", 25, 10, False, math.inf, 3, False, 3, 50, 25, False, 0]
-        if(Ship_Mods[4] is 1 or 2 or 3 or 4):
+        Stratagem = list(copy.deepcopy(Rocket_Sentry))
+        if Ship_Mods[4] is 1 or 2 or 3 or 4:
             Stratagem[9] = 100 
     elif Chosen_Stratagems is 20:
-        Stratagem = [5, "Autocannon Sentry", 20, 15, False, math.inf, 2, False, 3, 50, 25, False, 0]
-        if(Ship_Mods[4] is 1 or 2 or 3 or 4):
+        Stratagem = list(copy.deepcopy(Autocannon_Sentry))
+        if Ship_Mods[4] is 1 or 2 or 3 or 4:
             Stratagem[9] = 100 
     elif Chosen_Stratagems is 21:
-        Stratagem = [5, "Anti Tank Emplacement", 100, math.inf, False, math.inf, 3, True, 3, 50, 25, False, 0]
+        Stratagem = list(copy.deepcopy(Anti_Tank_Emplacement))
     elif Chosen_Stratagems is 22:
-        Stratagem = [5, "Gas Mines", 15, math.inf, False, math.inf, 6, False, 0, 0, 0, True, 1]
+        Stratagem = list(copy.deepcopy(Gas_Mines))
     elif Chosen_Stratagems is 23:
-        Stratagem = [5, "Incendiary Mines", 20, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 2]
+        Stratagem = list(copy.deepcopy(Incendiary_Mines))
     elif Chosen_Stratagems is 24:
-        Stratagem = [5, "Regular Mines", 25, math.inf, False, math.inf, 3, False, 0, 0, 0, True, 3]
+        Stratagem = list(copy.deepcopy(Regular_Mines))
     elif Chosen_Stratagems is 25:
-        Stratagem = [5, "Anti Tank Mines", 50, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 4]
+        Stratagem = list(copy.deepcopy(Anti_Tank_Mines))
     elif Chosen_Stratagems is 26:
-        Stratagem = [2, "Supply Pack", math.inf, 6, False, 0, 0, 0, 0]
-        if(Ship_Mods[0] is 0):
-            Stratagem[3] = 4 ## does my code work? idk if the values will save
-            ## yes this will work, also in python, you don't need to put brackets () around the if statement
+        Stratagem = list(copy.deepcopy(Supply_Pack))
+        if Ship_Mods[0] is 0:
+            Stratagem[3] = 4 
     elif Chosen_Stratagems is 27:
-        Stratagem = [2, "Shield Generator Pack", math.inf, 6, False, 0, 0, 0, 0]
+        Stratagem = list(copy.deepcopy(Shield_Generator_Pack))
+        if Ship_Mods[0] is 0:
+            Stratagem[3] = 4 
     elif Chosen_Stratagems is 28:
-        Stratagem = [2, "Hellbomb Backpack", math.inf, 6, False, 0, 0, 0, 0]
+        Stratagem = list(copy.deepcopy(Hellbomb_Backpack))
+        if Ship_Mods[0] is 0:
+            Stratagem[3] = 4 
     elif Chosen_Stratagems is 29:
-        Stratagem = [2, "Balistic Shield", math.inf, 6, False, 0, 0, 0, 0]
+        Stratagem = list(copy.deepcopy(Balistic_Shield))
+        if Ship_Mods[0] is 0:
+            Stratagem[3] = 4 
     elif Chosen_Stratagems is 30:
-        Stratagem = [2, "Guard Dog", math.inf, 6, True, 5, 10, 30, 3]
+        Stratagem = list(copy.deepcopy(Guard_Dog))
+        if Ship_Mods[0] is 0:
+            Stratagem[3] = 4 
     elif Chosen_Stratagems is 31:
-        Stratagem = [2, "Guard Dog Rover", math.inf, 6, True, 1, math.inf, 100, 3]
+        Stratagem = list(copy.deepcopy(Guard_Dog_Rover))
+        if Ship_Mods[0] is 0:
+            Stratagem[3] = 4 
     elif Chosen_Stratagems is 32:
-        Stratagem = [2, "Guard Dog Dog Breath", math.inf, 6, True, 5, math.inf, 45, 3]
+        Stratagem = list(copy.deepcopy(Guard_Dog_Dog_Breath))
+        if Ship_Mods[0] is 0:
+            Stratagem[3] = 4 
 
     All_Stratagems[n]=Stratagem
     n+=1
