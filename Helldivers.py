@@ -578,7 +578,7 @@ if True: #hides maps
         [7,0,0,0,2,0,0,0,0,0,0,1,0,3,2,2],
         [2,0,6,0,2,0,0,0,0,0,0,1,0,0,2,2],
         [2,0,0,0,2,0,0,0,0,0,0,1,0,0,2,2],
-        [2,2,2,2,2,2,7,7,7,7,2,2,2,2,2,2],
+        [2,2,0,2,2,2,7,7,7,7,2,2,2,2,2,2],
         [2,0,0,0,0,0,0,0,0,0,6,0,0,0,0,2],
         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
         [2,0,0,0,0,0,0,0,5,0,0,0,0,0,0,2],
@@ -951,18 +951,18 @@ if True: #hides maps
         Meme_1,
         Meme_2
     ]
-
 level = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
         ## []
         [[list(Scavenger.copy()), 13, 8, ["condition", ["killedBug1", "set", True]]],[list(Scavenger.copy()), 9, 2],[list(Scavenger.copy()), 11, 2]], ##enemies
-        [["killedBug1", False], ["closedHole1", False]], ## conditions
+        [["killedBug1", False], ["closedHole1", False], ["stimmed", False]], ## conditions
         [[["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]], [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]], [["spawner",["condition", ["closedHole1", "set", True]]], [1,10]], [["condition", ["closedHole1", "check", True, ["clear", [[5, 2],[5, 3]], 7]]], [4, 1]]], ## points of interest
         "player 0", ##turn
         math.inf, ##base moves
         "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| 1/2 to change weapon |", ## header
         [ ##players
+            #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade
             [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
         ],
         bugs
@@ -975,7 +975,7 @@ level_evac_1 = [
         ##[]
         [[list(Scavenger.copy()), 4, 14,],[list(Hunter.copy()), 12, 6],[list(Scavenger.copy()), 10, 6],[list(Scavenger.copy()), 11, 5],[list(Pouncer.copy()), 11, 7],[list(Stalkers.copy()), 9, 20],[list(Charger.copy()), 10, 20],[list(Scavenger.copy()), 11, 19],[list(Bile_Titan.copy()), 8, 26],[list(Scavenger.copy()), 9, 26],[list(Shreiker.copy()), 16, 20],[list(Shreiker.copy()), 17, 20],[list(Shreiker.copy()), 17, 21],[list(Scavenger.copy()), 27, 27],[list(Scavenger.copy()), 27, 29],[list(Scavenger.copy()), 27, 29],[list(Hunter.copy()), 29, 28]], ##enemies
 
-        [["evacedCivs", False]], ## conditions
+        [["evacedCivs", False], ["Objective.condition", False, "Evacuate civilians: ", True]], ## conditions
         [[["condition", ["evacedCivs", "check", True, ["extraction"],]], [2, 2]],[["spawner"], [10,15]],[["spawner"], [8,28]],[["spawner"], [19,9]],[["spawner"], [24,21]],[["civ enter"], [24,28]],[["civ enter button"], [27,30]],[["civ enter button"], [24,27]],[["civ enter"], [28,30]],[["civ exit"], [30,26]],[["hellbomb"], [15,26]]], ## points of interest
         "player 0", ##turn
         math.inf, ##base moves
@@ -993,7 +993,7 @@ level_ex_1 = [
         [[list(Hive_Guard.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Pouncer.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Hive_Guard.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
         ##[[list(Devistator.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Beserker.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Hulk.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Scout_Strider.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Devistator.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Trooper.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Hulk.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
         ##[[list(Cresent_Overseer.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Overseer.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Flesh_Mob.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Elevated_Overseer.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Watcher.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Voteless.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Flesh_Mob.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
-        [["killedEnemies", 0]], ## conditions
+        [["killedEnemies", 0], ["Objective.Extermanate", 0, "Extermanate enemies: ", 10]], ## conditions
         [[["hellbomb"], [2,11]], [["condition", ["killedEnemies", "check", 10, ["extraction"],]], [6, 7]],[["spawner"], [2,8]],[["spawner"], [3,5]],[["spawner"], [4,12]],[["spawner"], [5,2]],[["spawner"], [8,2]],[["spawner"], [8,11]],[["spawner"], [11,5]],[["spawner"], [11,13]],[["spawner"], [13,9]]], ## points of interest
         "player 0", ##turn
         5, ##base moves
@@ -1011,7 +1011,7 @@ level_ex_2 = [
         ##[]
         [[list(Scavenger.copy()), 6, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 7, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 8, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 9, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 10, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 7, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 10, 14, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 13, 7, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 4, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 2, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 2, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 3, 10, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 2, 8, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 3, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 8, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 5, 1, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
 
-        [["killedEnemies", 0]], ## conditions
+        [["killedEnemies", 0], ["Objective.Extermanate", 0, "Extermanate enemies: ", 17]], ## conditions
         [[["condition", ["killedEnemies", "check", 17, ["extraction"],]], [6, 8]],[["spawner"], [13,3]],[["spawner"], [7,2]],[["spawner"], [4,8]],[["spawner"], [2,12]],[["spawner"], [9,13]]], ## points of interest
         "player 0", ##turn
         5, ##base moves
@@ -1139,7 +1139,6 @@ while True:
                     level[0][6][playerIndexTurn][4] = 2
                 elif keyPressed == "space":
                     actionItem = ""
-                    shootPhases += 1
                     if shootPhases != 3:
                         targets = []
                         targetIndex = 0
@@ -1372,6 +1371,7 @@ while True:
                                 level[1][target[2]][target[1]] = 3
                             clear()
                             break
+                    shootPhases += 1
                 elif keyPressed == "e":
                     for poi in level[0][2]:
                         if level[1][poi[1][0]][poi[1][1]] == 6:
@@ -2275,12 +2275,18 @@ while n<4:
         Stratagem = list(copy.deepcopy(Spear))
     elif Chosen_Stratagems is 5:
         Stratagem = list(copy.deepcopy(Machine_gun))
+        if Ship_Mods[0] is 0 :
+            Stratagem[9] = 40
     elif Chosen_Stratagems is 6:
         Stratagem = list(copy.deepcopy(Grenade_Launcher))
+        if Ship_Mods[0] is 0 :
+            Stratagem[9] = 15
     elif Chosen_Stratagems is 7:
         Stratagem = list(copy.deepcopy(Flamethrower))
         if Ship_Mods[3] is 4 :
             Stratagem[2] = 12.5
+        elif Ship_Mods[0] is 0:
+            Stratagem[9] = 15
     elif Chosen_Stratagems is 8:
         Stratagem = list(copy.deepcopy(Arcthrower))
     elif Chosen_Stratagems is 9:
