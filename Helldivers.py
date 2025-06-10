@@ -1705,7 +1705,7 @@ def gameLoop(level):
                         selectableStratagems = []
                         for stratagem in level[0][6][playerIndexTurn][15]:
                             if stratagem[1] == 0:
-                                if stratagem[0][0] == 0 and stratagem[0][3] > 0:
+                                if stratagem[0][0] == 0 and stratagem[0][2] > 0:
                                     selectableStratagems.append(stratagem)
                                 elif stratagem[0][0] == 1 and stratagem[0][11] > 0:
                                     selectableStratagems.append(stratagem)
@@ -1720,7 +1720,7 @@ def gameLoop(level):
                             if stratagem in selectableStratagems:
                                 actionItem += f"\033[33m{stratagem[0][1]}: "
                                 if stratagem[0][0] == 0:
-                                    actionItem += f"{stratagem[0][3]} uses remaining\033[0m\n"
+                                    actionItem += f"{stratagem[0][2]} uses remaining\033[0m\n"
                                 elif stratagem[0][0] == 1:
                                     action += f"{stratagem[0][11]} turns remaining\033[0m\n"
                                 elif stratagem[0][0] == 4:
@@ -1731,6 +1731,9 @@ def gameLoop(level):
                                     actionItem += f"{stratagem[0][5]} uses remaining\033[0m\n"
                             else:
                                 actionItem += f"\033[31m{stratagem[0][1]}: On cooldown for {stratagem[1]} turns\033[0m\n"
+                        clear()
+                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                        time.sleep(200)
                     elif keyPressed == "r":
                         level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][11] += -1
                         level[0][6][playerIndexTurn][11] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][6]
