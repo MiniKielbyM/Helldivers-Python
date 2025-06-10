@@ -993,16 +993,15 @@ level_ex_1 = [
         [[list(Hive_Guard.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Pouncer.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Hive_Guard.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
         ##[[list(Devistator.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Beserker.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Hulk.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Scout_Strider.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Devistator.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Trooper.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Hulk.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
         ##[[list(Cresent_Overseer.copy()), 3, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Overseer.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Flesh_Mob.copy()), 3, 9, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 2, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Elevated_Overseer.copy()), 5, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Watcher.copy()), 10, 11, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 12, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Voteless.copy()), 6, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Flesh_Mob.copy()), 9, 3, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 13, 2, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
-        [None],
         [["killedEnemies", 0]], ## conditions
         [[["hellbomb"], [2,11]], [["condition", ["killedEnemies", "check", 10, ["extraction"],]], [6, 7]],[["spawner"], [2,8]],[["spawner"], [3,5]],[["spawner"], [4,12]],[["spawner"], [5,2]],[["spawner"], [8,2]],[["spawner"], [8,11]],[["spawner"], [11,5]],[["spawner"], [11,13]],[["spawner"], [13,9]]], ## points of interest
         "player 0", ##turn
         5, ##base moves
         "", ## header
         [ ##players
-            
+            [[8,8], list(Liberator_Penetrator.copy()), list(P_19_Redeemer.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name]
         ],
-        None
+        bugs
     ],
     list(copy.deepcopy(Exterminate_1))
 ]
@@ -1020,7 +1019,7 @@ level_ex_2 = [
         [ ##players
             [[8,8], list(Liberator_Penetrator.copy()), list(LAS_7_Dagger.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name]
         ],
-        None
+        bugs
     ],
     list(copy.deepcopy(Exterminate_2))
 ]
@@ -1340,7 +1339,7 @@ while True:
                                                             tempArmor = 0
                                                         if trueDmg >= targets[targetIndex][0][11]:
                                                             trueDmg = targets[targetIndex][0][11]
-                                                        actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]-trueDmg}/{targets[targetIndex][0][13]}\nArmor: {tempArmor}/{maxArmor}\n"
+                                                        actionItem = f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]-trueDmg}/{targets[targetIndex][0][13]}\nArmor: {tempArmor}/{maxArmor}\n"
                                                         actionItem += "Press Enter to confirm"
                                                         clear()
                                                         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
@@ -1455,14 +1454,15 @@ while True:
                                     if actual == 4:
                                         for poi in level[0][2]:
                                             if poi[1][1] == grenadeX and poi[1][0] == grenadeY:
-                                                i = parseActions(level[0], level[1], poi[0][1], level[0][1])
-                                                level[1] = i[0]
                                                 try:
+                                                    i = parseActions(level[0], level[1], poi[0][1], level[0][1])
+                                                    level[1] = i[0]
                                                     poi[0][1] = i[1]
-                                                finally:
                                                     level[0][1] = i[2]
                                                     level[0][2].remove(poi)
                                                     level[1][grenadeY][grenadeX] = 0
+                                                except Exception as e:
+                                                    None
                                     for enemy in list(level[0][0].copy()):
                                         if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
                                             enemy[0][11] -= level[0][6][playerIndexTurn][14][2]
