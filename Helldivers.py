@@ -383,7 +383,7 @@ def parseActions(levelMeta, gridMap, action, conditions):
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     if conditions[conditions.index(condition)][1] == action[1][2]:
-                        action = parseActions(gridMap, action[1][3], conditions)[1]
+                        action = parseActions(levelMeta, gridMap, action[1][3], conditions)[1]
             return[gridMap, action, conditions, levelMeta]
 def exponential_weighted_choice(arr, decay=0.7):
     weights = [decay ** i for i in range(len(arr))]
