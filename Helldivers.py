@@ -206,17 +206,14 @@ def parse_level(level,enemies=[], actionItem="", debug=False):
                 else:
                     final += "\033[38;2;255;0;255m▚▚\033[0m"
             elif xL is 12:
-                try:
-                    if playerIndexTurn == 0: # type: ignore
-                        final += "\033[38;2;255;153;0;48;2;0;0;0m><\033[0m"
-                    elif playerIndexTurn == 1: # type: ignore
-                        final += "\033[38;2;0;63;255;48;2;0;0;0m><\033[0m"
-                    elif playerIndexTurn == 2: # type: ignore
-                        final += "\033[38;2;0;150;0;48;2;0;0;0m><\033[0m"
-                    elif playerIndexTurn == 3: # type: ignore
-                        final += "\033[38;2;192;0;151;48;2;0;0;0m><\033[0m"
-                except:
-                    final += "\033[38;2;255;0;255m▚▚\033[0m"
+                if playerIndexTurn == 0: # type: ignore
+                    final += "\033[38;2;255;153;0;48;2;0;0;0m><\033[0m"
+                elif playerIndexTurn == 1: # type: ignore
+                    final += "\033[38;2;0;63;255;48;2;0;0;0m><\033[0m"
+                elif playerIndexTurn == 2: # type: ignore
+                    final += "\033[38;2;0;150;0;48;2;0;0;0m><\033[0m"
+                elif playerIndexTurn == 3: # type: ignore
+                    final += "\033[38;2;192;0;151;48;2;0;0;0m><\033[0m"
             else: 
                 final += "\033[38;2;255;0;255m▚▚\033[0m"
             xAt += 1
