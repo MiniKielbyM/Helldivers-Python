@@ -1744,31 +1744,59 @@ def gameLoop(level):
                         while True:
                             if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                                 keyPressed = keyboard.read_event().name
-                                
-                                if keyPressed == "enter" or keyPressed == "space":
-                                    clear()
-                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                    break
-                                elif keyPressed == "up" or keyPressed == "w":
-                                    if playerIndexTurn > 0:
-                                        playerIndexTurn -= 1
-                                        clear()
-                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                elif keyPressed == "down" or keyPressed == "s":
-                                    if playerIndexTurn < len(level[0][6]) - 1:
-                                        playerIndexTurn += 1
-                                        clear()
-                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                elif keyPressed == "left" or keyPressed == "a":
-                                    if level[0][6][playerIndexTurn][4] > 0:
-                                        level[0][6][playerIndexTurn][4] -= 1
-                                        clear()
-                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                elif keyPressed == "right" or keyPressed == "d":
-                                    if level[0][6][playerIndexTurn][4] < len(level[0][6][playerIndexTurn]) - 1:
-                                        level[0][6][playerIndexTurn][4] += 1
-                                        clear()
-                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                if keyPressed == "up":
+                                    if selectionIndex > 0:
+                                        selectionIndex -= 1
+                                    else:
+                                        selectionIndex = len(selectableStratagems) - 1
+                                elif keyPressed == "down":
+                                    if selectionIndex < len(selectableStratagems) - 1:
+                                        selectionIndex += 1
+                                    else:
+                                        selectionIndex = 0
+                                elif keyPressed == "enter" or keyPressed == "space":
+                                    None
+                            actionItem = ""
+                            for stratagem in level[0][6][playerIndexTurn][15]:
+                                if stratagem in selectableStratagems:
+                                    if stratagem == selectableStratagems[selectionIndex]:
+                                        actionItem += f"✓ \033[33m{stratagem[0][1]}"
+                                        if stratagem[0][0] == 0:
+                                            if stratagem[0][2] != math.inf:
+                                                actionItem += f": {stratagem[0][2]} uses remaining\033[0m ✓\n"
+                                        elif stratagem[0][0] == 1:
+                                            if stratagem[0][11] != math.inf:
+                                                action += f": {stratagem[0][11]} turns remaining\033[0m ✓\n"
+                                        elif stratagem[0][0] == 4:
+                                            if stratagem[0][5] != math.inf:
+                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
+                                        elif stratagem[0][0] == 5:
+                                            if stratagem[0][5] != math.inf:
+                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
+                                        elif stratagem[0][0] == 6:
+                                            if stratagem[0][5] != math.inf:
+                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
+                                    else:
+                                        actionItem += f"\033[33m{stratagem[0][1]}"
+                                        if stratagem[0][0] == 0:
+                                            if stratagem[0][2] != math.inf:
+                                                actionItem += f": {stratagem[0][2]} uses remaining\033[0m ✓\n"
+                                        elif stratagem[0][0] == 1:
+                                            if stratagem[0][11] != math.inf:
+                                                action += f": {stratagem[0][11]} turns remaining\033[0m ✓\n"
+                                        elif stratagem[0][0] == 4:
+                                            if stratagem[0][5] != math.inf:
+                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
+                                        elif stratagem[0][0] == 5:
+                                            if stratagem[0][5] != math.inf:
+                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
+                                        elif stratagem[0][0] == 6:
+                                            if stratagem[0][5] != math.inf:
+                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
+                                else:
+                                    actionItem += f"\033[31m{stratagem[0][1]}: On cooldown for {stratagem[1]} turns\033[0m\n"
+                            clear()
+                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                     elif keyPressed == "r":
                         level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][11] += -1
                         level[0][6][playerIndexTurn][11] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][6]
