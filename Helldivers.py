@@ -151,7 +151,16 @@ def parse_level(level,enemies=[], actionItem="", debug=False):
                     print("player at:")
                     print(xAt, end=" ")
                     print(yAt)
-                final += "\033[38;2;0;255;0mOO\033[0m"
+                for i in range(len(level[0][6])):
+                    if level[0][6][i][0][0] is xAt and level[0][6][i][0][1] is yAt:
+                        if i == 0:
+                            final += f"\033[48;2;255;153;0;38;2;0;0;0m{str(level[0][6][i][13])[0]}{str(i+1)}\033[0m"
+                        elif i == 1:
+                            final += f"\033[48;2;0;63;255;38;2;0;0;0m{str(level[0][6][i][13])[0]}{str(i+1)}\033[0m"
+                        elif i == 2:
+                            final += f"\033[48;2;0;150;0;38;2;0;0;0m{str(level[0][6][i][13])[0]}{str(i+1)}\033[0m"
+                        elif i == 3:
+                            final += f"\033[48;2;192;0;151;38;2;0;0;0m{str(level[0][6][i][13])[0]}{str(i+1)}\033[0m"
             elif xL is 6:
                 if debug:
                     print("interactable at:")
@@ -218,22 +227,23 @@ def parse_level(level,enemies=[], actionItem="", debug=False):
     for i in range(len(level[0][6])):
         j = ""
         if i == 0:
-            j = f"\033[48;2;255;153;0;38;2;255;255;255m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m\033[38;2;255;153;0m\tHP {level[0][6][i][5]}/{level[0][6][i][6]} \033[0m"
-            for t in range(x-visible_length(j)-3):
-                j += " "
-            final += j + "\n\n"
+            j = f"\033[48;2;255;153;0;38;2;0;0;0m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m\033[38;2;255;153;0m\tHP {level[0][6][i][5]}/{level[0][6][i][6]}\n \tArmor: {level[0][6][i][3][2]}\n \tEquipped Weapon: {level[0][6][i][level[0][6][i][4]][0]}\n \tAmmo: {level[0][6][i][level[0][6][i][4]][10]}/{level[0][6][i][level[0][6][i][4]][4]}\n \tMags: {level[0][6][i][level[0][6][i][4]][11]}/{level[0][6][i][level[0][6][i][4]][5]}\n \tGrenades: {level[0][6][i][7]}/{level[0][6][i][8]}\n \tStims: {level[0][6][i][9]}/{level[0][6][i][10]}\033[0m"
+            for s in j.split("\n"):
+                for t in range(x-visible_length(s)-3):
+                    s += " "
+                final += s
         elif i == 1:
-            j = f"\033[48;2;0;63;255;38;2;255;255;255m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m"
+            j = f"\033[48;2;0;63;255;38;2;0;0;0m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m\033[38;2;0;63;255m\tHP {level[0][6][i][5]}/{level[0][6][i][6]}\n \tArmor: {level[0][6][i][3][2]}\n \tEquipped Weapon: {level[0][6][i][level[0][6][i][4]][0]}\n \tAmmo: {level[0][6][i][level[0][6][i][4]][10]}/{level[0][6][i][level[0][6][i][4]][4]}\n \tMags: {level[0][6][i][level[0][6][i][4]][11]}/{level[0][6][i][level[0][6][i][4]][5]}\n \tGrenades: {level[0][6][i][7]}/{level[0][6][i][8]}\n \tStims: {level[0][6][i][9]}/{level[0][6][i][10]}\033[0m"
             for t in range(x-visible_length(j)-3):
                 j += " "
             final += j + "\n\n"
         elif i == 2:
-            j = f"\033[48;2;0;150;0;38;2;255;255;255m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m"
+            j = f"\033[48;2;0;150;0;38;2;0;0;0m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m\033[38;2;0;150;0m\tHP {level[0][6][i][5]}/{level[0][6][i][6]}\n \tArmor: {level[0][6][i][3][2]}\n \tEquipped Weapon: {level[0][6][i][level[0][6][i][4]][0]}\n \tAmmo: {level[0][6][i][level[0][6][i][4]][10]}/{level[0][6][i][level[0][6][i][4]][4]}\n \tMags: {level[0][6][i][level[0][6][i][4]][11]}/{level[0][6][i][level[0][6][i][4]][5]}\n \tGrenades: {level[0][6][i][7]}/{level[0][6][i][8]}\n \tStims: {level[0][6][i][9]}/{level[0][6][i][10]}\033[0m"
             for t in range(x-visible_length(j)-3):
                 j += " "
             final += j + "\n\n"
         elif i == 3:
-            j = f"\033[48;2;192;0;151;38;2;255;255;255m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m"
+            j = f"\033[48;2;192;0;151;38;2;0;0;0m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m\033[38;2;192;0;151m\tHP {level[0][6][i][5]}/{level[0][6][i][6]}\n \tArmor: {level[0][6][i][3][2]}\n \tEquipped Weapon: {level[0][6][i][level[0][6][i][4]][0]}\n \tAmmo: {level[0][6][i][level[0][6][i][4]][10]}/{level[0][6][i][level[0][6][i][4]][4]}\n \tMags: {level[0][6][i][level[0][6][i][4]][11]}/{level[0][6][i][level[0][6][i][4]][5]}\n \tGrenades: {level[0][6][i][7]}/{level[0][6][i][8]}\n \tStims: {level[0][6][i][9]}/{level[0][6][i][10]}\033[0m"
             for t in range(x-visible_length(j)-3):
                 j += " "
             final += j + "\n\n"
@@ -490,6 +500,7 @@ if True: #hides all the stats, remove before release
     RE_2310_Honorary_Guard = ["RE-2310 Honorary Guard", 0, 25, "Reinforced Epaulettes"]
     Armors = [B_01_Tactical, SC_34_Infiltrator, SA_04_Combat_Technician, CE_35_Trench_Engineer, CE_07_Demolition_Specialist, DP_40_Hero_of_the_Federation, FS_23_Battle_Master, CM_14_Physician, SA_12_Servo_Assisted, SA_32_Dynamo, PH_9_Predator, P_202_Twigsnapper, I_09_Heatseeker, I_102_Draconaught, AF_50_Noxious_Ranger, AF_02_Haz_Master, SR_24_Street_Scout, SR_18_Roadblock, IE_12_Righteous, RE_1861_Parade_Commander, RE_2310_Honorary_Guard]
 
+    Resupply = ["Resupply", math.inf, 10]
     Quasar = [1, "Quasar", 100, 10, True, math.inf, 1, 1, 5, 1, False]
     Expendible_Anti_Tank = [1, "Expendible Anti Tank", 50, 100, True, 2, 0, 0, 5, 1, False]
     Recoilless_Rifle = [3, "Recoilless Rifle", 100, 30, True, 7, 2, 0, 5, 1, False]
@@ -951,6 +962,7 @@ if True: #hides maps
         Meme_1,
         Meme_2
     ]
+
 level = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
@@ -963,7 +975,8 @@ level = [
         "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| 1/2 to change weapon |", ## header
         [ ##players
             #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade
-            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
+            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [list(Resupply.copy())]],
+            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [list(Resupply.copy())]]
         ],
         bugs
     ],
@@ -1023,6 +1036,23 @@ level_ex_2 = [
     ],
     list(copy.deepcopy(Exterminate_2))
 ]
+level_ICBM_1 = [
+    [
+        ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
+        [[list(Scavenger.copy()), 21, 6],[list(Scavenger.copy()), 19, 6],[list(Scavenger.copy()), 18, 7],[list(Scavenger.copy()), 16, 7],[list(Scavenger.copy()), 19, 9],[list(Scavenger.copy()), 18, 10],[list(Scavenger.copy()), 5, 13],[list(Scavenger.copy()), 6, 15],[list(Scavenger.copy()), 16, 17],[list(Scavenger.copy()), 18, 17],[list(Scavenger.copy()), 20, 18],[list(Scavenger.copy()), 2, 23],[list(Scavenger.copy()), 4, 23],[list(Scavenger.copy()), 5, 24],[list(Scavenger.copy()), 4, 27],[list(Scavenger.copy()), 5, 29],[list(Scavenger.copy()), 22, 25],[list(Scavenger.copy()), 29, 22],[list(Scavenger.copy()), 25, 23],[list(Scavenger.copy()), 20, 24],[list(Scavenger.copy()), 20, 27],[list(Scavenger.copy()), 19, 26]], ##enemies
+
+        [["Objective.RetreiveCodes", False, "Retreive launch codes: ", True],["Objective.Launch", False, "Launch missle: ", True]],
+        [[["hellbomb"], [21,13]],[["sample text"], [26,18]],[["sample text"], [28,3]], [["condition", ["Launch", "check", True, ["extraction"],]], [3, 3]], [["condition", ["Hatch_1", "set", True]], [23, 27]], [["condition", ["Hatch_2", "set", True]], [26, 24]], [["condition", ["Hatch_3", "set", True]], [26, 30]], [["condition", ["Hatch_4", "set", True]], [29, 27]]], ## points of interest
+        "player 0", ##turn
+        math.inf, ##base moves
+        "", ## header
+        [ ##players
+            [[28,2], list(Liberator_Penetrator.copy()), list(P_19_Redeemer.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
+        ],
+        bugs
+    ],
+    list(copy.deepcopy(ICBM_1))
+]
 for playerIndexTurn in range(len(level[0][6])):
     if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
         level[0][6][playerIndexTurn][5] += 10
@@ -1064,6 +1094,8 @@ while True:
         clear()
         if level[0][6][playerIndexTurn][11] > 0:
             level[0][6][playerIndexTurn][11] -= 1
+            if level[0][6][playerIndexTurn][11] == 0:
+                level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][4]
         if level[0][6][playerIndexTurn][11] != 0:
             actionItem = f"\033[33mReloading {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][0]} for {level[0][6][playerIndexTurn][11]} turns...\n"
             actionItem += f"\033[31mPress X to end turn\033[0m"
@@ -1088,6 +1120,7 @@ while True:
                                     break
                                 else:
                                     continue
+                        clear()
                         break
                     else:
                         continue
@@ -1514,8 +1547,12 @@ while True:
                                     break
                                 clear()
                                 print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                elif keyPressed == "ctrl":
+                    selectableStratagems = []
+                    actionItem = ""
+                    for stratagem in level[0][6][playerIndexTurn][15]:
+                        _
                 elif keyPressed == "r":
-                    level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][4]
                     level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][11] += -1
                     level[0][6][playerIndexTurn][11] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][6]
                     actionItem = f"\033[33mReloading {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][0]} for {level[0][6][playerIndexTurn][11]} turns...\n"
@@ -1541,6 +1578,11 @@ while True:
                                 continue
                         break
                 elif keyPressed == "v":
+                    try:
+                        if level[0][1][0] == "stimmed":
+                            level[0][1][2] = True
+                    finally:
+                        _
                     if level[0][6][playerIndexTurn][9] > 0:
                         level[0][6][playerIndexTurn][9] -= 1
                         level[0][6][playerIndexTurn][5] += 60
@@ -2375,4 +2417,3 @@ while n<4:
 
     All_Stratagems[n]=Stratagem
     n+=1
-    
