@@ -1620,14 +1620,14 @@ while True:
                         if level[0][6][playerIndexTurn] [3][3].lower() == "democracy protects" and random.randint(0, 100) < 50:
                             level[0][6][playerIndexTurn][5] = 1
                         else:
-                            actionItem = f"\033[31mYou have been hit for {trueDmg} damage!\033[0m\n"
+                            actionItem = f"\033[31mYou have been hit for {trueDmg} damage by a {enemy[0][0]}\033[0m\n"
                             actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
                             actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
                             actionItem += "\033[31mYou have been killed by an enemy\033[0m"
                             clear()
                             print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                             sys.exit()
-                    actionItem = f"\033[31mYou have been hit for {trueDmg} damage!\033[0m\n"
+                    actionItem = f"\033[31mYou have been hit for {trueDmg} damage by a {enemy[0][0]}\033[0m\n"
                     actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
                     actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
                     clear()
