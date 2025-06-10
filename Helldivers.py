@@ -117,7 +117,7 @@ def center_text_x(text, width):
     return '\n'.join(centered_lines)
 def print_centered(text):
     print(center_text_x(text, x))
-def parse_level(level,enemies=[], actionItem="", debug=False):
+def parse_level(level,enemies=[], actionItem="", debug=False, turn = 0):
     final = "\033[33m\n" + level[0][5] + "\n\n\033[0m"
     yAt = 0
     xAt = 0
@@ -206,13 +206,13 @@ def parse_level(level,enemies=[], actionItem="", debug=False):
                 else:
                     final += "\033[38;2;255;0;255m▚▚\033[0m"
             elif xL is 12:
-                if playerIndexTurn == 0: # type: ignore
+                if turn == 0: # type: ignore
                     final += "\033[38;2;255;153;0;48;2;0;0;0m><\033[0m"
-                elif playerIndexTurn == 1: # type: ignore
+                elif turn == 1: # type: ignore
                     final += "\033[38;2;0;63;255;48;2;0;0;0m><\033[0m"
-                elif playerIndexTurn == 2: # type: ignore
+                elif turn == 2: # type: ignore
                     final += "\033[38;2;0;150;0;48;2;0;0;0m><\033[0m"
-                elif playerIndexTurn == 3: # type: ignore
+                elif turn == 3: # type: ignore
                     final += "\033[38;2;192;0;151;48;2;0;0;0m><\033[0m"
             else: 
                 final += "\033[38;2;255;0;255m▚▚\033[0m"
@@ -1500,7 +1500,7 @@ def gameLoop(level):
                             if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
                                 r = 4.99
                             clear()
-                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem, turn = playerIndexTurn)}")
                             while True:
                                 if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                                     keyPressed = keyboard.read_event().name
