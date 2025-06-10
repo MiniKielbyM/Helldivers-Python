@@ -981,7 +981,7 @@ level_evac_1 = [
         math.inf, ##base moves
         "", ## header
         [ ##players
-
+            [[8,8], list(Liberator_Penetrator.copy()), list(P_19_Redeemer.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
         ],
         bugs
     ],
@@ -999,7 +999,7 @@ level_ex_1 = [
         5, ##base moves
         "", ## header
         [ ##players
-            [[8,8], list(Liberator_Penetrator.copy()), list(P_19_Redeemer.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name]
+            [[6,7], list(Liberator_Penetrator.copy()), list(P_19_Redeemer.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
         ],
         bugs
     ],
@@ -1017,7 +1017,7 @@ level_ex_2 = [
         5, ##base moves
         "", ## header
         [ ##players
-            [[8,8], list(Liberator_Penetrator.copy()), list(LAS_7_Dagger.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name]
+            [[8,8], list(Liberator_Penetrator.copy()), list(LAS_7_Dagger.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
         ],
         bugs
     ],
@@ -1459,10 +1459,10 @@ while True:
                                                     level[1] = i[0]
                                                     poi[0][1] = i[1]
                                                     level[0][1] = i[2]
-                                                    level[0][2].remove(poi)
-                                                    level[1][grenadeY][grenadeX] = 0
                                                 except Exception as e:
                                                     None
+                                                level[0][2].remove(poi)
+                                                level[1][grenadeY][grenadeX] = 0
                                     for enemy in list(level[0][0].copy()):
                                         if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
                                             enemy[0][11] -= level[0][6][playerIndexTurn][14][2]
