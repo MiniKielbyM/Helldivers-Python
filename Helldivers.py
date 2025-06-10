@@ -355,7 +355,7 @@ def parseActions(levelMeta, gridMap, action, conditions):
         for clearpos in action[1]:
             gridMap[clearpos[0]][clearpos[1]] = 0
             clear()
-            print_centered(f"{parse_level([level[0],gridMap],level[0][0])}")
+            print_centered(f"{parse_level([level_training_1[0],gridMap],level_training_1[0][0])}")
             time.sleep(0.3)
         action[0] = "set"
         return[gridMap, action, conditions, levelMeta]
@@ -363,12 +363,12 @@ def parseActions(levelMeta, gridMap, action, conditions):
         for setpos in reversed(action[1]):
             gridMap[setpos[0]][setpos[1]] = action[2]
             clear()
-            print_centered(f"{parse_level([level[0],gridMap],level[0][0])}")
+            print_centered(f"{parse_level([level_training_1[0],gridMap],level_training_1[0][0])}")
             time.sleep(0.3)
         action[0] = "clear"
         return[gridMap, action, conditions, levelMeta]
     elif action[0] == "damage":
-        levelMeta[0][6][playerIndexTurn][5] = 50 # type: ignore
+        levelMeta[6][int(str(levelMeta[3])[-1])][5] = 50 # type: ignore
         return[gridMap, action, conditions, levelMeta] 
     elif action[0] == "condition":
         if action[1][1] == "set":
@@ -507,25 +507,32 @@ if True: #hides all the stats, remove before release
     RE_1861_Parade_Commander = ["RE-1861 Parade Commander", 1, 5, "Reinforced Epaulettes"]#150% melee damage ✓, 50% chance of +20 health for the turn ✓
     RE_2310_Honorary_Guard = ["RE-2310 Honorary Guard", 0, 25, "Reinforced Epaulettes"]
     Armors = [B_01_Tactical, SC_34_Infiltrator, SA_04_Combat_Technician, CE_35_Trench_Engineer, CE_07_Demolition_Specialist, DP_40_Hero_of_the_Federation, FS_23_Battle_Master, CM_14_Physician, SA_12_Servo_Assisted, SA_32_Dynamo, PH_9_Predator, P_202_Twigsnapper, I_09_Heatseeker, I_102_Draconaught, AF_50_Noxious_Ranger, AF_02_Haz_Master, SR_24_Street_Scout, SR_18_Roadblock, IE_12_Righteous, RE_1861_Parade_Commander, RE_2310_Honorary_Guard]
+    # Weapon: [Stratagem type, Weapon, Damage, AP, Explosive, Uses(Ammo or uses before recharge), Cooldown, Aoe, Range, Mag Size, Chain AOE stratagem uses]
+    # Offensive: [Stratagem type, Stratagem Name, Damage, AP, Explosive, Uses, Cooldown, Aoe, dps (0 for no dps), dps AP (0 for no dps), dps time(how long does the dps last), dps type] # Dps only for long-term damage (e.g. gas, fire)
+    # Defensive: [Stratagem type, Stratagem Name, Damage, AP, Explosive, Uses, Cooldown, Rideable(for emplacements), Range, HP, Armor, Mines(Boolean), mine type (0 for no mines, 1 for gas, 2 for incendiary, 3 for regular, 4 for anti-tank)]
+    # Backpacks: [Stratagem type, Stratagem Name, Uses, Cooldown, Guard dog(Boolean, all other values are 0 for no guard dog), Damage, AP, Shots(amount of times the guard dog can shoot before needing to resupply), Recharge time(how many turns before the guard dog can shoot again), stratagem uses]
+    # Weapon type key; 1 = weapon; 2 = backpack; 3 = weapon and backpack; 4 = offensive; 5 = defensive
+    Resupply = [0, "Resupply", math.inf, 10, "WSDW"]
 
-    Resupply = ["Resupply", math.inf, 10, "WSDW"]
-    Quasar = [1, "Quasar", 100, 10, True, math.inf, 1, 1, 5, 1, False, "SSWAD"]
-    Expendible_Anti_Tank = [1, "Expendible Anti Tank", 50, 100, True, 2, 0, 0, 5, 1, False, "SSAWD"]
-    Recoilless_Rifle = [3, "Recoilless Rifle", 100, 30, True, 7, 2, 0, 5, 1, False, "SADDA"]
-    Spear = [3, "Spear", 50, 100, True, 3, 2, 0, 5, 1, False, "SSWSS"]
-    Machine_Gun = [1, "Machine gun", 50, 5, False, 4, 0, 0, 3, 30, False, "SASWD"]
-    Grenade_Launcher = [1, "Grenade Launcher", 50, 10, True, 4, 0, 1, 3, 10, False, "SAWAS"]
-    Flamethrower = [1, "Flamethrower", 10, 0, True, 4, 0, 1, 2, 10, False, "SAWSW"]
-    Arcthrower = [1, "Arcthrower", 15, math.inf, False, math.inf, 1, 0, 4, 1, True, "SDSWAA"]
+    Quasar = [1, "Quasar", 100, 10, True, math.inf, 1, 1, 5, 1, False, 4, "SSWAD"]
+    Expendible_Anti_Tank = [1, "Expendible Anti Tank", 50, 100, True, 2, 0, 0, 5, 1, False, 4, "SSAWD"]
+    Recoilless_Rifle = [3, "Recoilless Rifle", 100, 30, True, 7, 2, 0, 5, 1, False, 4, "SADDA"]
+    Spear = [3, "Spear", 50, 100, True, 3, 2, 0, 5, 1, False, 4, "SSWSS"]
+    Machine_Gun = [1, "Machine gun", 50, 5, False, 4, 0, 0, 3, 30, False, 4, "SASWD"]
+    Grenade_Launcher = [1, "Grenade Launcher", 50, 10, True, 4, 0, 1, 3, 10, False, 4, "SAWAS"]
+    Flamethrower = [1, "Flamethrower", 10, 0, True, 4, 0, 1, 2, 10, False, 4, 4, "SAWSW"]
+    Arcthrower = [1, "Arcthrower", 15, math.inf, False, math.inf, 1, 0, 4, 1, True, 4, "SDSWAA"]
+
     Bomb_500kg = [4, "500kg", 150, 50, True, 1, 2, 2, 0, 0, 0, "WDSSS"]
-    Barrage_380mm = [4, "380mm Barrage", 100, 50, True, math.inf, 5, 3, 100, 50, 3, "DSWWASS"]
+    Barrage_380mm = [4, "380mm Barrage", 100, 50, True, math.inf, 5, 3, 100, 50, 3, "regular", "DSWWASS"]
     Orbital_Precision_Strike = [4, "Orbital Precision Strike", 25, 50, True, math.inf, 2, 1, 0, 0, 0, "DDW"]
     Cluster_Bomb = [4, "Cluster bomb", 30, 10, True, 3, 1, 2, 0, 0, 0, "WDSSD"]
     Strafing_Run = [4, "Strafing run", 30, 20, False, 3, 1, 1, 0, 0, 0, "WDD"]
     Eagle_Airstrike = [4, "Eagle airstrike", 50, 10, True, 2, 1, 1, 0, 0, 0, "WDSD"]
     Rocket_Pods = [4, "Rocket pods", 35, 30, True, 4, 1, 1, 0, 0, 0, "WDWA"]
     Orbital_Gatling = [4, "Orbital Gatling", 50, 10, False, math.inf, 3, 1, 0, 0, 0, "DSAWW"]
-    Orbital_Gas = [4, "Orbital Gas", 25, 100, False, math.inf, 3, 2, 10, math.inf, 2, "DDSD"]
+    Orbital_Gas = [4, "Orbital Gas", 25, 100, False, math.inf, 3, 2, 10, math.inf, 2, "gas", "DDSD"]
+
     Gatling_Sentry = [5, "Gatling Sentry", 10, 0, False, math.inf, 1, False, 3, 50, 25, False, 0, "SWDA"]
     Machine_Gun_Sentry = [5, "Machine Gun Sentry", 5, 2, False, math.inf, 2, False, 3, 50, 25, False, 0, "SWDDW"]
     Rocket_Sentry = [5, "Rocket Sentry", 25, 10, False, math.inf, 3, False, 3, 50, 25, False, 0, "SWDDA"]
@@ -535,6 +542,7 @@ if True: #hides all the stats, remove before release
     Incendiary_Mines = [5, "Incendiary Mines", 20, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 2, "SAAS"]
     Regular_Mines = [5, "Regular Mines", 25, math.inf, False, math.inf, 3, False, 0, 0, 0, True, 3, "SAWD"]
     Anti_Tank_Mines = [5, "Anti Tank Mines", 50, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 4, "SAWW"]
+    
     Supply_Pack = [2, "Supply Pack", math.inf, 6, False, 0, 0, 0, 0, "SASWWS"]
     Shield_Generator_Pack = [2, "Shield Generator Pack", math.inf, 6, False, 0, 0, 0, 0, "SWADAD"]
     Hellbomb_Backpack = [2, "Hellbomb Backpack", math.inf, 6, False, 0, 0, 0, 0, "SDWWW"]
@@ -597,7 +605,7 @@ if True: #hides maps
         [7,0,0,0,2,0,0,0,0,0,0,1,0,3,2,2],
         [2,0,6,0,2,0,0,0,0,0,0,1,0,0,2,2],
         [2,0,0,0,2,0,0,0,0,0,0,1,0,0,2,2],
-        [2,2,0,2,2,2,7,7,7,7,2,2,2,2,2,2],
+        [2,2,2,2,2,2,7,7,7,7,2,2,2,2,2,2],
         [2,0,0,0,0,0,0,0,0,0,6,0,0,0,0,2],
         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
         [2,0,0,0,0,0,0,0,5,0,0,0,0,0,0,2],
@@ -971,23 +979,50 @@ if True: #hides maps
         Meme_2
     ]
 
-level = [
+level_training_1 = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
         ## []
         [[list(Scavenger.copy()), 13, 8, ["condition", ["killedBug1", "set", True]]],[list(Scavenger.copy()), 9, 2],[list(Scavenger.copy()), 11, 2]], ##enemies
         [["killedBug1", False], ["closedHole1", False], ["stimmed", False]], ## conditions
-        [[["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]], [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]], [["spawner",["condition", ["closedHole1", "set", True]]], [1,10]], [["condition", ["closedHole1", "check", True, ["clear", [[5, 2],[5, 3]], 7]]], [4, 1]], [["condition", ["stimmed", "check", True, ["clear", [[8, 0], [7, 0]]], 7]], [6,1]]], ## points of interest
+        [
+            [["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]], 
+            [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]], 
+            [["spawner",["condition", ["closedHole1", "set", True]]], [1,10]], 
+            [["condition", ["closedHole1", "check", True, ["clear", [[5, 2],[5, 3]], 7]]], [4, 1]], 
+            [["condition", ["stimmed", "check", True, ["clear", [[8, 0], [7, 0]], 7]]], [6,1]], 
+            [["damage"], [9, 2]]
+        ], ## points of interest
         "player 0", ##turn
         math.inf, ##base moves
-        "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| 1/2 to change weapon |", ## header
+        "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| V to heal |\n| 1/2 to change weapon |", ## header
         [ ##players
-            #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade
-            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [list(Resupply.copy())]],
+            #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade, [[stratagem, cooldown remaining, uses remaining]]
+            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), []],
         ],
         bugs
     ],
     list(copy.deepcopy(training_1_2_3))
+]
+level_training_2 = [
+    [
+        ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
+        ## []
+        [[list(Charger.copy()), 3, 3, ["condition", ["killedBug1", "set", True]]],[list(Scavenger.copy()), 2, 5],[list(Scavenger.copy()), 1, 2]], ##enemies
+        [["killedBugs", False], ["closedHole1", False], ["stimmed", False]], ## conditions
+        [
+
+        ], ## points of interest
+        "player 0", ##turn
+        math.inf, ##base moves
+        "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| V to heal |\n| 1/2 to change weapon |\n| Ctrl to use stratagems |", ## header
+        [ ##players
+            #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade, [[stratagem, cooldown remaining, uses remaining]]
+            [[9,2], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [[list(Resupply.copy()), 0]]],
+        ],
+        bugs
+    ],
+    list(copy.deepcopy(training_4))
 ]
 level_evac_1 = [
     [
@@ -1186,8 +1221,7 @@ def gameLoop(level):
                             continue
                 except IndexError:
                     continue
-#            print(level[0][6][0][0][1], level[0][6][0][0][0])
-            print(level[0][2][2])
+            print(level[0][6][0][0][1], level[0][6][0][0][0])
             print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
             while True:
                 if keyboard.read_event().event_type is keyboard.KEY_DOWN:
@@ -1198,24 +1232,32 @@ def gameLoop(level):
                             level[0][6][playerIndexTurn][0][1] -= 1
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
                             level[0][4] -= 1
+                        elif level[0][6][playerIndexTurn][0][1]-1 < 0:
+                            return None
                     elif keyPressed == "down" or keyPressed == "s":
                         if level[1][level[0][6][playerIndexTurn][0][1]+1][level[0][6][playerIndexTurn][0][0]] == 0 and level[0][4] > 0:
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
                             level[0][6][playerIndexTurn][0][1] += 1
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
                             level[0][4] -= 1
+                        elif level[0][6][playerIndexTurn][0][1]+1 >= len(level[1]):
+                            return None
                     elif keyPressed == "left" or keyPressed == "a":
                         if level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]-1] == 0 and level[0][4] > 0:
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
                             level[0][6][playerIndexTurn][0][0] -= 1
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
                             level[0][4] -= 1
+                        elif level[0][6][playerIndexTurn][0][0]-1 < 0:
+                            return None
                     elif keyPressed == "right" or keyPressed == "d":
                         if level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]+1] == 0 and level[0][4] > 0:
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
                             level[0][6][playerIndexTurn][0][0] += 1
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
                             level[0][4] -= 1
+                        elif level[0][6][playerIndexTurn][0][0]+1 >= len(level[1][level[0][6][playerIndexTurn][0][1]]):
+                            return None
                     elif keyPressed == "1":
                         level[0][6][playerIndexTurn][4] = 1
                     elif keyPressed == "2":
@@ -1491,8 +1533,16 @@ def gameLoop(level):
                             grenadeX = level[0][6][playerIndexTurn][0][0]
                             grenadeY = level[0][6][playerIndexTurn][0][1]-1
                             if level[1][grenadeY][grenadeX] not in [0, 1, 3, 4, 5, 8, 9]:
-                                print("You cannot move the grenade there!")
-                                time.sleep(100)
+                                grenadeX = level[0][6][playerIndexTurn][0][0]+1
+                                grenadeY = level[0][6][playerIndexTurn][0][1]
+                                if level[1][grenadeY][grenadeX] not in [0, 1, 3, 4, 5, 8, 9]:
+                                    grenadeX = level[0][6][playerIndexTurn][0][0]
+                                    grenadeY = level[0][6][playerIndexTurn][0][1]+1
+                                    if level[1][grenadeY][grenadeX] not in [0, 1, 3, 4, 5, 8, 9]:
+                                        grenadeX = level[0][6][playerIndexTurn][0][0]-1
+                                        grenadeY = level[0][6][playerIndexTurn][0][1]
+                                        if level[1][grenadeY][grenadeX] not in [0, 1, 3, 4, 5, 8, 9]:
+                                            continue
                             actual = level[1][grenadeY][grenadeX]
                             level[1][grenadeY][grenadeX] = 12
                             actionItem = "\033[33mpress Enter to confirm\033[0m"
@@ -1565,7 +1615,7 @@ def gameLoop(level):
                                         for player in level[0][6]:
                                             if hypotenuse_los(level[1], [player[0][0], player[0][1]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
                                                 player[3][2] -= level[0][6][playerIndexTurn][14][2]
-                                                if player[3][2] >= 0:
+                                                if player[3][2] <= 0:
                                                     player[3][2] = 0
                                                 if player[3][2] - level[0][6][playerIndexTurn][14][1] < 0:
                                                     player[5] +=  player[3][2] - level[0][6][playerIndexTurn][14][1]
@@ -1599,6 +1649,18 @@ def gameLoop(level):
                                     print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                     elif keyPressed == "ctrl":
                         selectableStratagems = []
+                        for stratagem in level[0][6][playerIndexTurn][15]:
+                            if stratagem[1] == 0:
+                                if stratagem[0][0] == 0 and stratagem[0][3] > 0:
+                                    selectableStratagems.append(stratagem)
+                                elif stratagem[0][0] == 1 and stratagem[0][11] > 0:
+                                    selectableStratagems.append(stratagem)
+                                elif stratagem[0][0] == 4 and stratagem[0][5] > 0:
+                                    selectableStratagems.append(stratagem)
+                                elif stratagem[0][0] == 5 and stratagem[0][5] > 0:
+                                    selectableStratagems.append(stratagem)
+                                elif stratagem[0][0] == 6 and stratagem[0][5] > 0:
+                                    selectableStratagems.append(stratagem)
                         actionItem = ""
                         for stratagem in level[0][6][playerIndexTurn][15]:
                             None
@@ -1736,18 +1798,23 @@ def gameLoop(level):
                             enemy = list(exponential_weighted_choice(level[0][7]))
                             for yS in range(poi[1][0]+2, poi[1][0]-2, -1):
                                 for xS in range(poi[1][1]+2, poi[1][1]-2, -1):
-                                    if level[1][yS][xS] == 0:
-                                        level[1][yS][xS] = 3
-                                        level[0][0].append(list((enemy, xS, yS)))
-                                        clear()
-                                        print_centered(f"{parse_level(level=level,enemies=level[0][0], actionItem = actionItem)}")
-                                        time.sleep(1)
-                                        break
-                                    else:
+                                    try:
+                                        if level[1][yS][xS] == 0:
+                                            level[1][yS][xS] = 3
+                                            level[0][0].append(list((enemy, xS, yS)))
+                                            clear()
+                                            print_centered(f"{parse_level(level=level,enemies=level[0][0], actionItem = actionItem)}")
+                                            time.sleep(1)
+                                            break
+                                        else:
+                                            continue
+                                    except IndexError:
                                         continue
                                 break
             level[0][3] = "player 0"
-gameLoop(level)
+gameLoop(level_training_2)
+clear()
+gameLoop(level_training_2)
 print_slow("ALERT: ENCRYPTED TRANSMISSION RECEIVED\n\nDECRYPTING...\n.\n.\n.\nCLASSIFICATION: TOP SECRET\n\nMINISTRY OF DEFENSE\nDIRECTORY OF HELLDIVER READINESS\nORIGINATING STATION: MARS\n\nMEMORANDUM FOR: Helldiver Readiness Command\nSUBJECT: Daily Incoming Recruit Report\n\nTotal Incoming Trainees: 48,736\nAvg. Age(Years): 18.7\nAvg. Combat Readiness Rating: 27.1%\nAvg. Patriotism Rating: 97.4%\n\nExpected Survival Rate: 21.3%\nProjected Helldiver Production: WITHIN QUOTA\n\nEND TRANSMISSION ")
 print("You step out of your cryopod, shivering from the cold. The super destroyer awaits your command.")
 print("What is your name, helldiver?")
