@@ -207,13 +207,13 @@ def parse_level(level,enemies=[], actionItem="", debug=False):
                     final += "\033[38;2;255;0;255m▚▚\033[0m"
             elif xL is 12:
                 try:
-                    if playerIndexTurn == 0:
+                    if playerIndexTurn == 0: # type: ignore
                         final += "\033[38;2;255;153;0;48;2;0;0;0m><\033[0m"
-                    elif playerIndexTurn == 1:
+                    elif playerIndexTurn == 1: # type: ignore
                         final += "\033[38;2;0;63;255;48;2;0;0;0m><\033[0m"
-                    elif playerIndexTurn == 2:
+                    elif playerIndexTurn == 2: # type: ignore
                         final += "\033[38;2;0;150;0;48;2;0;0;0m><\033[0m"
-                    elif playerIndexTurn == 3:
+                    elif playerIndexTurn == 3: # type: ignore
                         final += "\033[38;2;192;0;151;48;2;0;0;0m><\033[0m"
                 except:
                     final += "\033[38;2;255;0;255m▚▚\033[0m"
@@ -232,21 +232,32 @@ def parse_level(level,enemies=[], actionItem="", debug=False):
                 for t in range(x-visible_length(s)-3):
                     s += " "
                 final += s
+            if i != len(level[0][6])-1:
+                final += "\n"
         elif i == 1:
             j = f"\033[48;2;0;63;255;38;2;0;0;0m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m\033[38;2;0;63;255m\tHP {level[0][6][i][5]}/{level[0][6][i][6]}\n \tArmor: {level[0][6][i][3][2]}\n \tEquipped Weapon: {level[0][6][i][level[0][6][i][4]][0]}\n \tAmmo: {level[0][6][i][level[0][6][i][4]][10]}/{level[0][6][i][level[0][6][i][4]][4]}\n \tMags: {level[0][6][i][level[0][6][i][4]][11]}/{level[0][6][i][level[0][6][i][4]][5]}\n \tGrenades: {level[0][6][i][7]}/{level[0][6][i][8]}\n \tStims: {level[0][6][i][9]}/{level[0][6][i][10]}\033[0m"
-            for t in range(x-visible_length(j)-3):
-                j += " "
-            final += j + "\n\n"
+            for s in j.split("\n"):
+                for t in range(x-visible_length(s)-3):
+                    s += " "
+                final += s
+            if i != len(level[0][6])-1:
+                final += "\n"
         elif i == 2:
             j = f"\033[48;2;0;150;0;38;2;0;0;0m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m\033[38;2;0;150;0m\tHP {level[0][6][i][5]}/{level[0][6][i][6]}\n \tArmor: {level[0][6][i][3][2]}\n \tEquipped Weapon: {level[0][6][i][level[0][6][i][4]][0]}\n \tAmmo: {level[0][6][i][level[0][6][i][4]][10]}/{level[0][6][i][level[0][6][i][4]][4]}\n \tMags: {level[0][6][i][level[0][6][i][4]][11]}/{level[0][6][i][level[0][6][i][4]][5]}\n \tGrenades: {level[0][6][i][7]}/{level[0][6][i][8]}\n \tStims: {level[0][6][i][9]}/{level[0][6][i][10]}\033[0m"
-            for t in range(x-visible_length(j)-3):
-                j += " "
-            final += j + "\n\n"
+            for s in j.split("\n"):
+                for t in range(x-visible_length(s)-3):
+                    s += " "
+                final += s
+            if i != len(level[0][6])-1:
+                final += "\n"
         elif i == 3:
             j = f"\033[48;2;192;0;151;38;2;0;0;0m {str(level[0][6][i][13])[0]}{str(i+1)} \033[0m\033[38;2;192;0;151m\tHP {level[0][6][i][5]}/{level[0][6][i][6]}\n \tArmor: {level[0][6][i][3][2]}\n \tEquipped Weapon: {level[0][6][i][level[0][6][i][4]][0]}\n \tAmmo: {level[0][6][i][level[0][6][i][4]][10]}/{level[0][6][i][level[0][6][i][4]][4]}\n \tMags: {level[0][6][i][level[0][6][i][4]][11]}/{level[0][6][i][level[0][6][i][4]][5]}\n \tGrenades: {level[0][6][i][7]}/{level[0][6][i][8]}\n \tStims: {level[0][6][i][9]}/{level[0][6][i][10]}\033[0m"
-            for t in range(x-visible_length(j)-3):
-                j += " "
-            final += j + "\n\n"
+            for s in j.split("\n"):
+                for t in range(x-visible_length(s)-3):
+                    s += " "
+                final += s
+            if i != len(level[0][6])-1:
+                final += "\n"
     return final
 def hypotenuse_los(grid, start, end, view_distance, debug = False, grenade = False):
     if debug:
@@ -360,7 +371,7 @@ def parseActions(levelMeta, gridMap, action, conditions):
         action[0] = "clear"
         return[gridMap, action, conditions, levelMeta]
     elif action[0] == "damage":
-        levelMeta[0][6][playerIndexTurn][5] = 50
+        levelMeta[0][6][playerIndexTurn][5] = 50 # type: ignore
         return[gridMap, action, conditions, levelMeta] 
     elif action[0] == "condition":
         if action[1][1] == "set":
@@ -426,9 +437,9 @@ if True: #hides all the stats, remove before release
     Charger = ["Charger", "CR", True, 30, 20, False, 0, 0, 0, 10, 5, 50, 50, 50]
     Shreiker = ["Shreiker", "SR", True, 10, 5, False, 0, 0, 0, 10, 10, 10, 0, 10]
     Bile_Spewer = ["Bile Spewer", "BS", True, 5, 51, True, 15, 2, 10, 2, 10, 15, 0, 15]
-    Stalkers = ["Stalkers", "SK", True, 15, 10, False, 0, 0, 0, 3, 5, 20, 10, 20]
+    Stalker = ["Stalkers", "SK", True, 15, 10, False, 0, 0, 0, 3, 5, 20, 10, 20]
     Bile_Titan = ["Bile Titan", "BT", True, 100, 100, True, 75, 100, 2, 5, 5, 50, 75, 50]
-    bugs = [Scavenger, Pouncer, Hunter, Hive_Guard, Charger, Shreiker, Bile_Spewer, Stalkers, Bile_Titan]
+    bugs = [Scavenger, Pouncer, Hunter, Hive_Guard, Charger, Shreiker, Bile_Spewer, Stalker, Bile_Titan]
     
     Trooper = ["Trooper", "TR", False, 0, 0, True, 5, 0, 2, 5, 10, 10, 0, 10]
     Comissar = ["Comissar", "CM", True, 10, 5, True, 5, 0, 3, 2, 5, 10, 0, 10]
@@ -500,40 +511,40 @@ if True: #hides all the stats, remove before release
     RE_2310_Honorary_Guard = ["RE-2310 Honorary Guard", 0, 25, "Reinforced Epaulettes"]
     Armors = [B_01_Tactical, SC_34_Infiltrator, SA_04_Combat_Technician, CE_35_Trench_Engineer, CE_07_Demolition_Specialist, DP_40_Hero_of_the_Federation, FS_23_Battle_Master, CM_14_Physician, SA_12_Servo_Assisted, SA_32_Dynamo, PH_9_Predator, P_202_Twigsnapper, I_09_Heatseeker, I_102_Draconaught, AF_50_Noxious_Ranger, AF_02_Haz_Master, SR_24_Street_Scout, SR_18_Roadblock, IE_12_Righteous, RE_1861_Parade_Commander, RE_2310_Honorary_Guard]
 
-    Resupply = ["Resupply", math.inf, 10]
-    Quasar = [1, "Quasar", 100, 10, True, math.inf, 1, 1, 5, 1, False]
-    Expendible_Anti_Tank = [1, "Expendible Anti Tank", 50, 100, True, 2, 0, 0, 5, 1, False]
-    Recoilless_Rifle = [3, "Recoilless Rifle", 100, 30, True, 7, 2, 0, 5, 1, False]
-    Spear = [3, "Spear", 50, 100, True, 3, 2, 0, 5, 1, False]
-    Machine_Gun = [1, "Machine gun", 50, 5, False, 4, 0, 0, 3, 30, False]
-    Grenade_Launcher = [1, "Grenade Launcher", 50, 10, True, 4, 0, 1, 3, 10, False]
-    Flamethrower = [1, "Flamethrower", 10, 0, True, 4, 0, 1, 2, 10, False]
-    Arcthrower = [1, "Arcthrower", 15, math.inf, False, math.inf, 1, 0, 4, 1, True]
-    Bomb_500kg = [4, "500kg", 150, 50, True, 1, 2, 2, 0, 0, 0]
-    Barrage_380mm = [4, "380mm Barrage", 100, 50, True, math.inf, 5, 3, 100, 50, 3]
-    Orbital_Precision_Strike = [4, "Orbital Precision Strike", 25, 50, True, math.inf, 2, 1, 0, 0, 0]
-    Cluster_Bomb = [4, "Cluster bomb", 30, 10, True, 3, 1, 2, 0, 0, 0]
-    Strafing_Run = [4, "Strafing run", 30, 20, False, 3, 1, 1, 0, 0, 0]
-    Eagle_Airstrike = [4, "Eagle airstrike", 50, 10, True, 2, 1, 1, 0, 0, 0]
-    Rocket_Pods = [4, "Rocket pods", 35, 30, True, 4, 1, 1, 0, 0, 0]
-    Orbital_Gatling = [4, "Orbital Gatling", 50, 10, False, math.inf, 3, 1, 0, 0, 0]
-    Orbital_Gas = [4, "Orbital Gas", 25, 100, False, math.inf, 3, 2, 10, math.inf, 2]
-    Gatling_Sentry = [5, "Gatling Sentry", 10, 0, False, math.inf, 1, False, 3, 50, 25, False, 0]
-    Machine_Gun_Sentry = [5, "Machine Gun Sentry", 5, 2, False, math.inf, 2, False, 3, 50, 25, False, 0]
-    Rocket_Sentry = [5, "Rocket Sentry", 25, 10, False, math.inf, 3, False, 3, 50, 25, False, 0]
-    Autocannon_Sentry = [5, "Autocannon Sentry", 20, 15, False, math.inf, 2, False, 3, 50, 25, False, 0]
-    Anti_Tank_Emplacement = [5, "Anti Tank Emplacement", 100, math.inf, False, math.inf, 3, True, 3, 50, 25, False, 0]
-    Gas_Mines = [5, "Gas Mines", 15, math.inf, False, math.inf, 6, False, 0, 0, 0, True, 1]
-    Incendiary_Mines = [5, "Incendiary Mines", 20, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 2]
-    Regular_Mines = [5, "Regular Mines", 25, math.inf, False, math.inf, 3, False, 0, 0, 0, True, 3]
-    Anti_Tank_Mines = [5, "Anti Tank Mines", 50, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 4]
-    Supply_Pack = [2, "Supply Pack", math.inf, 6, False, 0, 0, 0, 0]
-    Shield_Generator_Pack = [2, "Shield Generator Pack", math.inf, 6, False, 0, 0, 0, 0]
-    Hellbomb_Backpack = [2, "Hellbomb Backpack", math.inf, 6, False, 0, 0, 0, 0]
-    Balistic_Shield = [2, "Balistic Shield", math.inf, 6, False, 0, 0, 0, 0]
-    Guard_Dog = [2, "Guard Dog", math.inf, 6, True, 5, 10, 30, 3]
-    Guard_Dog_Rover = [2, "Guard Dog Rover", math.inf, 6, True, 1, math.inf, 100, 3]
-    Guard_Dog_Breath = [2, "Guard Dog Dog Breath", math.inf, 6, True, 5, math.inf, 45, 3]
+    Resupply = ["Resupply", math.inf, 10, "WSDW"]
+    Quasar = [1, "Quasar", 100, 10, True, math.inf, 1, 1, 5, 1, False, "SSWAD"]
+    Expendible_Anti_Tank = [1, "Expendible Anti Tank", 50, 100, True, 2, 0, 0, 5, 1, False, "SSAWD"]
+    Recoilless_Rifle = [3, "Recoilless Rifle", 100, 30, True, 7, 2, 0, 5, 1, False, "SADDA"]
+    Spear = [3, "Spear", 50, 100, True, 3, 2, 0, 5, 1, False, "SSWSS"]
+    Machine_Gun = [1, "Machine gun", 50, 5, False, 4, 0, 0, 3, 30, False, "SASWD"]
+    Grenade_Launcher = [1, "Grenade Launcher", 50, 10, True, 4, 0, 1, 3, 10, False, "SAWAS"]
+    Flamethrower = [1, "Flamethrower", 10, 0, True, 4, 0, 1, 2, 10, False, "SAWSW"]
+    Arcthrower = [1, "Arcthrower", 15, math.inf, False, math.inf, 1, 0, 4, 1, True, "SDSWAA"]
+    Bomb_500kg = [4, "500kg", 150, 50, True, 1, 2, 2, 0, 0, 0, "WDSSS"]
+    Barrage_380mm = [4, "380mm Barrage", 100, 50, True, math.inf, 5, 3, 100, 50, 3, "DSWWASS"]
+    Orbital_Precision_Strike = [4, "Orbital Precision Strike", 25, 50, True, math.inf, 2, 1, 0, 0, 0, "DDW"]
+    Cluster_Bomb = [4, "Cluster bomb", 30, 10, True, 3, 1, 2, 0, 0, 0, "WDSSD"]
+    Strafing_Run = [4, "Strafing run", 30, 20, False, 3, 1, 1, 0, 0, 0, "WDD"]
+    Eagle_Airstrike = [4, "Eagle airstrike", 50, 10, True, 2, 1, 1, 0, 0, 0, "WDSD"]
+    Rocket_Pods = [4, "Rocket pods", 35, 30, True, 4, 1, 1, 0, 0, 0, "WDWA"]
+    Orbital_Gatling = [4, "Orbital Gatling", 50, 10, False, math.inf, 3, 1, 0, 0, 0, "DSAWW"]
+    Orbital_Gas = [4, "Orbital Gas", 25, 100, False, math.inf, 3, 2, 10, math.inf, 2, "DDSD"]
+    Gatling_Sentry = [5, "Gatling Sentry", 10, 0, False, math.inf, 1, False, 3, 50, 25, False, 0, "SWDA"]
+    Machine_Gun_Sentry = [5, "Machine Gun Sentry", 5, 2, False, math.inf, 2, False, 3, 50, 25, False, 0, "SWDDW"]
+    Rocket_Sentry = [5, "Rocket Sentry", 25, 10, False, math.inf, 3, False, 3, 50, 25, False, 0, "SWDDA"]
+    Autocannon_Sentry = [5, "Autocannon Sentry", 20, 15, False, math.inf, 2, False, 3, 50, 25, False, 0, "SWDWAW"]
+    Anti_Tank_Emplacement = [5, "Anti Tank Emplacement", 100, math.inf, False, math.inf, 3, True, 3, 50, 25, False, 0, "SWADDD"]
+    Gas_Mines = [5, "Gas Mines", 15, math.inf, False, math.inf, 6, False, 0, 0, 0, True, 1, "SAAD"]
+    Incendiary_Mines = [5, "Incendiary Mines", 20, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 2, "SAAS"]
+    Regular_Mines = [5, "Regular Mines", 25, math.inf, False, math.inf, 3, False, 0, 0, 0, True, 3, "SAWD"]
+    Anti_Tank_Mines = [5, "Anti Tank Mines", 50, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 4, "SAWW"]
+    Supply_Pack = [2, "Supply Pack", math.inf, 6, False, 0, 0, 0, 0, "SASWWS"]
+    Shield_Generator_Pack = [2, "Shield Generator Pack", math.inf, 6, False, 0, 0, 0, 0, "SWADAD"]
+    Hellbomb_Backpack = [2, "Hellbomb Backpack", math.inf, 6, False, 0, 0, 0, 0, "SDWWW"]
+    Balistic_Shield = [2, "Balistic Shield", math.inf, 6, False, 0, 0, 0, 0, "SASSWA"]
+    Guard_Dog = [2, "Guard Dog", math.inf, 6, True, 5, 10, 30, 3, "SWAWDS"]
+    Guard_Dog_Rover = [2, "Guard Dog Rover", math.inf, 6, True, 1, math.inf, 100, 3, "SWAWDD"]
+    Guard_Dog_Breath = [2, "Guard Dog Dog Breath", math.inf, 6, True, 5, math.inf, 45, 3, "SWAWDW"]
 
 # main code
 if (y-8)%2 is 0:
@@ -552,10 +563,10 @@ if True:
     print_centered(" ")
     print_centered("PRESS ANY KEY TO START")
 if (y-8)%2 is 0:
-    for _ in range(int((y-8)/2)):
+    for _ in range(int((y-8)/2)-1):
         print_centered(" ")
 else:
-    for _ in range(int((y-8)/2)+1):
+    for _ in range(int((y-8)/2)):
         print_centered(" ")
 hide_cursor()
 while True:
@@ -748,8 +759,8 @@ if True: #hides maps
         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,3,0,2],
-        [2,0,3,0,3,0,0,0,0,1,0,0,0,0,1,9,2,2,1,0,0,0,0,0,0,3,0,6,0,0,0,2],
-        [2,0,0,4,0,3,0,0,1,1,0,0,0,0,1,2,2,2,1,1,3,1,0,0,0,0,0,0,0,0,0,2],
+        [2,0,3,0,3,0,0,0,0,1,0,0,0,0,0,9,2,2,1,0,0,0,0,0,0,3,0,6,0,0,0,2],
+        [2,0,0,4,0,3,0,0,1,1,0,0,0,0,0,1,2,2,1,1,3,1,0,0,0,0,0,0,0,0,0,2],
         [2,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,2,2,1,0,0,1,3,0,0,0,0,0,0,0,0,2],
         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,1,3,6,1,0,0,6,0,0,0,0,0,6,2],
         [2,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,1,2,1,0,3,1,0,0,0,0,0,0,0,0,0,2],
@@ -969,14 +980,13 @@ level = [
         ## []
         [[list(Scavenger.copy()), 13, 8, ["condition", ["killedBug1", "set", True]]],[list(Scavenger.copy()), 9, 2],[list(Scavenger.copy()), 11, 2]], ##enemies
         [["killedBug1", False], ["closedHole1", False], ["stimmed", False]], ## conditions
-        [[["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]], [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]], [["spawner",["condition", ["closedHole1", "set", True]]], [1,10]], [["condition", ["closedHole1", "check", True, ["clear", [[5, 2],[5, 3]], 7]]], [4, 1]]], ## points of interest
+        [[["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]], [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]], [["spawner",["condition", ["closedHole1", "set", True]]], [1,10]], [["condition", ["closedHole1", "check", True, ["clear", [[5, 2],[5, 3]], 7]]], [4, 1]], [["condition", ["stimmed", "check", True, ["clear", [[8, 0], [7, 0]]], 7]], [6,1]]], ## points of interest
         "player 0", ##turn
         math.inf, ##base moves
         "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| 1/2 to change weapon |", ## header
         [ ##players
             #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade
             [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [list(Resupply.copy())]],
-            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [list(Resupply.copy())]]
         ],
         bugs
     ],
@@ -986,7 +996,7 @@ level_evac_1 = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
         ##[]
-        [[list(Scavenger.copy()), 4, 14,],[list(Hunter.copy()), 12, 6],[list(Scavenger.copy()), 10, 6],[list(Scavenger.copy()), 11, 5],[list(Pouncer.copy()), 11, 7],[list(Stalkers.copy()), 9, 20],[list(Charger.copy()), 10, 20],[list(Scavenger.copy()), 11, 19],[list(Bile_Titan.copy()), 8, 26],[list(Scavenger.copy()), 9, 26],[list(Shreiker.copy()), 16, 20],[list(Shreiker.copy()), 17, 20],[list(Shreiker.copy()), 17, 21],[list(Scavenger.copy()), 27, 27],[list(Scavenger.copy()), 27, 29],[list(Scavenger.copy()), 27, 29],[list(Hunter.copy()), 29, 28]], ##enemies
+        [[list(Scavenger.copy()), 4, 14,],[list(Hunter.copy()), 12, 6],[list(Scavenger.copy()), 10, 6],[list(Scavenger.copy()), 11, 5],[list(Pouncer.copy()), 11, 7],[list(Stalker.copy()), 9, 20],[list(Charger.copy()), 10, 20],[list(Scavenger.copy()), 11, 19],[list(Bile_Titan.copy()), 8, 26],[list(Scavenger.copy()), 9, 26],[list(Shreiker.copy()), 16, 20],[list(Shreiker.copy()), 17, 20],[list(Shreiker.copy()), 17, 21],[list(Scavenger.copy()), 27, 27],[list(Scavenger.copy()), 27, 29],[list(Scavenger.copy()), 27, 29],[list(Hunter.copy()), 29, 28]], ##enemies
 
         [["evacedCivs", False], ["Objective.condition", False, "Evacuate civilians: ", True]], ## conditions
         [[["condition", ["evacedCivs", "check", True, ["extraction"],]], [2, 2]],[["spawner"], [10,15]],[["spawner"], [8,28]],[["spawner"], [19,9]],[["spawner"], [24,21]],[["civ enter"], [24,28]],[["civ enter button"], [27,30]],[["civ enter button"], [24,27]],[["civ enter"], [28,30]],[["civ exit"], [30,26]],[["hellbomb"], [15,26]]], ## points of interest
@@ -1022,8 +1032,9 @@ level_ex_2 = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
         ##[]
-        [[list(Scavenger.copy()), 6, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 7, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 8, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 9, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 10, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 7, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 10, 14, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 13, 7, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 4, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 2, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 2, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 3, 10, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 2, 8, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 3, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 8, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 5, 1, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
-
+        [[list(Hive_Guard.copy()), 6, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 7, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 8, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Pouncer.copy()), 9, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Hive_Guard.copy()), 10, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 7, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 10, 14, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Titan.copy()), 13, 7, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 4, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Hive_Guard.copy()), 2, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 2, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 3, 10, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 2, 8, ["condition", ["killedEnemies", "add", 1]]],[list(Scavenger.copy()), 4, 6, ["condition", ["killedEnemies", "add", 1]]],[list(Bile_Spewer.copy()), 3, 4, ["condition", ["killedEnemies", "add", 1]]],[list(Charger.copy()), 8, 2, ["condition", ["killedEnemies", "add", 1]]],[list(Hunter.copy()), 5, 1, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
+        ##[[list(Devistator.copy()), 6, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Beserker.copy()), 7, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Hulk.copy()), 8, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 9, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Scout_Strider.copy()), 10, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Devistator.copy()), 7, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 10, 14, ["condition", ["killedEnemies", "add", 1]]],[list(Trooper.copy()), 13, 7, ["condition", ["killedEnemies", "add", 1]]],[list(Hulk.copy()), 4, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Factory_Strider.copy()), 2, 12, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
+        ##[[list(Cresent_Overseer.copy()), 6, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Overseer.copy()), 7, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Flesh_Mob.copy()), 8, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 9, 5, ["condition", ["killedEnemies", "add", 1]]],[list(Elevated_Overseer.copy()), 10, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Watcher.copy()), 7, 12, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 10, 14, ["condition", ["killedEnemies", "add", 1]]],[list(Voteless.copy()), 13, 7, ["condition", ["killedEnemies", "add", 1]]],[list(Flesh_Mob.copy()), 4, 13, ["condition", ["killedEnemies", "add", 1]]],[list(Harvester.copy()), 2, 12, ["condition", ["killedEnemies", "add", 1]]]], ##enemies
         [["killedEnemies", 0], ["Objective.Extermanate", 0, "Extermanate enemies: ", 17]], ## conditions
         [[["condition", ["killedEnemies", "check", 17, ["extraction"],]], [6, 8]],[["spawner"], [13,3]],[["spawner"], [7,2]],[["spawner"], [4,8]],[["spawner"], [2,12]],[["spawner"], [9,13]]], ## points of interest
         "player 0", ##turn
@@ -1039,11 +1050,47 @@ level_ex_2 = [
 level_ICBM_1 = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
-        [[list(Scavenger.copy()), 21, 6],[list(Scavenger.copy()), 19, 6],[list(Scavenger.copy()), 18, 7],[list(Scavenger.copy()), 16, 7],[list(Scavenger.copy()), 19, 9],[list(Scavenger.copy()), 18, 10],[list(Scavenger.copy()), 5, 13],[list(Scavenger.copy()), 6, 15],[list(Scavenger.copy()), 16, 17],[list(Scavenger.copy()), 18, 17],[list(Scavenger.copy()), 20, 18],[list(Scavenger.copy()), 2, 23],[list(Scavenger.copy()), 4, 23],[list(Scavenger.copy()), 5, 24],[list(Scavenger.copy()), 4, 27],[list(Scavenger.copy()), 5, 29],[list(Scavenger.copy()), 22, 25],[list(Scavenger.copy()), 29, 22],[list(Scavenger.copy()), 25, 23],[list(Scavenger.copy()), 20, 24],[list(Scavenger.copy()), 20, 27],[list(Scavenger.copy()), 19, 26]], ##enemies
-
+        [
+            [list(Scavenger.copy()), 21, 6],
+            [list(Bile_Titan.copy()), 19, 6],
+            [list(Bile_Spewer.copy()), 18, 7],
+            [list(Scavenger.copy()), 16, 7],
+            [list(Bile_Spewer.copy()), 19, 9],
+            [list(Hunter.copy()), 18, 10],
+            [list(Hunter.copy()), 5, 13],
+            [list(Pouncer.copy()), 6, 15],
+            [list(Scavenger.copy()), 16, 17],
+            [list(Pouncer.copy()), 18, 17],
+            [list(Scavenger.copy()), 20, 18],
+            [list(Pouncer.copy()), 2, 23],
+            [list(Scavenger.copy()), 4, 23],
+            [list(Charger.copy()), 5, 24],
+            [list(Charger.copy()), 4, 27],
+            [list(Scavenger.copy()), 5, 29],
+            [list(Hunter.copy()), 22, 25],
+            [list(Scavenger.copy()), 29, 22],
+            [list(Scavenger.copy()), 25, 23],
+            [list(Bile_Titan.copy()), 20, 24],
+            [list(Scavenger.copy()), 20, 27],
+            [list(Bile_Titan.copy()), 19, 26]
+        ], ##enemies
+        ##[[list(Devistator.copy()), 21, 6],[list(Beserker.copy()), 19, 6],[list(Hulk.copy()), 18, 7],[list(Factory_Strider.copy()), 16, 7],[list(Scout_Strider.copy()), 19, 9],[list(Devistator.copy()), 18, 10],[list(Factory_Strider.copy()), 5, 13],[list(Trooper.copy()), 5, 13],[list(Hulk.copy()), 4, 13],[list(Factory_Strider.copy()), 2, 12]], ##enemies
+        ##[[list(Cresent_Overseer.copy()), 21, 6],[list(Overseer.copy()), 19, 6],[list(Flesh_Mob.copy()), 18, 7],[list(Harvester.copy()), 16, 7],[list(Elevated_Overseer.copy()), 19, 9],[list(Watcher.copy()), 18, 10],[list(Harvester.copy()), 5, 13],[list(Voteless.copy()), 5, 13],[list(Flesh_Mob.copy()), 4, 13],[list(Harvester.copy()), 2, 12]], ##enemies
         [["Objective.RetreiveCodes", False, "Retreive launch codes: ", True],["Objective.Launch", False, "Launch missle: ", True]],
-        [[["hellbomb"], [21,13]],[["sample text"], [26,18]],[["sample text"], [28,3]], [["condition", ["Launch", "check", True, ["extraction"],]], [3, 3]], [["condition", ["Hatch_1", "set", True]], [23, 27]], [["condition", ["Hatch_2", "set", True]], [26, 24]], [["condition", ["Hatch_3", "set", True]], [26, 30]], [["condition", ["Hatch_4", "set", True]], [29, 27]]], ## points of interest
-        "player 0", ##turn
+        [
+            [["hellbomb"], [21,13]],
+            [["condition", ["Objective.RetreiveCodes", "set", True]], [28,3]],
+            [["condition", ["Objective.Launch", "check", True, ["extraction"],]], [3, 3]],
+            [["condition", ["Objective.RetreiveCodes", "check", True, ["condition", "Hatch_1", "set", True]]], [23, 27]],
+            [["condition", ["Objective.RetreiveCodes", "check", True, [["condition",["Hatch_2", "set", True]]]], [26, 24]]],
+            [["condition", ["Objective.RetreiveCodes", "check", True, [["condition",["Hatch_3", "set", True]]]], [26, 30]]],
+            [["condition", ["Objective.RetreiveCodes", "check", True, [["condition",["Hatch_4", "set", True]]]], [29, 27]]],
+            [["condition", ["Hatch_1", "check", True, 
+                            ["Hatch_2", "check", True,
+                            ["Hatch_3", "check", True,
+                            ["Hatch_4", "check", True,["Objective.Launch", "set", True]]]]]], [26,18]] ## points of interest        
+        ],
+        "player 0",
         math.inf, ##base moves
         "", ## header
         [ ##players
@@ -1053,604 +1100,576 @@ level_ICBM_1 = [
     ],
     list(copy.deepcopy(ICBM_1))
 ]
-for playerIndexTurn in range(len(level[0][6])):
-    if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
-        level[0][6][playerIndexTurn][5] += 10
-        level[0][6][playerIndexTurn][6] += 10
-    if level[0][6][playerIndexTurn][3][3].lower() == "engineering kit":
-        level[0][6][playerIndexTurn][7] += 2
-        level[0][6][playerIndexTurn][8] += 2
-    if level[0][6][playerIndexTurn][3][3].lower() == "med-kit":
-        level[0][6][playerIndexTurn][9] += 2
-        level[0][6][playerIndexTurn][10] += 2
-    if level[0][6][playerIndexTurn][3][3].lower() == "siege-ready":
-        level[0][6][playerIndexTurn][1][4] = int(round(level[0][6][playerIndexTurn][1][4] * Fraction(6, 5)))
-        level[0][6][playerIndexTurn][2][4] = int(round(level[0][6][playerIndexTurn][2][4] * Fraction(6, 5)))
-        level[0][6][playerIndexTurn][1][10] = int(round(level[0][6][playerIndexTurn][1][10] * Fraction(6, 5)))
-        level[0][6][playerIndexTurn][2][10] = int(round(level[0][6][playerIndexTurn][2][10] * Fraction(6, 5)))
 # Enemy = [list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
 # Condition = ["name", value]
 
 hide_cursor()
-
-while True:
-    actionItem = ""
-    if level[0][3].startswith("player "):
-        playerIndexTurn = int(level[0][3][-1])
-        if level[0][6][playerIndexTurn][3][3].lower() == "reinforced epaulets" and random.randint(0, 100) < 50:
-            level[0][6][playerIndexTurn][5] += 20
-            level[0][6][playerIndexTurn][6] = 120
-        else:
-            level[0][6][playerIndexTurn][6] = 100
-            if level[0][6][playerIndexTurn][5] > level[0][6][playerIndexTurn][6]:
-                level[0][6][playerIndexTurn][5] = level[0][6][playerIndexTurn][6]
-        if level[0][6][playerIndexTurn][12] > 0:
-            level[0][6][playerIndexTurn][12] -= 1
-            level[0][6][playerIndexTurn][5] += 60
-            if level[0][6][playerIndexTurn][5] > level[0][6][playerIndexTurn][6]:
-                level[0][6][playerIndexTurn][5] = level[0][6][playerIndexTurn][6]
-        shootPhases = 0
-        targets = []
-        clear()
-        if level[0][6][playerIndexTurn][11] > 0:
-            level[0][6][playerIndexTurn][11] -= 1
-            if level[0][6][playerIndexTurn][11] == 0:
-                level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][4]
-        if level[0][6][playerIndexTurn][11] != 0:
-            actionItem = f"\033[33mReloading {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][0]} for {level[0][6][playerIndexTurn][11]} turns...\n"
-            actionItem += f"\033[31mPress X to end turn\033[0m"
+def gameLoop(level):
+    for playerIndexTurn in range(len(level[0][6])):
+        if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
+            level[0][6][playerIndexTurn][5] += 10
+            level[0][6][playerIndexTurn][6] += 10
+        if level[0][6][playerIndexTurn][3][3].lower() == "engineering kit":
+            level[0][6][playerIndexTurn][7] += 2
+            level[0][6][playerIndexTurn][8] += 2
+        if level[0][6][playerIndexTurn][3][3].lower() == "med-kit":
+            level[0][6][playerIndexTurn][9] += 2
+            level[0][6][playerIndexTurn][10] += 2
+        if level[0][6][playerIndexTurn][3][3].lower() == "siege-ready":
+            level[0][6][playerIndexTurn][1][4] = int(round(level[0][6][playerIndexTurn][1][4] * Fraction(6, 5)))
+            level[0][6][playerIndexTurn][2][4] = int(round(level[0][6][playerIndexTurn][2][4] * Fraction(6, 5)))
+            level[0][6][playerIndexTurn][1][10] = int(round(level[0][6][playerIndexTurn][1][10] * Fraction(6, 5)))
+            level[0][6][playerIndexTurn][2][10] = int(round(level[0][6][playerIndexTurn][2][10] * Fraction(6, 5)))
+    while True:
+        actionItem = ""
+        if level[0][3].startswith("player "):
+            playerIndexTurn = int(level[0][3][-1])
+            if level[0][6][playerIndexTurn][3][3].lower() == "reinforced epaulets" and random.randint(0, 100) < 50:
+                level[0][6][playerIndexTurn][5] += 20
+                level[0][6][playerIndexTurn][6] = 120
+            else:
+                level[0][6][playerIndexTurn][6] = 100
+                if level[0][6][playerIndexTurn][5] > level[0][6][playerIndexTurn][6]:
+                    level[0][6][playerIndexTurn][5] = level[0][6][playerIndexTurn][6]
+            if level[0][6][playerIndexTurn][12] > 0:
+                level[0][6][playerIndexTurn][12] -= 1
+                level[0][6][playerIndexTurn][5] += 60
+                if level[0][6][playerIndexTurn][5] > level[0][6][playerIndexTurn][6]:
+                    level[0][6][playerIndexTurn][5] = level[0][6][playerIndexTurn][6]
+            shootPhases = 0
+            targets = []
+            clear()
+            if level[0][6][playerIndexTurn][11] > 0:
+                level[0][6][playerIndexTurn][11] -= 1
+                if level[0][6][playerIndexTurn][11] == 0:
+                    level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][4]
+            if level[0][6][playerIndexTurn][11] != 0:
+                actionItem = f"\033[33mReloading {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][0]} for {level[0][6][playerIndexTurn][11]} turns...\n"
+                actionItem += f"\033[31mPress X to end turn\033[0m"
+                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                while True:
+                    if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                        keyPressed = keyboard.read_event().name
+                        if keyPressed == "x":
+                            clear()
+                            actionItem = "\033[31mPress X again to confirm."
+                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                            while True:
+                                if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                    keyPressed = keyboard.read_event().name
+                                    if keyPressed == "x":
+                                        clear()
+                                        actionItem = "\033[31mEnding turn..."
+                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                        time.sleep(1)
+                                        level[0][3] = "enemy"
+                                        level[0][4] = 5 + level[0][6][playerIndexTurn][3][1]
+                                        break
+                                    else:
+                                        continue
+                            clear()
+                            break
+                        else:
+                            continue
+            actionItem = f"\033[33mMoves left: {level[0][4]}"
+            if level[0][4] is 0:
+                actionItem += "\n\033[31mPress X to end turn\033[0m"
+            for poi in level[0][2]:
+                try:
+                    if level[1][poi[1][0]][poi[1][1]] == 6:
+                        try:
+                            if poi[1][0] is level[0][6][playerIndexTurn][0][1]+1 and poi[1][1] is level[0][6][playerIndexTurn][0][0] or poi[1][0] is level[0][6][playerIndexTurn][0][1]-1 and poi[1][1] is level[0][6][playerIndexTurn][0][0] or poi[1][0] is level[0][6][playerIndexTurn][0][1] and poi[1][1] is level[0][6][playerIndexTurn][0][0]+1 or poi[1][0] is level[0][6][playerIndexTurn][0][1] and poi[1][1] is level[0][6][playerIndexTurn][0][0]-1:
+                                if poi[0][0] == "hellbomb" or poi[0][0] == "spawner":
+                                    break
+                                if len(poi) >= 3:
+                                    actionItem += f"\n\033[33m{poi[2]}\033[0m"
+                                else:
+                                    actionItem += f"\n\033[33mPress E to interact\033[0m"
+                        except:
+                            continue
+                except IndexError:
+                    continue
+#            print(level[0][6][0][0][1], level[0][6][0][0][0])
+            print(level[0][2][2])
             print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
             while True:
                 if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                     keyPressed = keyboard.read_event().name
-                    if keyPressed == "x":
-                        clear()
+                    if keyPressed == "up" or keyPressed == "w":
+                        if level[1][level[0][6][playerIndexTurn][0][1]-1][level[0][6][playerIndexTurn][0][0]] == 0 and level[0][4] > 0:
+                            level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
+                            level[0][6][playerIndexTurn][0][1] -= 1
+                            level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
+                            level[0][4] -= 1
+                    elif keyPressed == "down" or keyPressed == "s":
+                        if level[1][level[0][6][playerIndexTurn][0][1]+1][level[0][6][playerIndexTurn][0][0]] == 0 and level[0][4] > 0:
+                            level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
+                            level[0][6][playerIndexTurn][0][1] += 1
+                            level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
+                            level[0][4] -= 1
+                    elif keyPressed == "left" or keyPressed == "a":
+                        if level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]-1] == 0 and level[0][4] > 0:
+                            level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
+                            level[0][6][playerIndexTurn][0][0] -= 1
+                            level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
+                            level[0][4] -= 1
+                    elif keyPressed == "right" or keyPressed == "d":
+                        if level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]+1] == 0 and level[0][4] > 0:
+                            level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
+                            level[0][6][playerIndexTurn][0][0] += 1
+                            level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
+                            level[0][4] -= 1
+                    elif keyPressed == "1":
+                        level[0][6][playerIndexTurn][4] = 1
+                    elif keyPressed == "2":
+                        level[0][6][playerIndexTurn][4] = 2
+                    elif keyPressed == "space":
+                        actionItem = ""
+                        if shootPhases != 3:
+                            targets = []
+                            targetIndex = 0
+                            for enemy in level[0][0]:
+                                if hypotenuse_los(level[1], level[0][6][playerIndexTurn][0], [enemy[1], enemy[2]], 5):
+                                    targets.append(enemy)
+                                    level[1][enemy[2]][enemy[1]] = 10
+                                    clear()
+                                    for target in targets:
+                                        actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
+                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                            if len(targets) is not 0:
+                                clear()
+                                actionItem = ""
+                                level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 11
+                                for target in targets:
+                                    if target is targets[targetIndex]:
+                                        actionItem += f"\033[33m✓ {target[0][0]} ✓\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
+                                    else:
+                                        actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
+                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                while True:
+                                    if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                        actionItem = ""
+                                        keyPressed = keyboard.read_event().name
+                                        if keyPressed == "up" or keyPressed == "right":
+                                            level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 10
+                                            if targetIndex is len(targets) - 1:
+                                                targetIndex = 0
+                                            else:
+                                                targetIndex += 1
+                                            level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 11
+                                            for target in targets:
+                                                if target is targets[targetIndex]:
+                                                    actionItem += f"\033[33m✓ {target[0][0]} ✓\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
+                                                else:
+                                                    actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
+                                            clear()
+                                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                        elif keyPressed == "down" or keyPressed == "left":
+                                            level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 10
+                                            if targetIndex is 0:
+                                                targetIndex = len(targets) - 1
+                                            else:
+                                                targetIndex -= 1
+                                            level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 11
+                                            for target in targets:
+                                                if target is targets[targetIndex]:
+                                                    actionItem += f"\033[33m✓ {target[0][0]} ✓\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
+                                                else:
+                                                    actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
+                                            clear()
+                                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                        elif keyPressed == "enter" or keyPressed == "space":
+                                            clear()
+                                            actionItem = ""
+                                            actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]}/{targets[targetIndex][0][13]}\nArmor: {targets[targetIndex][0][12]}/{targets[targetIndex][0][12]}\033[0m\n"
+                                            attacks = [f"Fire {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][0]}", "Melee", "Cancel"]
+                                            if not hypotenuse_los(level[1], [level[0][6][playerIndexTurn][0][0], level[0][6][playerIndexTurn][0][1]], [targets[targetIndex][1], targets[targetIndex][2]], 1):
+                                                attacks.pop(attacks.index("Melee"))
+                                            selectionIndex = 1
+                                            actionItem += f"\033[33m✓ 1: {attacks[0]} ✓\n"
+                                            actionItem += f"\033[33m2: {attacks[1]}\n"
+                                            if len(attacks) is 3:
+                                                actionItem += f"\033[33m3: {attacks[2]}\n"
+                                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                            while True:
+                                                if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                                    keyPressed = keyboard.read_event().name
+                                                    if keyPressed == "1":
+                                                        selectionIndex = 1
+                                                    elif keyPressed == "2":
+                                                        selectionIndex = 2
+                                                    elif keyPressed == "3" and len(attacks) is 3:
+                                                        selectionIndex = 3
+                                                    elif keyPressed == "up":
+                                                        if selectionIndex is 1:
+                                                            selectionIndex = len(attacks)
+                                                        else:
+                                                            selectionIndex -= 1
+                                                    elif keyPressed == "down":
+                                                        if selectionIndex is len(attacks):
+                                                            selectionIndex = 1
+                                                        else:
+                                                            selectionIndex += 1
+                                                    elif keyPressed != "enter" and keyPressed != "space":
+                                                        break
+                                                    clear()
+                                                    actionItem = f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]}/{targets[targetIndex][0][13]}\nArmor: {targets[targetIndex][0][12]}/{targets[targetIndex][0][12]}\033[0m\n"
+                                                    if selectionIndex is 1:
+                                                        actionItem += f"\033[33m✓ 1: {attacks[0]} ✓\n"
+                                                        actionItem += f"\033[33m2: {attacks[1]}\n"
+                                                        if len(attacks) is 3:
+                                                            actionItem += f"\033[33m3: {attacks[2]}\n"
+                                                    elif selectionIndex is 2:
+                                                        actionItem += f"\033[33m1: {attacks[0]}\n"
+                                                        actionItem += f"\033[33m✓ 2: {attacks[1]} ✓\n"
+                                                        if len(attacks) is 3:
+                                                            actionItem += f"\033[33m3: {attacks[2]}\n"
+                                                    elif selectionIndex is 3:
+                                                        actionItem += f"\033[33m1: {attacks[0]}\n"
+                                                        actionItem += f"\033[33m2: {attacks[1]}\n"
+                                                        actionItem += f"\033[33m✓ 3: {attacks[2]} ✓\n"
+                                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                                    if keyPressed != "enter" and keyPressed != "space":
+                                                        continue
+                                                    elif keyPressed == "enter" or keyPressed == "space":
+                                                        if attacks[selectionIndex-1] == "Cancel":
+                                                            break
+                                                        elif attacks[selectionIndex-1].startswith("Fire"):
+                                                            for target in targets:
+                                                                if level[1][target[2]][target[1]] is 10:
+                                                                    level[1][target[2]][target[1]] = 3
+                                                            bullets = 0
+                                                            tempArmor = targets[targetIndex][0][12]
+                                                            clear()
+                                                            actionItem = ""
+                                                            actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]}/{targets[targetIndex][0][13]}\nArmor: {targets[targetIndex][0][12]}/{targets[targetIndex][0][12]}\n"
+                                                            actionItem += f"Firing {bullets}/{level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]}\nUse Up/Down arrows to change the amount\033[0m"
+                                                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                                            trueDmg = 0
+                                                            dmg = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][1] * bullets
+                                                            maxArmor = targets[targetIndex][0][12] - (level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][2] * bullets)
+                                                            tempArmor = maxArmor - dmg
+                                                            while True:
+                                                                if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                                                    keyPressed = keyboard.read_event().name
+                                                                    if keyPressed == "up":
+                                                                        if bullets < level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]:
+                                                                            bullets += 1
+                                                                    elif keyPressed == "down":
+                                                                        if bullets != 0:
+                                                                            bullets += -1
+                                                                    elif keyPressed == "enter" or keyPressed == "space":
+                                                                        clear()
+                                                                        actionItem = ""
+                                                                        actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]-trueDmg}/{targets[targetIndex][0][13]}\nArmor: {tempArmor}/{maxArmor}\n"
+                                                                        actionItem += f"\033[33mYou are going to fire {bullets}/{level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]} at {targets[targetIndex][0][0]}, leaving {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]-bullets} remaining\n"
+                                                                        actionItem += "Press Enter to confirm"
+                                                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                                                        breakOut = False
+                                                                        while True:
+                                                                            if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                                                                keyPressed = keyboard.read_event().name
+                                                                                if keyPressed == "enter" or keyPressed == "space":
+                                                                                    targets[targetIndex][0][11] -= trueDmg
+                                                                                    targets[targetIndex][0][12] = maxArmor
+                                                                                    if targets[targetIndex][0][11] <= 0:
+                                                                                        
+                                                                                        level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 0
+                                                                                        if len(targets[targetIndex]) > 3:
+                                                                                            i = parseActions(level[0], level[1], targets[targetIndex][3], level[0][1])
+                                                                                            level[1] = i[0]
+                                                                                            targets[targetIndex][3] = i[1]
+                                                                                            level[0][1] = i[2]
+                                                                                        level[0][0].remove(targets[targetIndex])
+                                                                                        targets.pop(targetIndex)
+                                                                                    level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10] += -bullets
+                                                                                    breakOut = True
+                                                                                    break
+                                                                                else:
+                                                                                    break
+                                                                        if breakOut == True:
+                                                                            break
+                                                                    clear()
+                                                                    trueDmg = 0
+                                                                    dmg = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][1] * bullets
+                                                                    maxArmor = targets[targetIndex][0][12] - (level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][2] * bullets)
+                                                                    tempArmor = maxArmor - dmg
+                                                                    if maxArmor < 0:
+                                                                        maxArmor = 0
+                                                                    if tempArmor < 0:
+                                                                        trueDmg = dmg - maxArmor
+                                                                        tempArmor = 0
+                                                                    if trueDmg >= targets[targetIndex][0][11]:
+                                                                        trueDmg = targets[targetIndex][0][11]
+                                                                    actionItem = ""
+                                                                    actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11] - trueDmg}/{targets[targetIndex][0][13]}\nArmor: {tempArmor}/{maxArmor}\n"
+                                                                    actionItem += f"Firing {bullets}/{level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]}\nUse Up/Down arrows to change the amount\n"
+                                                                    actionItem += "Press Enter to confirm \033[0m"
+                                                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                                            break
+                                                        elif attacks[selectionIndex-1] == "Melee":
+                                                            trueDmg = 0
+                                                            dmg = random.randint(1, 5)
+                                                            maxArmor = targets[targetIndex][0][12] - 1
+                                                            if level[0][6][playerIndexTurn][3][3].lower() == "peak physique":
+                                                                dmg = dmg * 2 
+                                                                maxArmor -= 5
+                                                            if level[0][6][playerIndexTurn][3][3].lower() == "reinforced epaulets":
+                                                                dmg = int(round(Fraction(3,2) * dmg))
+                                                            tempArmor = maxArmor - dmg
+                                                            if maxArmor < 0:
+                                                                maxArmor = 0
+                                                            if tempArmor < 0:
+                                                                trueDmg = dmg - maxArmor
+                                                                tempArmor = 0
+                                                            if trueDmg >= targets[targetIndex][0][11]:
+                                                                trueDmg = targets[targetIndex][0][11]
+                                                            actionItem = f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]-trueDmg}/{targets[targetIndex][0][13]}\nArmor: {tempArmor}/{maxArmor}\n"
+                                                            actionItem += "Press Enter to confirm"
+                                                            clear()
+                                                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                                            while True:
+                                                                if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                                                    keyPressed = keyboard.read_event().name
+                                                                    if keyPressed == "enter" or keyPressed == "space":
+                                                                        targets[targetIndex][0][11] -= trueDmg
+                                                                        targets[targetIndex][0][12] = maxArmor
+                                                                        if targets[targetIndex][0][11] <= 0:
+                                                                            level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 0
+                                                                            if len(targets[targetIndex]) > 3:
+                                                                                i = parseActions(level[0], level[1], targets[targetIndex][3], level[0][1])
+                                                                                level[1] = i[0]
+                                                                                targets[targetIndex][3] = i[1]
+                                                                                level[0][1] = i[2]
+                                                                            level[0][0].remove(targets[targetIndex])
+                                                                            targets.pop(targetIndex)
+                                                                        break
+                                                                else:
+                                                                    break
+                                                            break
+                                                        break
+                                                    else:
+                                                        break
+                                            break
+                                        else:
+                                            break
+                                for target in targets:
+                                    level[1][target[2]][target[1]] = 3
+                                clear()
+                                break
+                        shootPhases += 1
+                    elif keyPressed == "e":
+                        for poi in level[0][2]:
+                            if level[1][poi[1][0]][poi[1][1]] == 6:
+                                if (poi[1][1] is level[0][6][playerIndexTurn][0][0]+1 and poi[1][0] is level[0][6][playerIndexTurn][0][1]) or (poi[1][1] is level[0][6][playerIndexTurn][0][0]-1 and poi[1][0] is level[0][6][playerIndexTurn][0][1]) or (poi[1][0] is level[0][6][playerIndexTurn][0][1]+1 and poi[1][1] is level[0][6][playerIndexTurn][0][0]) or (poi[1][0] is level[0][6][playerIndexTurn][0][1]-1 and poi[1][1] is level[0][6][playerIndexTurn][0][0]):
+                                    if poi[0][0] == "hellbomb" or poi[0][0] == "spawner":
+                                        break
+                                    i = parseActions(level[0], level[1], poi[0], level[0][1])
+                                    level[1] = i[0]
+                                    poi[0] = i[1]
+                                    level[0][1] = i[2]
+                    elif keyPressed == "x":
                         actionItem = "\033[31mPress X again to confirm."
+                        clear()
                         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                         while True:
                             if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                                 keyPressed = keyboard.read_event().name
                                 if keyPressed == "x":
-                                    clear()
                                     actionItem = "\033[31mEnding turn..."
+                                    clear()
                                     print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                                     time.sleep(1)
-                                    level[0][3] = "enemy"
+                                    if len(level[0][6]) == playerIndexTurn + 1:
+                                        level[0][3] = "enemy"
+                                    else:
+                                        level[0][3] = f"player {playerIndexTurn + 1}"
                                     level[0][4] = 5 + level[0][6][playerIndexTurn][3][1]
                                     break
                                 else:
-                                    continue
-                        clear()
-                        break
-                    else:
-                        continue
-        actionItem = f"\033[33mMoves left: {level[0][4]}"
-        if level[0][4] is 0:
-            actionItem += "\n\033[31mPress X to end turn\033[0m"
-        for poi in level[0][2]:
-            if level[1][poi[1][0]][poi[1][1]] == 6:
-                if poi[1][0] is level[0][6][playerIndexTurn][0][1]+1 and poi[1][1] is level[0][6][playerIndexTurn][0][0] or poi[1][0] is level[0][6][playerIndexTurn][0][1]-1 and poi[1][1] is level[0][6][playerIndexTurn][0][0] or poi[1][0] is level[0][6][playerIndexTurn][0][1] and poi[1][1] is level[0][6][playerIndexTurn][0][0]+1 or poi[1][0] is level[0][6][playerIndexTurn][0][1] and poi[1][1] is level[0][6][playerIndexTurn][0][0]-1:
-                    if poi[0][0] == "hellbomb" or poi[0][0] == "spawner":
-                        break
-                    if len(poi) >= 3:
-                        actionItem += f"\n\033[33m{poi[2]}\033[0m"
-                    else:
-                        actionItem += f"\n\033[33mPress E to interact\033[0m"
-        print(level[0][6][0][0][1], level[0][6][0][0][0])
-        print()
-        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-        while True:
-            if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                keyPressed = keyboard.read_event().name
-                if keyPressed == "up" or keyPressed == "w":
-                    if level[1][level[0][6][playerIndexTurn][0][1]-1][level[0][6][playerIndexTurn][0][0]] == 0 and level[0][4] > 0:
-                        level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
-                        level[0][6][playerIndexTurn][0][1] -= 1
-                        level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
-                        level[0][4] -= 1
-                elif keyPressed == "down" or keyPressed == "s":
-                    if level[1][level[0][6][playerIndexTurn][0][1]+1][level[0][6][playerIndexTurn][0][0]] == 0 and level[0][4] > 0:
-                        level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
-                        level[0][6][playerIndexTurn][0][1] += 1
-                        level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
-                        level[0][4] -= 1
-                elif keyPressed == "left" or keyPressed == "a":
-                    if level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]-1] == 0 and level[0][4] > 0:
-                        level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
-                        level[0][6][playerIndexTurn][0][0] -= 1
-                        level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
-                        level[0][4] -= 1
-                elif keyPressed == "right" or keyPressed == "d":
-                    if level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]+1] == 0 and level[0][4] > 0:
-                        level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
-                        level[0][6][playerIndexTurn][0][0] += 1
-                        level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
-                        level[0][4] -= 1
-                elif keyPressed == "1":
-                    level[0][6][playerIndexTurn][4] = 1
-                elif keyPressed == "2":
-                    level[0][6][playerIndexTurn][4] = 2
-                elif keyPressed == "space":
-                    actionItem = ""
-                    if shootPhases != 3:
-                        targets = []
-                        targetIndex = 0
-                        for enemy in level[0][0]:
-                            if hypotenuse_los(level[1], level[0][6][playerIndexTurn][0], [enemy[1], enemy[2]], 5):
-                                targets.append(enemy)
-                                level[1][enemy[2]][enemy[1]] = 10
-                                clear()
-                                for target in targets:
-                                    actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
-                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                        if len(targets) is not 0:
+                                    break
+                    elif keyPressed == "g":
+                        if level[0][6][playerIndexTurn][7] is not 0:
+                            level[0][6][playerIndexTurn][7] -= 1
+                            grenadeX = level[0][6][playerIndexTurn][0][0]
+                            grenadeY = level[0][6][playerIndexTurn][0][1]-1
+                            if level[1][grenadeY][grenadeX] not in [0, 1, 3, 4, 5, 8, 9]:
+                                print("You cannot move the grenade there!")
+                                time.sleep(100)
+                            actual = level[1][grenadeY][grenadeX]
+                            level[1][grenadeY][grenadeX] = 12
+                            actionItem = "\033[33mpress Enter to confirm\033[0m"
+                            r = 3.99
+                            if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
+                                r = 4.99
                             clear()
-                            actionItem = ""
-                            level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 11
-                            for target in targets:
-                                if target is targets[targetIndex]:
-                                    actionItem += f"\033[33m✓ {target[0][0]} ✓\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
-                                else:
-                                    actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
                             print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                             while True:
                                 if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                                    actionItem = ""
                                     keyPressed = keyboard.read_event().name
-                                    if keyPressed == "up" or keyPressed == "right":
-                                        level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 10
-                                        if targetIndex is len(targets) - 1:
-                                            targetIndex = 0
-                                        else:
-                                            targetIndex += 1
-                                        level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 11
-                                        for target in targets:
-                                            if target is targets[targetIndex]:
-                                                actionItem += f"\033[33m✓ {target[0][0]} ✓\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
-                                            else:
-                                                actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
-                                        clear()
-                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                    elif keyPressed == "down" or keyPressed == "left":
-                                        level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 10
-                                        if targetIndex is 0:
-                                            targetIndex = len(targets) - 1
-                                        else:
-                                            targetIndex -= 1
-                                        level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 11
-                                        for target in targets:
-                                            if target is targets[targetIndex]:
-                                                actionItem += f"\033[33m✓ {target[0][0]} ✓\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
-                                            else:
-                                                actionItem += f"\033[33m{target[0][0]}:\nHP: {target[0][11]}/{target[0][13]}\nArmor: {target[0][12]}/{target[0][12]}\033[0m\n"
-                                        clear()
-                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                    if keyPressed == "up" or keyPressed == "w":
+                                        if grenadeY <= 0 or level[1][grenadeY-1][grenadeX] in [0, 1, 3, 4, 5, 8, 9]:
+                                            if hypotenuse_los(level[1], [grenadeX, grenadeY-1], level[0][6][playerIndexTurn][0], r):
+                                                level[1][grenadeY][grenadeX] = actual
+                                                grenadeY -= 1
+                                                actual = level[1][grenadeY][grenadeX]
+                                                level[1][grenadeY][grenadeX] = 12
+                                    elif keyPressed == "down" or keyPressed == "s":
+                                        if grenadeY >= len(level[1])-1 or level[1][grenadeY+1][grenadeX] in [0, 1, 3, 4, 5, 8, 9]:
+                                            if hypotenuse_los(level[1], [grenadeX, grenadeY+1], level[0][6][playerIndexTurn][0], r):
+                                                level[1][grenadeY][grenadeX] = actual
+                                                grenadeY += 1
+                                                actual = level[1][grenadeY][grenadeX]
+                                                level[1][grenadeY][grenadeX] = 12
+                                    elif keyPressed == "left" or keyPressed == "a":
+                                        if grenadeX <= 0 or level[1][grenadeY][grenadeX-1] in [0, 1, 3, 4, 5, 8, 9]:
+                                            if hypotenuse_los(level[1], [grenadeX-1, grenadeY], level[0][6][playerIndexTurn][0], r):
+                                                level[1][grenadeY][grenadeX] = actual
+                                                grenadeX -= 1
+                                                actual = level[1][grenadeY][grenadeX]
+                                                level[1][grenadeY][grenadeX] = 12
+                                    elif keyPressed == "right" or keyPressed == "d":
+                                        if grenadeX >= len(level[1][0])-1 or level[1][grenadeY][grenadeX+1] in [0, 1, 3, 4, 5, 8, 9]:
+                                            if hypotenuse_los(level[1], [grenadeX+1, grenadeY], level[0][6][playerIndexTurn][0], r):
+                                                level[1][grenadeY][grenadeX] = actual
+                                                grenadeX += 1
+                                                actual = level[1][grenadeY][grenadeX]
+                                                level[1][grenadeY][grenadeX] = 12
                                     elif keyPressed == "enter" or keyPressed == "space":
-                                        clear()
-                                        actionItem = ""
-                                        actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]}/{targets[targetIndex][0][13]}\nArmor: {targets[targetIndex][0][12]}/{targets[targetIndex][0][12]}\033[0m\n"
-                                        attacks = [f"Fire {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][0]}", "Melee", "Cancel"]
-                                        if not hypotenuse_los(level[1], [level[0][6][playerIndexTurn][0][0], level[0][6][playerIndexTurn][0][1]], [targets[targetIndex][1], targets[targetIndex][2]], 1):
-                                            attacks.pop(attacks.index("Melee"))
-                                        selectionIndex = 1
-                                        actionItem += f"\033[33m✓ 1: {attacks[0]} ✓\n"
-                                        actionItem += f"\033[33m2: {attacks[1]}\n"
-                                        if len(attacks) is 3:
-                                            actionItem += f"\033[33m3: {attacks[2]}\n"
-                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                        while True:
-                                            if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                                                keyPressed = keyboard.read_event().name
-                                                if keyPressed == "1":
-                                                    selectionIndex = 1
-                                                elif keyPressed == "2":
-                                                    selectionIndex = 2
-                                                elif keyPressed == "3" and len(attacks) is 3:
-                                                    selectionIndex = 3
-                                                elif keyPressed == "up":
-                                                    if selectionIndex is 1:
-                                                        selectionIndex = len(attacks)
+                                        level[1][grenadeY][grenadeX] = actual
+                                        if actual == 4:
+                                            for poi in level[0][2]:
+                                                if poi[1][1] == grenadeX and poi[1][0] == grenadeY:
+                                                    try:
+                                                        i = parseActions(level[0], level[1], poi[0][1], level[0][1])
+                                                        level[1] = i[0]
+                                                        poi[0][1] = i[1]
+                                                        level[0][1] = i[2]
+                                                    except Exception as e:
+                                                        None
+                                                    level[0][2].remove(poi)
+                                                    level[1][grenadeY][grenadeX] = 0
+                                        for enemy in list(level[0][0].copy()):
+                                            if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
+                                                enemy[0][11] -= level[0][6][playerIndexTurn][14][2]
+                                                if enemy[0][12] <= 0:
+                                                    enemy[0][12] = 0
+                                                if enemy[0][12] - level[0][6][playerIndexTurn][14][1] < 0:
+                                                    enemy[0][11] -= level[0][6][playerIndexTurn][14][1] - enemy[0][12]
+                                                if enemy[0][11] <= 0:
+                                                    level[1][enemy[2]][enemy[1]] = 0
+                                                    if len(enemy) > 3:
+                                                        i = parseActions(level[0], level[1], enemy[3], level[0][1])
+                                                        level[1] = i[0]
+                                                        enemy[3] = i[1]
+                                                        level[0][1] = i[2]
+                                                    level[1][enemy[2]][enemy[1]] = 0
+                                                    level[0][0].remove(enemy)
+                                        for player in level[0][6]:
+                                            if hypotenuse_los(level[1], [player[0][0], player[0][1]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
+                                                player[3][2] -= level[0][6][playerIndexTurn][14][2]
+                                                if player[3][2] >= 0:
+                                                    player[3][2] = 0
+                                                if player[3][2] - level[0][6][playerIndexTurn][14][1] < 0:
+                                                    player[5] +=  player[3][2] - level[0][6][playerIndexTurn][14][1]
+                                                if player[5] <= 0:
+                                                    if player[3][3].lower() == "democracy protects" and random.randint(1, 100) <= 50:
+                                                        player[5] = 1
                                                     else:
-                                                        selectionIndex -= 1
-                                                elif keyPressed == "down":
-                                                    if selectionIndex is len(attacks):
-                                                        selectionIndex = 1
-                                                    else:
-                                                        selectionIndex += 1
-                                                elif keyPressed != "enter" and keyPressed != "space":
-                                                    break
-                                                clear()
-                                                actionItem = f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]}/{targets[targetIndex][0][13]}\nArmor: {targets[targetIndex][0][12]}/{targets[targetIndex][0][12]}\033[0m\n"
-                                                if selectionIndex is 1:
-                                                    actionItem += f"\033[33m✓ 1: {attacks[0]} ✓\n"
-                                                    actionItem += f"\033[33m2: {attacks[1]}\n"
-                                                    if len(attacks) is 3:
-                                                        actionItem += f"\033[33m3: {attacks[2]}\n"
-                                                elif selectionIndex is 2:
-                                                    actionItem += f"\033[33m1: {attacks[0]}\n"
-                                                    actionItem += f"\033[33m✓ 2: {attacks[1]} ✓\n"
-                                                    if len(attacks) is 3:
-                                                        actionItem += f"\033[33m3: {attacks[2]}\n"
-                                                elif selectionIndex is 3:
-                                                    actionItem += f"\033[33m1: {attacks[0]}\n"
-                                                    actionItem += f"\033[33m2: {attacks[1]}\n"
-                                                    actionItem += f"\033[33m✓ 3: {attacks[2]} ✓\n"
-                                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                                if keyPressed != "enter" and keyPressed != "space":
-                                                    continue
-                                                elif keyPressed == "enter" or keyPressed == "space":
-                                                    if attacks[selectionIndex-1] == "Cancel":
-                                                        break
-                                                    elif attacks[selectionIndex-1].startswith("Fire"):
-                                                        for target in targets:
-                                                            if level[1][target[2]][target[1]] is 10:
-                                                                level[1][target[2]][target[1]] = 3
-                                                        bullets = 0
-                                                        tempArmor = targets[targetIndex][0][12]
-                                                        clear()
-                                                        actionItem = ""
-                                                        actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]}/{targets[targetIndex][0][13]}\nArmor: {targets[targetIndex][0][12]}/{targets[targetIndex][0][12]}\n"
-                                                        actionItem += f"Firing {bullets}/{level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]}\nUse Up/Down arrows to change the amount\033[0m"
-                                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                                        trueDmg = 0
-                                                        dmg = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][1] * bullets
-                                                        maxArmor = targets[targetIndex][0][12] - (level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][2] * bullets)
-                                                        tempArmor = maxArmor - dmg
-                                                        while True:
-                                                            if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                                                                keyPressed = keyboard.read_event().name
-                                                                if keyPressed == "up":
-                                                                    if bullets < level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]:
-                                                                        bullets += 1
-                                                                elif keyPressed == "down":
-                                                                    if bullets != 0:
-                                                                        bullets += -1
-                                                                elif keyPressed == "enter" or keyPressed == "space":
-                                                                    clear()
-                                                                    actionItem = ""
-                                                                    actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]-trueDmg}/{targets[targetIndex][0][13]}\nArmor: {tempArmor}/{maxArmor}\n"
-                                                                    actionItem += f"\033[33mYou are going to fire {bullets}/{level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]} at {targets[targetIndex][0][0]}, leaving {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]-bullets} remaining\n"
-                                                                    actionItem += "Press Enter to confirm"
-                                                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                                                    breakOut = False
-                                                                    while True:
-                                                                        if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                                                                            keyPressed = keyboard.read_event().name
-                                                                            if keyPressed == "enter" or keyPressed == "space":
-                                                                                targets[targetIndex][0][11] -= trueDmg
-                                                                                targets[targetIndex][0][12] = maxArmor
-                                                                                if targets[targetIndex][0][11] <= 0:
-                                                                                    
-                                                                                    level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 0
-                                                                                    if len(targets[targetIndex]) > 3:
-                                                                                        i = parseActions(level[0], level[1], targets[targetIndex][3], level[0][1])
-                                                                                        level[1] = i[0]
-                                                                                        targets[targetIndex][3] = i[1]
-                                                                                        level[0][1] = i[2]
-                                                                                    level[0][0].remove(targets[targetIndex])
-                                                                                    targets.pop(targetIndex)
-                                                                                level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10] += -bullets
-                                                                                breakOut = True
-                                                                                break
-                                                                            else:
-                                                                                break
-                                                                    if breakOut == True:
-                                                                        break
-                                                                clear()
-                                                                trueDmg = 0
-                                                                dmg = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][1] * bullets
-                                                                maxArmor = targets[targetIndex][0][12] - (level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][2] * bullets)
-                                                                tempArmor = maxArmor - dmg
-                                                                if maxArmor < 0:
-                                                                    maxArmor = 0
-                                                                if tempArmor < 0:
-                                                                    trueDmg = dmg - maxArmor
-                                                                    tempArmor = 0
-                                                                if trueDmg >= targets[targetIndex][0][11]:
-                                                                    trueDmg = targets[targetIndex][0][11]
-                                                                actionItem = ""
-                                                                actionItem += f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11] - trueDmg}/{targets[targetIndex][0][13]}\nArmor: {tempArmor}/{maxArmor}\n"
-                                                                actionItem += f"Firing {bullets}/{level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][10]}\nUse Up/Down arrows to change the amount\n"
-                                                                actionItem += "Press Enter to confirm \033[0m"
-                                                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                                        break
-                                                    elif attacks[selectionIndex-1] == "Melee":
-                                                        trueDmg = 0
-                                                        dmg = random.randint(1, 5)
-                                                        maxArmor = targets[targetIndex][0][12] - 1
-                                                        if level[0][6][playerIndexTurn][3][3].lower() == "peak physique":
-                                                            dmg = dmg * 2 
-                                                            maxArmor -= 5
-                                                        if level[0][6][playerIndexTurn][3][3].lower() == "reinforced epaulets":
-                                                            dmg = int(round(Fraction(3,2) * dmg))
-                                                        tempArmor = maxArmor - dmg
-                                                        if maxArmor < 0:
-                                                            maxArmor = 0
-                                                        if tempArmor < 0:
-                                                            trueDmg = dmg - maxArmor
-                                                            tempArmor = 0
-                                                        if trueDmg >= targets[targetIndex][0][11]:
-                                                            trueDmg = targets[targetIndex][0][11]
-                                                        actionItem = f"\033[33m{targets[targetIndex][0][0]}:\nHP: {targets[targetIndex][0][11]-trueDmg}/{targets[targetIndex][0][13]}\nArmor: {tempArmor}/{maxArmor}\n"
-                                                        actionItem += "Press Enter to confirm"
-                                                        clear()
-                                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                                        while True:
-                                                            if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                                                                keyPressed = keyboard.read_event().name
-                                                                if keyPressed == "enter" or keyPressed == "space":
-                                                                    targets[targetIndex][0][11] -= trueDmg
-                                                                    targets[targetIndex][0][12] = maxArmor
-                                                                    if targets[targetIndex][0][11] <= 0:
-                                                                        level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 0
-                                                                        if len(targets[targetIndex]) > 3:
-                                                                            i = parseActions(level[0], level[1], targets[targetIndex][3], level[0][1])
+                                                        player[5] = 0
+                                                        if player[3][3].lower() == "integrated explosives":
+                                                            for enemy in list(level[0][0].copy()):
+                                                                if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], 1, grenade=True):
+                                                                    enemy[0][12] -= 10
+                                                                    if enemy[0][12] <= 0:
+                                                                        enemy[0][12] = 0
+                                                                        enemy[0][11] -= 20
+                                                                    if enemy[0][11] <= 0:
+                                                                        level[1][enemy[2]][enemy[1]] = 0
+                                                                        if len(enemy) > 3:
+                                                                            i = parseActions(level[0], level[1], enemy[3], level[0][1])
                                                                             level[1] = i[0]
-                                                                            targets[targetIndex][3] = i[1]
+                                                                            enemy[3] = i[1]
                                                                             level[0][1] = i[2]
-                                                                        level[0][0].remove(targets[targetIndex])
-                                                                        targets.pop(targetIndex)
-                                                                    break
-                                                            else:
-                                                                break
-                                                        break
-                                                    break
-                                                else:
-                                                    break
+                                                                        level[1][enemy[2]][enemy[1]] = 0
+                                                                        level[0][0].remove(enemy)
+                                                        sys.exit(0)
                                         break
                                     else:
+                                        level[1][grenadeY][grenadeX] = actual
                                         break
-                            for target in targets:
-                                level[1][target[2]][target[1]] = 3
-                            clear()
-                            break
-                    shootPhases += 1
-                elif keyPressed == "e":
-                    for poi in level[0][2]:
-                        if level[1][poi[1][0]][poi[1][1]] == 6:
-                            if (poi[1][1] is level[0][6][playerIndexTurn][0][0]+1 and poi[1][0] is level[0][6][playerIndexTurn][0][1]) or (poi[1][1] is level[0][6][playerIndexTurn][0][0]-1 and poi[1][0] is level[0][6][playerIndexTurn][0][1]) or (poi[1][0] is level[0][6][playerIndexTurn][0][1]+1 and poi[1][1] is level[0][6][playerIndexTurn][0][0]) or (poi[1][0] is level[0][6][playerIndexTurn][0][1]-1 and poi[1][1] is level[0][6][playerIndexTurn][0][0]):
-                                if poi[0][0] == "hellbomb" or poi[0][0] == "spawner":
-                                    break
-                                i = parseActions(level[0], level[1], poi[0], level[0][1])
-                                level[1] = i[0]
-                                poi[0] = i[1]
-                                level[0][1] = i[2]
-                elif keyPressed == "x":
-                    actionItem = "\033[31mPress X again to confirm."
-                    clear()
-                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                    while True:
-                        if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                            keyPressed = keyboard.read_event().name
-                            if keyPressed == "x":
-                                actionItem = "\033[31mEnding turn..."
-                                clear()
-                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                time.sleep(1)
-                                if len(level[0][6]) == playerIndexTurn + 1:
-                                    level[0][3] = "enemy"
-                                else:
-                                    level[0][3] = f"player {playerIndexTurn + 1}"
-                                level[0][4] = 5 + level[0][6][playerIndexTurn][3][1]
-                                break
-                            else:
-                                break
-                elif keyPressed == "g":
-                    if level[0][6][playerIndexTurn][7] is not 0:
-                        level[0][6][playerIndexTurn][7] -= 1
-                        grenadeX = level[0][6][playerIndexTurn][0][0]
-                        grenadeY = level[0][6][playerIndexTurn][0][1]-1
-                        if level[1][grenadeY][grenadeX] not in [0, 1, 3, 4, 5, 8, 9]:
-                            print("You cannot move the grenade there!")
-                            time.sleep(100)
-                        actual = level[1][grenadeY][grenadeX]
-                        level[1][grenadeY][grenadeX] = 12
-                        actionItem = "\033[33mpress Enter to confirm\033[0m"
-                        r = 3.99
-                        if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
-                            r = 4.99
+                                    clear()
+                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                    elif keyPressed == "ctrl":
+                        selectableStratagems = []
+                        actionItem = ""
+                        for stratagem in level[0][6][playerIndexTurn][15]:
+                            None
+                    elif keyPressed == "r":
+                        level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][11] += -1
+                        level[0][6][playerIndexTurn][11] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][6]
+                        actionItem = f"\033[33mReloading {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][0]} for {level[0][6][playerIndexTurn][11]} turns...\n"
+                        actionItem += f"\033[31mPress X to end turn\033[0m"
                         clear()
+                        print(level[0][6][playerIndexTurn][11])
                         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                         while True:
                             if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                                 keyPressed = keyboard.read_event().name
-                                if keyPressed == "up" or keyPressed == "w":
-                                    if grenadeY <= 0 or level[1][grenadeY-1][grenadeX] in [0, 1, 3, 4, 5, 8, 9]:
-                                        if hypotenuse_los(level[1], [grenadeX, grenadeY-1], level[0][6][playerIndexTurn][0], r):
-                                            level[1][grenadeY][grenadeX] = actual
-                                            grenadeY -= 1
-                                            actual = level[1][grenadeY][grenadeX]
-                                            level[1][grenadeY][grenadeX] = 12
-                                elif keyPressed == "down" or keyPressed == "s":
-                                    if grenadeY >= len(level[1])-1 or level[1][grenadeY+1][grenadeX] in [0, 1, 3, 4, 5, 8, 9]:
-                                        if hypotenuse_los(level[1], [grenadeX, grenadeY+1], level[0][6][playerIndexTurn][0], r):
-                                            level[1][grenadeY][grenadeX] = actual
-                                            grenadeY += 1
-                                            actual = level[1][grenadeY][grenadeX]
-                                            level[1][grenadeY][grenadeX] = 12
-                                elif keyPressed == "left" or keyPressed == "a":
-                                    if grenadeX <= 0 or level[1][grenadeY][grenadeX-1] in [0, 1, 3, 4, 5, 8, 9]:
-                                        if hypotenuse_los(level[1], [grenadeX-1, grenadeY], level[0][6][playerIndexTurn][0], r):
-                                            level[1][grenadeY][grenadeX] = actual
-                                            grenadeX -= 1
-                                            actual = level[1][grenadeY][grenadeX]
-                                            level[1][grenadeY][grenadeX] = 12
-                                elif keyPressed == "right" or keyPressed == "d":
-                                    if grenadeX >= len(level[1][0])-1 or level[1][grenadeY][grenadeX+1] in [0, 1, 3, 4, 5, 8, 9]:
-                                        if hypotenuse_los(level[1], [grenadeX+1, grenadeY], level[0][6][playerIndexTurn][0], r):
-                                            level[1][grenadeY][grenadeX] = actual
-                                            grenadeX += 1
-                                            actual = level[1][grenadeY][grenadeX]
-                                            level[1][grenadeY][grenadeX] = 12
-                                elif keyPressed == "enter" or keyPressed == "space":
-                                    level[1][grenadeY][grenadeX] = actual
-                                    if actual == 4:
-                                        for poi in level[0][2]:
-                                            if poi[1][1] == grenadeX and poi[1][0] == grenadeY:
-                                                try:
-                                                    i = parseActions(level[0], level[1], poi[0][1], level[0][1])
-                                                    level[1] = i[0]
-                                                    poi[0][1] = i[1]
-                                                    level[0][1] = i[2]
-                                                except Exception as e:
-                                                    None
-                                                level[0][2].remove(poi)
-                                                level[1][grenadeY][grenadeX] = 0
-                                    for enemy in list(level[0][0].copy()):
-                                        if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
-                                            enemy[0][11] -= level[0][6][playerIndexTurn][14][2]
-                                            if enemy[0][12] <= 0:
-                                                enemy[0][12] = 0
-                                            if enemy[0][12] - level[0][6][playerIndexTurn][14][1] < 0:
-                                                enemy[0][11] -= level[0][6][playerIndexTurn][14][1] - enemy[0][12]
-                                            if enemy[0][11] <= 0:
-                                                level[1][enemy[2]][enemy[1]] = 0
-                                                if len(enemy) > 3:
-                                                    i = parseActions(level[0], level[1], enemy[3], level[0][1])
-                                                    level[1] = i[0]
-                                                    enemy[3] = i[1]
-                                                    level[0][1] = i[2]
-                                                level[1][enemy[2]][enemy[1]] = 0
-                                                level[0][0].remove(enemy)
-                                    for player in level[0][6]:
-                                        if hypotenuse_los(level[1], [player[0][0], player[0][1]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
-                                            player[3][2] -= level[0][6][playerIndexTurn][14][2]
-                                            if player[3][2] >= 0:
-                                                player[3][2] = 0
-                                            if player[3][2] - level[0][6][playerIndexTurn][14][1] < 0:
-                                                player[5] +=  player[3][2] - level[0][6][playerIndexTurn][14][1]
-                                            if player[5] <= 0:
-                                                if player[3][3].lower() == "democracy protects" and random.randint(1, 100) <= 50:
-                                                    player[5] = 1
-                                                else:
-                                                    player[5] = 0
-                                                    if player[3][3].lower() == "integrated explosives":
-                                                        for enemy in list(level[0][0].copy()):
-                                                            if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], 1, grenade=True):
-                                                                enemy[0][12] -= 10
-                                                                if enemy[0][12] <= 0:
-                                                                    enemy[0][12] = 0
-                                                                    enemy[0][11] -= 20
-                                                                if enemy[0][11] <= 0:
-                                                                    level[1][enemy[2]][enemy[1]] = 0
-                                                                    if len(enemy) > 3:
-                                                                        i = parseActions(level[0], level[1], enemy[3], level[0][1])
-                                                                        level[1] = i[0]
-                                                                        enemy[3] = i[1]
-                                                                        level[0][1] = i[2]
-                                                                    level[1][enemy[2]][enemy[1]] = 0
-                                                                    level[0][0].remove(enemy)
-                                                    sys.exit(0)
+                                if keyPressed == "x":                                
+                                    actionItem = "\033[31mEnding turn..."
+                                    clear()
+                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                    time.sleep(1)
+                                    if len(level[0][6]) == playerIndexTurn + 1:
+                                        level[0][3] = "enemy"
+                                    else:
+                                        level[0][3] = f"player {playerIndexTurn + 1}"
+                                    level[0][4] = 5 + level[0][6][playerIndexTurn][3][1]
                                     break
                                 else:
-                                    level[1][grenadeY][grenadeX] = actual
-                                    break
-                                clear()
-                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                elif keyPressed == "ctrl":
-                    selectableStratagems = []
-                    actionItem = ""
-                    for stratagem in level[0][6][playerIndexTurn][15]:
-                        _
-                elif keyPressed == "r":
-                    level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][11] += -1
-                    level[0][6][playerIndexTurn][11] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][6]
-                    actionItem = f"\033[33mReloading {level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][0]} for {level[0][6][playerIndexTurn][11]} turns...\n"
-                    actionItem += f"\033[31mPress X to end turn\033[0m"
+                                    continue
+                            break
+                    elif keyPressed == "v":
+                        try:
+                            if level[0][1][2][0] == "stimmed":
+                                level[0][1][2][1] = True
+                        finally:
+                            None
+                        if level[0][6][playerIndexTurn][9] > 0:
+                            level[0][6][playerIndexTurn][9] -= 1
+                            level[0][6][playerIndexTurn][5] += 60
+                            if level[0][6][playerIndexTurn][5] > level[0][6][playerIndexTurn][6]:
+                                level[0][6][playerIndexTurn][5] = level[0][6][playerIndexTurn][6]
+                            if level[0][6][playerIndexTurn][3][3].lower() == "med-kit":
+                                level[0][6][playerIndexTurn][11] = 1
                     clear()
-                    print(level[0][6][playerIndexTurn][11])
-                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                    while True:
-                        if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                            keyPressed = keyboard.read_event().name
-                            if keyPressed == "x":                                
-                                actionItem = "\033[31mEnding turn..."
-                                clear()
-                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                                time.sleep(1)
-                                if len(level[0][6]) == playerIndexTurn + 1:
-                                    level[0][3] = "enemy"
-                                else:
-                                    level[0][3] = f"player {playerIndexTurn + 1}"
-                                level[0][4] = 5 + level[0][6][playerIndexTurn][3][1]
-                                break
-                            else:
-                                continue
-                        break
-                elif keyPressed == "v":
-                    try:
-                        if level[0][1][0] == "stimmed":
-                            level[0][1][2] = True
-                    finally:
-                        _
-                    if level[0][6][playerIndexTurn][9] > 0:
-                        level[0][6][playerIndexTurn][9] -= 1
-                        level[0][6][playerIndexTurn][5] += 60
-                        if level[0][6][playerIndexTurn][5] > level[0][6][playerIndexTurn][6]:
-                            level[0][6][playerIndexTurn][5] = level[0][6][playerIndexTurn][6]
-                        actionItem = f"\033[33mYou have used a stim, your health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m"
-                        if level[0][6][playerIndexTurn][3][3].lower() == "med-kit":
-                            level[0][6][playerIndexTurn][11] = 1
-                        time.sleep(2)
-                clear()
-                break
-    elif level[0][3] == "enemy":
-        for enemy in level[0][0]:
-            visMod = 0
-            if Ship_Mods[3] is 1 or 2 or 3 or 4:
-                visMod = 1
-            if level[0][6][playerIndexTurn][3][3].lower() == "scout":
-                visMod += Fraction(30, 100) * enemy[0][9]
-            if hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], enemy[0][9]-visMod):
-                path = find_path(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0])
-                if len(path) > enemy[0][10]:
-                    while len(path) > enemy[0][10]:
-                        path.pop()
-                for coord in path:
-                    currentPos = [enemy[1], enemy[2]]
-                    level[1][currentPos[1]][currentPos[0]] = 0
-                    level[1][coord[1]][coord[0]] = 3
-                    enemy[1] = coord[0]
-                    enemy[2] = coord[1]
-                    clear()
-                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                    time.sleep(0.5)
-            if enemy[0][2] == True and hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], 1.59):
-                trueDmg = 0
-                dmg = enemy[0][3]
-                maxArmor = level[0][6][playerIndexTurn][3][2] - enemy[0][7]
-                tempArmor = maxArmor - dmg
-                if maxArmor < 0:
-                    maxArmor = 0
-                if tempArmor < 0:
-                    trueDmg = dmg - maxArmor
-                    tempArmor = 0
-                if trueDmg >= level[0][6][playerIndexTurn][5]:
-                    trueDmg = level[0][6][playerIndexTurn][5]
-                level[0][6][playerIndexTurn][3][2] = tempArmor
-                level[0][6][playerIndexTurn][5] -= trueDmg
-                if level[0][6][playerIndexTurn][5] <= 0:
-                    if level[0][6][playerIndexTurn] [3][3].lower() == "democracy protects" and random.randint(0, 100) < 50:
-                        level[0][6][playerIndexTurn][5] = 1
-                    else:
-                        actionItem = f"\033[31mYou have been hit for {trueDmg} damage by a {enemy[0][0]}\033[0m\n"
-                        actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
-                        actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
-                        actionItem += "\033[31mYou have been killed by an enemy\033[0m"
+                    break
+        elif level[0][3] == "enemy":
+            for enemy in level[0][0]:
+                visMod = 0
+                if Ship_Mods[3] is 1 or 2 or 3 or 4:
+                    visMod = 1
+                if level[0][6][playerIndexTurn][3][3].lower() == "scout":
+                    visMod += Fraction(30, 100) * enemy[0][9]
+                if hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], enemy[0][9]-visMod):
+                    path = find_path(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0])
+                    if len(path) > enemy[0][10]:
+                        while len(path) > enemy[0][10]:
+                            path.pop()
+                    for coord in path:
+                        currentPos = [enemy[1], enemy[2]]
+                        level[1][currentPos[1]][currentPos[0]] = 0
+                        level[1][coord[1]][coord[0]] = 3
+                        enemy[1] = coord[0]
+                        enemy[2] = coord[1]
                         clear()
                         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                        sys.exit()
-                actionItem = f"\033[31mYou have been hit for {trueDmg} damage!\033[0m\n"
-                actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
-                actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
-                clear()
-                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                time.sleep(2)                
-            elif enemy[0][5] == True:
-                if hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], enemy[0][8]):
+                        time.sleep(0.5)
+                if enemy[0][2] == True and hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], 1.59):
                     trueDmg = 0
                     dmg = enemy[0][3]
-                    maxArmor = level[0][6][playerIndexTurn][3][2] - enemy[0][4]
+                    maxArmor = level[0][6][playerIndexTurn][3][2] - enemy[0][7]
                     tempArmor = maxArmor - dmg
                     if maxArmor < 0:
                         maxArmor = 0
@@ -1672,33 +1691,66 @@ while True:
                             clear()
                             print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                             sys.exit()
-                    actionItem = f"\033[31mYou have been hit for {trueDmg} damage by a {enemy[0][0]}\033[0m\n"
+                    actionItem = f"\033[31mYou have been hit for {trueDmg} damage!\033[0m\n"
                     actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
                     actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
                     clear()
                     print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                    time.sleep(2)
-        clear()
-        level[0][3] = "spawners"
-    elif level[0][3] == "spawners":
-        for poi in level[0][2]:
-            if poi[0][0] == "spawner":
-                if level[1][poi[1][0]][poi[1][1]] == 4:
-                    for _ in range(random.randint(1, 3)):
-                        enemy = list(exponential_weighted_choice(level[0][7]))
-                        for yS in range(poi[1][0]+2, poi[1][0]-2, -1):
-                            for xS in range(poi[1][1]+2, poi[1][1]-2, -1):
-                                if level[1][yS][xS] == 0:
-                                    level[1][yS][xS] = 3
-                                    level[0][0].append(list((enemy, xS, yS)))
-                                    clear()
-                                    print_centered(f"{parse_level(level=level,enemies=level[0][0], actionItem = actionItem)}")
-                                    time.sleep(1)
-                                    break
-                                else:
-                                    continue
-                            break
-        level[0][3] = "player 0"
+                    time.sleep(2)                
+                elif enemy[0][5] == True:
+                    if hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], enemy[0][8]):
+                        trueDmg = 0
+                        dmg = enemy[0][3]
+                        maxArmor = level[0][6][playerIndexTurn][3][2] - enemy[0][4]
+                        tempArmor = maxArmor - dmg
+                        if maxArmor < 0:
+                            maxArmor = 0
+                        if tempArmor < 0:
+                            trueDmg = dmg - maxArmor
+                            tempArmor = 0
+                        if trueDmg >= level[0][6][playerIndexTurn][5]:
+                            trueDmg = level[0][6][playerIndexTurn][5]
+                        level[0][6][playerIndexTurn][3][2] = tempArmor
+                        level[0][6][playerIndexTurn][5] -= trueDmg
+                        if level[0][6][playerIndexTurn][5] <= 0:
+                            if level[0][6][playerIndexTurn] [3][3].lower() == "democracy protects" and random.randint(0, 100) < 50:
+                                level[0][6][playerIndexTurn][5] = 1
+                            else:
+                                actionItem = f"\033[31mYou have been hit for {trueDmg} damage by a {enemy[0][0]}\033[0m\n"
+                                actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
+                                actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
+                                actionItem += "\033[31mYou have been killed by an enemy\033[0m"
+                                clear()
+                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                sys.exit()
+                        actionItem = f"\033[31mYou have been hit for {trueDmg} damage by a {enemy[0][0]}\033[0m\n"
+                        actionItem += f"\033[33mYour health is now {level[0][6][playerIndexTurn][5]}/{level[0][6][playerIndexTurn][6]}\033[0m\n"
+                        actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
+                        clear()
+                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                        time.sleep(2)
+            clear()
+            level[0][3] = "spawners"
+        elif level[0][3] == "spawners":
+            for poi in level[0][2]:
+                if poi[0][0] == "spawner":
+                    if level[1][poi[1][0]][poi[1][1]] == 4:
+                        for _ in range(random.randint(1, 3)):
+                            enemy = list(exponential_weighted_choice(level[0][7]))
+                            for yS in range(poi[1][0]+2, poi[1][0]-2, -1):
+                                for xS in range(poi[1][1]+2, poi[1][1]-2, -1):
+                                    if level[1][yS][xS] == 0:
+                                        level[1][yS][xS] = 3
+                                        level[0][0].append(list((enemy, xS, yS)))
+                                        clear()
+                                        print_centered(f"{parse_level(level=level,enemies=level[0][0], actionItem = actionItem)}")
+                                        time.sleep(1)
+                                        break
+                                    else:
+                                        continue
+                                break
+            level[0][3] = "player 0"
+gameLoop(level)
 print_slow("ALERT: ENCRYPTED TRANSMISSION RECEIVED\n\nDECRYPTING...\n.\n.\n.\nCLASSIFICATION: TOP SECRET\n\nMINISTRY OF DEFENSE\nDIRECTORY OF HELLDIVER READINESS\nORIGINATING STATION: MARS\n\nMEMORANDUM FOR: Helldiver Readiness Command\nSUBJECT: Daily Incoming Recruit Report\n\nTotal Incoming Trainees: 48,736\nAvg. Age(Years): 18.7\nAvg. Combat Readiness Rating: 27.1%\nAvg. Patriotism Rating: 97.4%\n\nExpected Survival Rate: 21.3%\nProjected Helldiver Production: WITHIN QUOTA\n\nEND TRANSMISSION ")
 print("You step out of your cryopod, shivering from the cold. The super destroyer awaits your command.")
 print("What is your name, helldiver?")
@@ -2294,18 +2346,13 @@ else:
 
 Mission=random.randint(0,Max_Maps)
 
-print("It’s time to equip the most important tools in your arsenal. You have stratagems that are Support Weapons, Offensive, and Defensive. Choose wisely, your choices will have an impact on your mission success, that is also based upon your enemy chosen.")
+print("It's time to equip the most important tools in your arsenal. You have stratagems that are Support Weapons, Offensive, and Defensive. Choose wisely, your choices will have an impact on your mission success, that is also based upon your enemy chosen.")
 
 print("Choose Stratagems\n \tSupport Weapons: \n 1.) Quasar Cannon \n 2.) EAT \n 3.) Recoilless Rifle (no backpack slot) \n 4.) Spear (no backback slot) \n 5.) Machine Gun \n 6.) Grenade Launcher \n 7.) Flamethrower \n 8.) Arc Thrower \n \tOffensive: \n 9.) 500 kg bomb \n 10.) 380mm Barrage \n 11.) Cluster Bomb \n 12.) Strafing Run \n 13.) Eagle Airstrike \n 14.) Rocket Pods \n 15.) Orbital Gatling \n 16.) Orbital Gas Strike \n \tDefensive: \n 17.)\n Gatling Sentry \n 18.) Machine Gun Sentry \n 19.) Rocket Sentry \n 20.) Autocannon Sentry \n 21.) Anti-Tank Emplacement \n 22.) Gas Mines \n 23.) Incendiary Mines \n 24.) Explosive Mines \n 25.) Anti-Tank Mines \n Backpacks: \n 26.) Supply Pack \n 27.) Shield Generator Pack \n 28.) Hellbomb Backpack \n 29.) Ballistic Shield \n 30.) Guard-Dog Regular \n 31.) Guard-Dog Laser \n 32.) Guard-Dog Gas")
 Stratagem=0
 n=0
 All_Stratagems=[]
 while n<4:
-    # Weapon: [Stratagem type, Weapon, Damage, AP, Explosive, Uses(Ammo or uses before recharge), Cooldown, Aoe, Range, Mag Size, Chain AOE]
-    # Offensive: [Stratagem type, Stratagem Name, Damage, AP, Explosive, Uses, Cooldown, Aoe, dps (0 for no dps), dps AP (0 for no dps), dps time(how long does the dps last)] # Dps only for long-term damage (e.g. gas, fire)
-    # Defensive: [Stratagem type, Stratagem Name, Damage, AP, Explosive, Uses, Cooldown, Rideable(for emplacements), Range, HP, Armor, Mines(Boolean), mine type (0 for no mines, 1 for gas, 2 for incendiary, 3 for regular, 4 for anti-tank)]
-    # Backpacks: [Stratagem type, Stratagem Name, Uses, Cooldown, Guard dog(Boolean, all other values are 0 for no guard dog), Damage, AP, Shots(amount of times the guard dog can shoot before needing to resupply), Recharge time(how many turns before the guard dog can shoot again)]
-    # Weapon type key; 1 = weapon; 2 = backpack; 3 = weapon and backpack; 4 = offensive; 5 = defensive
     Chosen_Stratagems = input("")
     if Chosen_Stratagems is 1:
         Stratagem = list(copy.deepcopy(Quasar))
@@ -2316,7 +2363,7 @@ while n<4:
     elif Chosen_Stratagems is 4:
         Stratagem = list(copy.deepcopy(Spear))
     elif Chosen_Stratagems is 5:
-        Stratagem = list(copy.deepcopy(Machine_gun))
+        Stratagem = list(copy.deepcopy(Machine_Gun))
         if Ship_Mods[0] is 0 :
             Stratagem[9] = 40
     elif Chosen_Stratagems is 6:
@@ -2332,7 +2379,7 @@ while n<4:
     elif Chosen_Stratagems is 8:
         Stratagem = list(copy.deepcopy(Arcthrower))
     elif Chosen_Stratagems is 9:
-        Stratagem = list(copy.deepcopy(bomb_500kg))
+        Stratagem = list(copy.deepcopy(Bomb_500kg))
         if Ship_Mods[2] is 3:
             Stratagem[5] = 2
         elif Ship_Mods[2] is 0:
@@ -2344,13 +2391,13 @@ while n<4:
         if Ship_Mods[3] is 0:
             Stratagem[6] = 2  
     elif Chosen_Stratagems is 11:
-        Stratagem = list(copy.deepcopy(Cluster_bomb))
+        Stratagem = list(copy.deepcopy(Cluster_Bomb))
     elif Chosen_Stratagems is 12:
-        Stratagem = list(copy.deepcopy(Strafing_run))
+        Stratagem = list(copy.deepcopy(Strafing_Run))
     elif Chosen_Stratagems is 13:
-        Stratagem = list(copy.deepcopy(Eagle_airstrike))
+        Stratagem = list(copy.deepcopy(Eagle_Airstrike))
     elif Chosen_Stratagems is 14:
-        Stratagem = list(copy.deepcopy(Rocket_pods))
+        Stratagem = list(copy.deepcopy(Rocket_Pods))
         
     elif Chosen_Stratagems is 15:
         Stratagem = list(copy.deepcopy(Orbital_Gatling))
@@ -2411,7 +2458,7 @@ while n<4:
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4 
     elif Chosen_Stratagems is 32:
-        Stratagem = list(copy.deepcopy(Guard_Dog_Dog_Breath))
+        Stratagem = list(copy.deepcopy(Guard_Dog_Breath))
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4 
 
