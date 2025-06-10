@@ -1509,6 +1509,9 @@ while True:
                                                                     level[0][0].remove(enemy)
                                                     sys.exit(0)
                                     break
+                                else:
+                                    level[1][grenadeY][grenadeX] = actual
+                                    break
                                 clear()
                                 print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                 elif keyPressed == "r":
