@@ -1137,30 +1137,30 @@ level_flag_1 = [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
         [
             [list(Scavenger.copy()), 3, 2],
-            [list(Scavenger.copy()), 4, 1],
-            [list(Scavenger.copy()), 28, 3],
-            [list(Scavenger.copy()), 27, 2],
-            [list(Scavenger.copy()), 5, 5],
-            [list(Scavenger.copy()), 6, 8],
-            [list(Scavenger.copy()), 2, 4],
+            [list(Hunter.copy()), 4, 1],
+            [list(Bile_Spewer.copy()), 28, 3],
+            [list(Bile_Spewer.copy()), 27, 2],
+            [list(Bile_Titan.copy()), 5, 5],
+            [list(Hunter.copy()), 6, 8],
+            [list(Pouncer.copy()), 2, 4],
             [list(Scavenger.copy()), 10, 9],
             [list(Scavenger.copy()), 12, 10],
-            [list(Scavenger.copy()), 19, 14],
-            [list(Scavenger.copy()), 21, 13],
+            [list(Pouncer.copy()), 19, 14],
+            [list(Pouncer.copy()), 21, 13],
             [list(Scavenger.copy()), 14, 18],
             [list(Scavenger.copy()), 13, 20],
-            [list(Scavenger.copy()), 3, 21],
+            [list(Pouncer.copy()), 3, 21],
             [list(Scavenger.copy()), 2, 24],
             [list(Scavenger.copy()), 9, 24],
             [list(Scavenger.copy()), 7, 22],
-            [list(Scavenger.copy()), 22, 19],
-            [list(Scavenger.copy()), 23, 18],
-            [list(Scavenger.copy()), 24, 20],
+            [list(Pouncer.copy()), 22, 19],
+            [list(Pouncer.copy()), 23, 18],
+            [list(Bile_Spewer.copy()), 24, 20],
             [list(Scavenger.copy()), 26, 22],
-            [list(Scavenger.copy()), 27, 28],
-            [list(Scavenger.copy()), 28, 28],
+            [list(Charger.copy()), 27, 28],
+            [list(Bile_Titan.copy()), 28, 28],
             [list(Scavenger.copy()), 29, 28],
-            [list(Scavenger.copy()), 29, 27],
+            [list(Charger.copy()), 29, 27],
         ], ##enemies
 
         [],
@@ -1177,7 +1177,7 @@ level_flag_1 = [
             [["condition", ["extraction"]], [2, 19]]
         ],
         "player 0",
-        math.inf, ##base moves
+        5, ##base moves
         "", ## header
         [ ##players
             [[18,5], list(Liberator_Penetrator.copy()), list(P_19_Redeemer.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
@@ -1709,31 +1709,66 @@ def gameLoop(level):
                                     selectableStratagems.append(stratagem)
                                 elif stratagem[0][0] == 1 and stratagem[0][11] > 0:
                                     selectableStratagems.append(stratagem)
+                                elif stratagem[0][0] == 2 and stratagem[0][2] > 0:
+                                    selectableStratagems.append(stratagem)
+                                elif stratagem[0][0] == 3 and stratagem[0][11] > 0:
+                                    selectableStratagems.append(stratagem)
                                 elif stratagem[0][0] == 4 and stratagem[0][5] > 0:
                                     selectableStratagems.append(stratagem)
                                 elif stratagem[0][0] == 5 and stratagem[0][5] > 0:
                                     selectableStratagems.append(stratagem)
-                                elif stratagem[0][0] == 6 and stratagem[0][5] > 0:
-                                    selectableStratagems.append(stratagem)
                         actionItem = ""
                         for stratagem in level[0][6][playerIndexTurn][15]:
                             if stratagem in selectableStratagems:
-                                actionItem += f"\033[33m{stratagem[0][1]}: "
+                                actionItem += f"\033[33m{stratagem[0][1]}"
                                 if stratagem[0][0] == 0:
-                                    actionItem += f"{stratagem[0][2]} uses remaining\033[0m\n"
+                                    if stratagem[0][2] != math.inf:
+                                        actionItem += f": {stratagem[0][2]} uses remaining\033[0m\n"
                                 elif stratagem[0][0] == 1:
-                                    action += f"{stratagem[0][11]} turns remaining\033[0m\n"
+                                    if stratagem[0][11] != math.inf:
+                                        action += f": {stratagem[0][11]} turns remaining\033[0m\n"
                                 elif stratagem[0][0] == 4:
-                                    actionItem += f"{stratagem[0][5]} uses remaining\033[0m\n"
+                                    if stratagem[0][5] != math.inf:
+                                        actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
                                 elif stratagem[0][0] == 5:
-                                    actionItem += f"{stratagem[0][5]} uses remaining\033[0m\n"
+                                    if stratagem[0][5] != math.inf:
+                                        actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
                                 elif stratagem[0][0] == 6:
-                                    actionItem += f"{stratagem[0][5]} uses remaining\033[0m\n"
+                                    if stratagem[0][5] != math.inf:
+                                        actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
                             else:
                                 actionItem += f"\033[31m{stratagem[0][1]}: On cooldown for {stratagem[1]} turns\033[0m\n"
                         clear()
                         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                        time.sleep(200)
+                        selectionIndex = 0
+                        while True:
+                            if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                keyPressed = keyboard.read_event().name
+                                
+                                if keyPressed == "enter" or keyPressed == "space":
+                                    clear()
+                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                    break
+                                elif keyPressed == "up" or keyPressed == "w":
+                                    if playerIndexTurn > 0:
+                                        playerIndexTurn -= 1
+                                        clear()
+                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                elif keyPressed == "down" or keyPressed == "s":
+                                    if playerIndexTurn < len(level[0][6]) - 1:
+                                        playerIndexTurn += 1
+                                        clear()
+                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                elif keyPressed == "left" or keyPressed == "a":
+                                    if level[0][6][playerIndexTurn][4] > 0:
+                                        level[0][6][playerIndexTurn][4] -= 1
+                                        clear()
+                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                elif keyPressed == "right" or keyPressed == "d":
+                                    if level[0][6][playerIndexTurn][4] < len(level[0][6][playerIndexTurn]) - 1:
+                                        level[0][6][playerIndexTurn][4] += 1
+                                        clear()
+                                        print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                     elif keyPressed == "r":
                         level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][11] += -1
                         level[0][6][playerIndexTurn][11] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][6]
@@ -1763,7 +1798,7 @@ def gameLoop(level):
                         try:
                             if level[0][1][2][0] == "stimmed":
                                 level[0][1][2][1] = True
-                        finally:
+                        except Exception as e:
                             None
                         if level[0][6][playerIndexTurn][9] > 0:
                             level[0][6][playerIndexTurn][9] -= 1
