@@ -24,7 +24,7 @@ import copy
 import asyncio
 import websockets
 import socket
-jghygfjhf
+
 # Regex to strip ANSI escape sequences
 ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
@@ -146,7 +146,7 @@ def parse_level(level,enemies=[], actionItem="", debug=False, turn = 0):
                     final += "\033[38;2;255;0;0m??\033[0m"
             elif xL is 4:
                 final += "\033[38;2;255;0;0m▚▚\033[0m"
-            elif xL is 5:                    
+            elif xL is 5:
                 if debug:
                     print("player at:")
                     print(xAt, end=" ")
@@ -214,7 +214,7 @@ def parse_level(level,enemies=[], actionItem="", debug=False, turn = 0):
                     final += "\033[38;2;0;150;0;48;2;0;0;0m><\033[0m"
                 elif turn == 3: # type: ignore
                     final += "\033[38;2;192;0;151;48;2;0;0;0m><\033[0m"
-            else: 
+            else:
                 final += "\033[38;2;255;0;255m▚▚\033[0m"
             xAt += 1
         final += "\n"
@@ -319,7 +319,7 @@ def reconstruct_path(came_from, current):
 def find_path(grid, start, goal):
     open_set = []
     heapq.heappush(open_set, (0, tuple(start)))
-    
+
     came_from = {}
     g_score = {tuple(start): 0}
     f_score = {tuple(start): heuristic(tuple(start), goal)}
@@ -369,14 +369,14 @@ def parseActions(levelMeta, gridMap, action, conditions):
         return[gridMap, action, conditions, levelMeta]
     elif action[0] == "damage":
         levelMeta[6][int(str(levelMeta[3])[-1])][5] = 50 # type: ignore
-        return[gridMap, action, conditions, levelMeta] 
+        return[gridMap, action, conditions, levelMeta]
     elif action[0] == "condition":
         if action[1][1] == "set":
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     conditions[conditions.index(condition)][1] = action[1][2]
             return[gridMap, action, conditions, levelMeta]
-        elif action[1][1] == "add": 
+        elif action[1][1] == "add":
             for condition in conditions:
                 if condition[0] == action[1][0]:
                     conditions[conditions.index(condition)][1] += action[1][2]
@@ -420,7 +420,7 @@ Medals = 0
 # Common, Rare, Super
 Samples = [100,50,10]
 # Patriotic Administration Center, Orbital Cannons, Hangar, Bridge, Engineering Bay, Robotics Workshop
-Ship_Mods = [0,0,0,0,0,0,0] 
+Ship_Mods = [0,0,0,0,0,0,0]
 xHalfStr = ""
 for _ in range(int(x/2)-1):
     xHalfStr += " "
@@ -437,7 +437,7 @@ if True: #hides all the stats, remove before release
     Stalker = ["Stalkers", "SK", True, 15, 10, False, 0, 0, 0, 3, 5, 20, 10, 20]
     Bile_Titan = ["Bile Titan", "BT", True, 100, 100, True, 75, 100, 2, 5, 5, 50, 75, 50]
     bugs = [Scavenger, Pouncer, Hunter, Hive_Guard, Charger, Shreiker, Bile_Spewer, Stalker, Bile_Titan]
-    
+
     Trooper = ["Trooper", "TR", False, 0, 0, True, 5, 0, 2, 5, 10, 10, 0, 10]
     Comissar = ["Comissar", "CM", True, 10, 5, True, 5, 0, 3, 2, 5, 10, 0, 10]
     Scout_Strider = ["Scout_Strider", "ST", True, 25, 10, True, 30, 20, 10, 15, 10, 10, 30, 10]
@@ -486,7 +486,7 @@ if True: #hides all the stats, remove before release
     ## Armor
     # Armor = [Armor Name, Movement Mod, Armor Stat, Armor Passive]
     B_01_Tactical = ["B-01 Tactical", 0, 35, "Extra Padding"]#+10 armor ✓
-    SC_34_Infiltrator = ["SC-34 Infiltrator", 1, 5, "Scout"]#70% enemy sight range against wearer ✓ 
+    SC_34_Infiltrator = ["SC-34 Infiltrator", 1, 5, "Scout"]#70% enemy sight range against wearer ✓
     SA_04_Combat_Technician = ["SA-04 Combat Technician", 0, 25, "Scout"]
     CE_35_Trench_Engineer = ["CE-35 Trench Engineer", 0, 25, "Engineering Kit"]#+2 grenades ✓
     CE_07_Demolition_Specialist = ["CE-07 Demolition Specialist", 1, 5, "Engineering Kit"]
@@ -503,7 +503,7 @@ if True: #hides all the stats, remove before release
     AF_02_Haz_Master = ["AF-02 Haz-Master", 0, 25, "Advanced Filtration"]
     SR_24_Street_Scout = ["SR-24 Street Scout", 1, 5, "Siege-Ready"]#120% ammo ✓
     SR_18_Roadblock = ["SR-18 Roadblock", -1, 45, "Siege-Ready"]
-    IE_12_Righteous = ["IE-12 Righteous", 0, 25, "Integrated Explosives"]#Explode 1 turn after death with 20 damage and 10 ap and 1 Aoe 
+    IE_12_Righteous = ["IE-12 Righteous", 0, 25, "Integrated Explosives"]#Explode 1 turn after death with 20 damage and 10 ap and 1 Aoe
     RE_1861_Parade_Commander = ["RE-1861 Parade Commander", 1, 5, "Reinforced Epaulettes"]#150% melee damage ✓, 50% chance of +20 health for the turn ✓
     RE_2310_Honorary_Guard = ["RE-2310 Honorary Guard", 0, 25, "Reinforced Epaulettes"]
     Armors = [B_01_Tactical, SC_34_Infiltrator, SA_04_Combat_Technician, CE_35_Trench_Engineer, CE_07_Demolition_Specialist, DP_40_Hero_of_the_Federation, FS_23_Battle_Master, CM_14_Physician, SA_12_Servo_Assisted, SA_32_Dynamo, PH_9_Predator, P_202_Twigsnapper, I_09_Heatseeker, I_102_Draconaught, AF_50_Noxious_Ranger, AF_02_Haz_Master, SR_24_Street_Scout, SR_18_Roadblock, IE_12_Righteous, RE_1861_Parade_Commander, RE_2310_Honorary_Guard]
@@ -514,24 +514,24 @@ if True: #hides all the stats, remove before release
     # Weapon type key; 1 = weapon; 2 = backpack; 3 = weapon and backpack; 4 = offensive; 5 = defensive
     Resupply = [0, "Resupply", math.inf, 10, "WSDW"]
 
-    Quasar = [1, "Quasar", 100, 10, True, math.inf, 1, 1, 5, 1, False, 4, "SSWAD"]
+    Quasar = [1, "Quasar Cannon", 100, 10, True, math.inf, 1, 1, 5, 1, False, 4, "SSWAD"]
     Expendible_Anti_Tank = [1, "Expendible Anti Tank", 50, 100, True, 2, 0, 0, 5, 1, False, 4, "SSAWD"]
     Recoilless_Rifle = [3, "Recoilless Rifle", 100, 30, True, 7, 2, 0, 5, 1, False, 4, "SADDA"]
     Spear = [3, "Spear", 50, 100, True, 3, 2, 0, 5, 1, False, 4, "SSWSS"]
     Machine_Gun = [1, "Machine gun", 50, 5, False, 4, 0, 0, 3, 30, False, 4, "SASWD"]
     Grenade_Launcher = [1, "Grenade Launcher", 50, 10, True, 4, 0, 1, 3, 10, False, 4, "SAWAS"]
     Flamethrower = [1, "Flamethrower", 10, 0, True, 4, 0, 1, 2, 10, False, 4, 4, "SAWSW"]
-    Arcthrower = [1, "Arcthrower", 15, math.inf, False, math.inf, 1, 0, 4, 1, True, 4, "SDSWAA"]
+    Arcthrower = [1, "Arc Thrower", 15, math.inf, False, math.inf, 1, 0, 4, 1, True, 4, "SDSWAA"]
 
-    Bomb_500kg = [4, "500kg", 150, 50, True, 1, 2, 2, 0, 0, 0, "WDSSS"]
-    Barrage_380mm = [4, "380mm Barrage", 100, 50, True, math.inf, 5, 3, 100, 50, 3, "regular", "DSWWASS"]
+    Bomb_500kg = [4, "Eagle 500kg Bomb", 150, 50, True, 1, 2, 2, 0, 0, 0, "WDSSS"]
+    Barrage_380mm = [4, "Orbital 380mm Barrage", 100, 50, True, math.inf, 5, 3, 100, 50, 3, "regular", "DSWWASS"]
     Orbital_Precision_Strike = [4, "Orbital Precision Strike", 25, 50, True, math.inf, 2, 1, 0, 0, 0, "DDW"]
-    Cluster_Bomb = [4, "Cluster bomb", 30, 10, True, 3, 1, 2, 0, 0, 0, "WDSSD"]
-    Strafing_Run = [4, "Strafing run", 30, 20, False, 3, 1, 1, 0, 0, 0, "WDD"]
-    Eagle_Airstrike = [4, "Eagle airstrike", 50, 10, True, 2, 1, 1, 0, 0, 0, "WDSD"]
-    Rocket_Pods = [4, "Rocket pods", 35, 30, True, 4, 1, 1, 0, 0, 0, "WDWA"]
-    Orbital_Gatling = [4, "Orbital Gatling", 50, 10, False, math.inf, 3, 1, 0, 0, 0, "DSAWW"]
-    Orbital_Gas = [4, "Orbital Gas", 25, 100, False, math.inf, 3, 2, 10, math.inf, 2, "gas", "DDSD"]
+    Cluster_Bomb = [4, "Eagle Cluster Bomb", 30, 10, True, 3, 1, 2, 0, 0, 0, "WDSSD"]
+    Strafing_Run = [4, "Eagle Strafing Run", 30, 20, False, 3, 1, 1, 0, 0, 0, "WDD"]
+    Eagle_Airstrike = [4, "Eagle Airstrike", 50, 10, True, 2, 1, 1, 0, 0, 0, "WDSD"]
+    Rocket_Pods = [4, "Eagle Rocket Pods", 35, 30, True, 4, 1, 1, 0, 0, 0, "WDWA"]
+    Orbital_Gatling = [4, "Orbital Gatling Barrage", 50, 10, False, math.inf, 3, 1, 0, 0, 0, "DSAWW"]
+    Orbital_Gas = [4, "Orbital Gas Strike", 25, 100, False, math.inf, 3, 2, 10, math.inf, 2, "gas", "DDSD"]
 
     Gatling_Sentry = [5, "Gatling Sentry", 10, 0, False, math.inf, 1, False, 3, 50, 25, False, 0, "SWDA"]
     Machine_Gun_Sentry = [5, "Machine Gun Sentry", 5, 2, False, math.inf, 2, False, 3, 50, 25, False, 0, "SWDDW"]
@@ -542,7 +542,7 @@ if True: #hides all the stats, remove before release
     Incendiary_Mines = [5, "Incendiary Mines", 20, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 2, "SAAS"]
     Regular_Mines = [5, "Regular Mines", 25, math.inf, False, math.inf, 3, False, 0, 0, 0, True, 3, "SAWD"]
     Anti_Tank_Mines = [5, "Anti Tank Mines", 50, math.inf, False, math.inf, 4, False, 0, 0, 0, True, 4, "SAWW"]
-    
+
     Supply_Pack = [2, "Supply Pack", math.inf, 6, False, 0, 0, 0, 0, "SASWWS"]
     Shield_Generator_Pack = [2, "Shield Generator Pack", math.inf, 6, False, 0, 0, 0, 0, "SWADAD"]
     Hellbomb_Backpack = [2, "Hellbomb Backpack", math.inf, 6, False, 0, 0, 0, 0, "SDWWW"]
@@ -986,11 +986,11 @@ level_training_1 = [
         [[list(Scavenger.copy()), 13, 8, ["condition", ["killedBug1", "set", True]]],[list(Scavenger.copy()), 9, 2],[list(Scavenger.copy()), 11, 2]], ##enemies
         [["killedBug1", False], ["closedHole1", False], ["stimmed", False]], ## conditions
         [
-            [["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]], 
-            [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]], 
-            [["spawner",["condition", ["closedHole1", "set", True]]], [1,10]], 
-            [["condition", ["closedHole1", "check", True, ["clear", [[5, 2],[5, 3]], 7]]], [4, 1]], 
-            [["condition", ["stimmed", "check", True, ["clear", [[8, 0], [7, 0]], 7]]], [6,1]], 
+            [["clear", [[11,6],[11,7],[11,8],[11,9]],7], [12,10]],
+            [["condition", ["killedBug1", "check", True, ["clear", [[5,6],[5,7],[5,8],[5,9]],7]]], [6, 10]],
+            [["spawner",["condition", ["closedHole1", "set", True]]], [1,10]],
+            [["condition", ["closedHole1", "check", True, ["clear", [[5, 2],[5, 3]], 7]]], [4, 1]],
+            [["condition", ["stimmed", "check", True, ["clear", [[8, 0], [7, 0]], 7]]], [6,1]],
             [["damage"], [9, 2]]
         ], ## points of interest
         "player 0", ##turn
@@ -998,7 +998,7 @@ level_training_1 = [
         "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| V to heal |\n| 1/2 to change weapon |", ## header
         [ ##players
             #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade, [[stratagem, cooldown remaining, uses remaining]]
-            [[8,14], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [[list(Resupply.copy()), 0]]],
+            [[8,14], list(Liberator_Penetrator.copy()), list(P_2_Peacemaker.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [[list(Resupply.copy()), 0]]],
         ],
         bugs
     ],
@@ -1018,7 +1018,7 @@ level_training_2 = [
         "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| V to heal |\n| 1/2 to change weapon |\n| Ctrl to use stratagems |", ## header
         [ ##players
             #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade, [[stratagem, cooldown remaining, uses remaining]]
-            [[9,2], list(Explosive_Crossbow.copy()), list(GP_31_Ultimatum.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [[list(Resupply.copy()), 0]]],
+            [[9,2], list(Liberator_Penetrator.copy()), list(P_2_Peacemaker.copy()), list(B_01_Tactical.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [[list(Resupply.copy()), 0],[list(Bomb_500kg.copy()), 0]]],
         ],
         bugs
     ],
@@ -1117,10 +1117,10 @@ level_ICBM_1 = [
             [["condition", ["Objective.RetreiveCodes", "check", True, [["condition",["Hatch_2", "set", True]]]], [26, 24]]],
             [["condition", ["Objective.RetreiveCodes", "check", True, [["condition",["Hatch_3", "set", True]]]], [26, 30]]],
             [["condition", ["Objective.RetreiveCodes", "check", True, [["condition",["Hatch_4", "set", True]]]], [29, 27]]],
-            [["condition", ["Hatch_1", "check", True, 
+            [["condition", ["Hatch_1", "check", True,
                             ["Hatch_2", "check", True,
                             ["Hatch_3", "check", True,
-                            ["Hatch_4", "check", True,["Objective.Launch", "set", True]]]]]], [26,18]] ## points of interest        
+                            ["Hatch_4", "check", True,["Objective.Launch", "set", True]]]]]], [26,18]] ## points of interest
         ],
         "player 0",
         math.inf, ##base moves
@@ -1466,7 +1466,7 @@ def gameLoop(level):
                                                                                     targets[targetIndex][0][11] -= trueDmg
                                                                                     targets[targetIndex][0][12] = maxArmor
                                                                                     if targets[targetIndex][0][11] <= 0:
-                                                                                        
+
                                                                                         level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 0
                                                                                         if len(targets[targetIndex]) > 3:
                                                                                             i = parseActions(level[0], level[1], targets[targetIndex][3], level[0][1])
@@ -1505,7 +1505,7 @@ def gameLoop(level):
                                                             dmg = random.randint(1, 5)
                                                             maxArmor = targets[targetIndex][0][12] - 1
                                                             if level[0][6][playerIndexTurn][3][3].lower() == "peak physique":
-                                                                dmg = dmg * 2 
+                                                                dmg = dmg * 2
                                                                 maxArmor -= 5
                                                             if level[0][6][playerIndexTurn][3][3].lower() == "reinforced epaulets":
                                                                 dmg = int(round(Fraction(3,2) * dmg))
@@ -1652,11 +1652,15 @@ def gameLoop(level):
                                                     level[1][grenadeY][grenadeX] = 0
                                         for enemy in list(level[0][0].copy()):
                                             if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], level[0][6][playerIndexTurn][14][3], grenade=True):
-                                                enemy[0][11] -= level[0][6][playerIndexTurn][14][2]
+                                                enemy[0][12] -= level[0][6][playerIndexTurn][14][2]
                                                 if enemy[0][12] <= 0:
                                                     enemy[0][12] = 0
                                                 if enemy[0][12] - level[0][6][playerIndexTurn][14][1] < 0:
                                                     enemy[0][11] -= level[0][6][playerIndexTurn][14][1] - enemy[0][12]
+                                                for e in level[0][0]:
+                                                    if e[1] == enemy[1] and e[2] == enemy[2]:
+                                                        level[0][0][level[0][0].index(e)][0][11] = enemy[0][11]
+                                                        level[0][0][level[0][0].index(e)][0][12] = enemy[0][12]
                                                 if enemy[0][11] <= 0:
                                                     level[1][enemy[2]][enemy[1]] = 0
                                                     if len(enemy) > 3:
@@ -1718,29 +1722,57 @@ def gameLoop(level):
                                 elif stratagem[0][0] == 5 and stratagem[0][5] > 0:
                                     selectableStratagems.append(stratagem)
                         actionItem = ""
+                        selectionIndex = 0
                         for stratagem in level[0][6][playerIndexTurn][15]:
                             if stratagem in selectableStratagems:
-                                actionItem += f"\033[33m{stratagem[0][1]}"
-                                if stratagem[0][0] == 0:
-                                    if stratagem[0][2] != math.inf:
-                                        actionItem += f": {stratagem[0][2]} uses remaining\033[0m\n"
-                                elif stratagem[0][0] == 1:
-                                    if stratagem[0][11] != math.inf:
-                                        action += f": {stratagem[0][11]} turns remaining\033[0m\n"
-                                elif stratagem[0][0] == 4:
-                                    if stratagem[0][5] != math.inf:
-                                        actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
-                                elif stratagem[0][0] == 5:
-                                    if stratagem[0][5] != math.inf:
-                                        actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
-                                elif stratagem[0][0] == 6:
-                                    if stratagem[0][5] != math.inf:
-                                        actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
+                                if stratagem == selectableStratagems[selectionIndex]:
+                                    actionItem += f"\033[33m✓ {stratagem[0][1]}"
+                                    if stratagem[0][0] == 0:
+                                        if stratagem[0][2] != math.inf:
+                                            actionItem += f": {stratagem[0][2]} uses remaining ✓\033[0m\n"
+                                        else:
+                                            actionItem += " ✓\n"
+                                    elif stratagem[0][0] == 1:
+                                        if stratagem[0][11] != math.inf:
+                                            action += f": {stratagem[0][11]} turns remaining ✓\033[0m\n"
+                                        else:
+                                            actionItem += " ✓\n"
+                                    elif stratagem[0][0] == 4:
+                                        if stratagem[0][5] != math.inf:
+                                            actionItem += f": {stratagem[0][5]} uses remaining ✓\033[0m\n"
+                                        else:
+                                            actionItem += " ✓\n"
+                                    elif stratagem[0][0] == 5:
+                                        if stratagem[0][5] != math.inf:
+                                            actionItem += f": {stratagem[0][5]} uses remaining ✓\033[0m \n"
+                                        else:
+                                            actionItem += " ✓\n"
+                                    elif stratagem[0][0] == 6:
+                                        if stratagem[0][5] != math.inf:
+                                            actionItem += f": {stratagem[0][5]} uses remaining ✓\033[0m\n"
+                                        else:
+                                            actionItem += " ✓\n"
+                                else:
+                                    actionItem += f"\033[33m{stratagem[0][1]}"
+                                    if stratagem[0][0] == 0:
+                                        if stratagem[0][2] != math.inf:
+                                            actionItem += f": {stratagem[0][2]} uses remaining\033[0m\n"
+                                    elif stratagem[0][0] == 1:
+                                        if stratagem[0][11] != math.inf:
+                                            action += f": {stratagem[0][11]} turns remaining\033[0m\n"
+                                    elif stratagem[0][0] == 4:
+                                        if stratagem[0][5] != math.inf:
+                                            actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
+                                    elif stratagem[0][0] == 5:
+                                        if stratagem[0][5] != math.inf:
+                                            actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
+                                    elif stratagem[0][0] == 6:
+                                        if stratagem[0][5] != math.inf:
+                                            actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
                             else:
                                 actionItem += f"\033[31m{stratagem[0][1]}: On cooldown for {stratagem[1]} turns\033[0m\n"
                         clear()
                         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                        selectionIndex = 0
                         while True:
                             if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                                 keyPressed = keyboard.read_event().name
@@ -1755,48 +1787,189 @@ def gameLoop(level):
                                     else:
                                         selectionIndex = 0
                                 elif keyPressed == "enter" or keyPressed == "space":
-                                    None
-                            actionItem = ""
-                            for stratagem in level[0][6][playerIndexTurn][15]:
-                                if stratagem in selectableStratagems:
-                                    if stratagem == selectableStratagems[selectionIndex]:
-                                        actionItem += f"✓ \033[33m{stratagem[0][1]}"
-                                        if stratagem[0][0] == 0:
-                                            if stratagem[0][2] != math.inf:
-                                                actionItem += f": {stratagem[0][2]} uses remaining\033[0m ✓\n"
-                                        elif stratagem[0][0] == 1:
-                                            if stratagem[0][11] != math.inf:
-                                                action += f": {stratagem[0][11]} turns remaining\033[0m ✓\n"
-                                        elif stratagem[0][0] == 4:
-                                            if stratagem[0][5] != math.inf:
-                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
-                                        elif stratagem[0][0] == 5:
-                                            if stratagem[0][5] != math.inf:
-                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
-                                        elif stratagem[0][0] == 6:
-                                            if stratagem[0][5] != math.inf:
-                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
-                                    else:
-                                        actionItem += f"\033[33m{stratagem[0][1]}"
-                                        if stratagem[0][0] == 0:
-                                            if stratagem[0][2] != math.inf:
-                                                actionItem += f": {stratagem[0][2]} uses remaining\033[0m ✓\n"
-                                        elif stratagem[0][0] == 1:
-                                            if stratagem[0][11] != math.inf:
-                                                action += f": {stratagem[0][11]} turns remaining\033[0m ✓\n"
-                                        elif stratagem[0][0] == 4:
-                                            if stratagem[0][5] != math.inf:
-                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
-                                        elif stratagem[0][0] == 5:
-                                            if stratagem[0][5] != math.inf:
-                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
-                                        elif stratagem[0][0] == 6:
-                                            if stratagem[0][5] != math.inf:
-                                                actionItem += f": {stratagem[0][5]} uses remaining\033[0m ✓\n"
+                                    if level[0][6][playerIndexTurn][7] is not 0:
+                                        level[0][6][playerIndexTurn][7] -= 1
+                                        stratX = level[0][6][playerIndexTurn][0][0]
+                                        stratY = level[0][6][playerIndexTurn][0][1]-1
+                                        if level[1][stratY][stratX] not in [0, 1, 3, 4, 5, 8, 9]:
+                                            stratX = level[0][6][playerIndexTurn][0][0]+1
+                                            stratY = level[0][6][playerIndexTurn][0][1]
+                                            if level[1][stratY][stratX] not in [0, 1, 3, 4, 5, 8, 9]:
+                                                stratX = level[0][6][playerIndexTurn][0][0]
+                                                stratY = level[0][6][playerIndexTurn][0][1]+1
+                                                if level[1][stratY][stratX] not in [0, 1, 3, 4, 5, 8, 9]:
+                                                    stratX = level[0][6][playerIndexTurn][0][0]-1
+                                                    stratY = level[0][6][playerIndexTurn][0][1]
+                                                    if level[1][stratY][stratX] not in [0, 1, 3, 4, 5, 8, 9]:
+                                                        continue
+                                    actual = level[1][stratY][stratX]
+                                    level[1][stratY][stratX] = 12
+                                    actionItem = "\033[33mpress Enter to confirm\033[0m"
+                                    r = 3.99
+                                    if level[0][6][playerIndexTurn][3][3].lower() == "servo-assisted":
+                                        r = 4.99
+                                    clear()
+                                    print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem, turn = playerIndexTurn)}")
+                                    while True:
+                                        if keyboard.read_event().event_type is keyboard.KEY_DOWN:
+                                            keyPressed = keyboard.read_event().name
+                                            if keyPressed == "up" or keyPressed == "w":
+                                                if stratY <= 0 or level[1][stratY-1][stratX] in [0, 1, 3, 4, 5, 8, 9]:
+                                                    if hypotenuse_los(level[1], [stratX, stratY-1], level[0][6][playerIndexTurn][0], r):
+                                                        level[1][stratY][stratX] = actual
+                                                        stratY -= 1
+                                                        actual = level[1][stratY][stratX]
+                                                        level[1][stratY][stratX] = 12
+                                            elif keyPressed == "down" or keyPressed == "s":
+                                                if stratY >= len(level[1])-1 or level[1][stratY+1][stratX] in [0, 1, 3, 4, 5, 8, 9]:
+                                                    if hypotenuse_los(level[1], [stratX, stratY+1], level[0][6][playerIndexTurn][0], r):
+                                                        level[1][stratY][stratX] = actual
+                                                        stratY += 1
+                                                        actual = level[1][stratY][stratX]
+                                                        level[1][stratY][stratX] = 12
+                                            elif keyPressed == "left" or keyPressed == "a":
+                                                if stratX <= 0 or level[1][stratY][stratX-1] in [0, 1, 3, 4, 5, 8, 9]:
+                                                    if hypotenuse_los(level[1], [stratX-1, stratY], level[0][6][playerIndexTurn][0], r):
+                                                        level[1][stratY][stratX] = actual
+                                                        stratX -= 1
+                                                        actual = level[1][stratY][stratX]
+                                                        level[1][stratY][stratX] = 12
+                                            elif keyPressed == "right" or keyPressed == "d":
+                                                if stratX >= len(level[1][0])-1 or level[1][stratY][stratX+1] in [0, 1, 3, 4, 5, 8, 9]:
+                                                    if hypotenuse_los(level[1], [stratX+1, stratY], level[0][6][playerIndexTurn][0], r):
+                                                        level[1][stratY][stratX] = actual
+                                                        stratX += 1
+                                                        actual = level[1][stratY][stratX]
+                                                        level[1][stratY][stratX] = 12
+                                            elif keyPressed == "enter" or keyPressed == "space":
+                                                level[1][stratY][stratX] = actual
+                                                if stratagem[0] == 4:
+                                                    for poi in level[0][2]:
+                                                        if hypotenuse_los()(level[1], [stratX, stratY], [poi[1][0], poi[1][1]],  stratagem[7], grenade=True):
+                                                            if poi[0][0] == "spawner":
+                                                                if len(poi[0]) > 1:
+                                                                    i = parseActions(level[0], level[1], poi[0][1], level[0][1])
+                                                                    level[1] = i[0]
+                                                                    poi[0][1][1] = i[1]
+                                                                    level[0][1] = i[2]
+                                                                level[1][poi[1][0]][poi[1][1]] = 0
+                                                                level[0][2].remove(poi)
+                                                for enemy in list(level[0][0].copy()):
+                                                    if hypotenuse_los(level[1], [enemy[1], enemy[2]], [stratX, stratY], stratagem[0][7], grenade=True):
+                                                        enemy[0][12] -= stratagem[0][3]
+                                                        if enemy[0][12] <= 0:
+                                                            enemy[0][12] = 0
+                                                        if enemy[0][12] - stratagem[0][2] < 0:
+                                                            enemy[0][11] -= stratagem[0][2] - enemy[0][12]
+                                                        for e in level[0][0]:
+                                                            if e[1] == enemy[1] and e[2] == enemy[2]:
+                                                                level[0][0][level[0][0].index(e)][0][11] = enemy[0][11]
+                                                                level[0][0][level[0][0].index(e)][0][12] = enemy[0][12]
+                                                        if enemy[0][11] <= 0:
+                                                            level[1][enemy[2]][enemy[1]] = 0
+                                                            if len(enemy) > 3:
+                                                                i = parseActions(level[0], level[1], enemy[3], level[0][1])
+                                                                level[1] = i[0]
+                                                                enemy[3] = i[1]
+                                                                level[0][1] = i[2]
+                                                            level[1][enemy[2]][enemy[1]] = 0
+                                                            level[0][0].remove(enemy)
+                                                for player in level[0][6]:
+                                                    if hypotenuse_los(level[1], [player[0][0], player[0][1]], [stratX, stratY], stratagem[0][7], grenade=True):
+                                                        player[3][2] -= stratagem[0][3]
+                                                        if player[3][2] <= 0:
+                                                            player[3][2] = 0
+                                                        if player[3][2] - stratagem[0][2] < 0:
+                                                            player[5] +=  player[3][2] - stratagem[0][2]
+                                                        if player[5] <= 0:
+                                                            if player[3][3].lower() == "democracy protects" and random.randint(1, 100) <= 50:
+                                                                player[5] = 1
+                                                            else:
+                                                                player[5] = 0
+                                                                if player[3][3].lower() == "integrated explosives":
+                                                                    for enemy in list(level[0][0].copy()):
+                                                                        if hypotenuse_los(level[1], [enemy[1], enemy[2]], [stratX, stratY], 1, grenade=True):
+                                                                            enemy[0][12] -= 10
+                                                                            if enemy[0][12] <= 0:
+                                                                                enemy[0][12] = 0
+                                                                                enemy[0][11] -= 20
+                                                                            if enemy[0][11] <= 0:
+                                                                                level[1][enemy[2]][enemy[1]] = 0
+                                                                                if len(enemy) > 3:
+                                                                                    i = parseActions(level[0], level[1], enemy[3], level[0][1])
+                                                                                    level[1] = i[0]
+                                                                                    enemy[3] = i[1]
+                                                                                    level[0][1] = i[2]
+                                                                                level[1][enemy[2]][enemy[1]] = 0
+                                                                                level[0][0].remove(enemy)
+                                                clear()
+                                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem, turn = playerIndexTurn)}")
+                                                break
+                                            clear()
+                                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem, turn = playerIndexTurn)}")
                                 else:
-                                    actionItem += f"\033[31m{stratagem[0][1]}: On cooldown for {stratagem[1]} turns\033[0m\n"
-                            clear()
-                            print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
+                                    break
+                                actionItem = ""
+                                for stratagem in level[0][6][playerIndexTurn][15]:
+                                    if stratagem in selectableStratagems:
+                                        if stratagem == selectableStratagems[selectionIndex]:
+                                            actionItem += f"\033[33m✓ {stratagem[0][1]}"
+                                            if stratagem[0][0] == 0:
+                                                if stratagem[0][2] != math.inf:
+                                                    actionItem += f": {stratagem[0][2]} uses remaining ✓\033[0m\n"
+                                                else:
+                                                    actionItem += " ✓\n"
+                                            elif stratagem[0][0] == 1:
+                                                if stratagem[0][11] != math.inf:
+                                                    action += f": {stratagem[0][11]} turns remaining ✓\033[0m\n"
+                                                else:
+                                                    actionItem += " ✓\n"
+                                            elif stratagem[0][0] == 4:
+                                                if stratagem[0][5] != math.inf:
+                                                    actionItem += f": {stratagem[0][5]} uses remaining ✓\033[0m\n"
+                                                else:
+                                                    actionItem += " ✓\n"
+                                            elif stratagem[0][0] == 5:
+                                                if stratagem[0][5] != math.inf:
+                                                    actionItem += f": {stratagem[0][5]} uses remaining ✓\033[0m \n"
+                                                else:
+                                                    actionItem += " ✓\n"
+                                            elif stratagem[0][0] == 6:
+                                                if stratagem[0][5] != math.inf:
+                                                    actionItem += f": {stratagem[0][5]} uses remaining ✓\033[0m\n"
+                                                else:
+                                                    actionItem += " ✓\n"
+                                        else:
+                                            actionItem += f"\033[33m{stratagem[0][1]}"
+                                            if stratagem[0][0] == 0:
+                                                if stratagem[0][2] != math.inf:
+                                                    actionItem += f": {stratagem[0][2]} uses remaining\033[0m\n"
+                                                else:
+                                                    actionItem += "\n\033[0m"
+                                            elif stratagem[0][0] == 1:
+                                                if stratagem[0][11] != math.inf:
+                                                    action += f": {stratagem[0][11]} turns remaining\033[0m\n"
+                                                else:
+                                                    actionItem += "\n\033[0m"
+                                            elif stratagem[0][0] == 4:
+                                                if stratagem[0][5] != math.inf:
+                                                    actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
+                                                else:
+                                                    actionItem += "\n\033[0m"
+                                            elif stratagem[0][0] == 5:
+                                                if stratagem[0][5] != math.inf:
+                                                    actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
+                                                else:
+                                                    actionItem += "\n\033[0m"
+                                            elif stratagem[0][0] == 6:
+                                                if stratagem[0][5] != math.inf:
+                                                    actionItem += f": {stratagem[0][5]} uses remaining\033[0m\n"
+                                                else:
+                                                    actionItem += "\n\033[0m"
+                                    else:
+                                        actionItem += f"\033[31m{stratagem[0][1]}: On cooldown for {stratagem[1]} turns\033[0m\n"
+                                clear()
+                                print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
                     elif keyPressed == "r":
                         level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][11] += -1
                         level[0][6][playerIndexTurn][11] = level[0][6][playerIndexTurn][level[0][6][playerIndexTurn][4]][6]
@@ -1808,7 +1981,7 @@ def gameLoop(level):
                         while True:
                             if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                                 keyPressed = keyboard.read_event().name
-                                if keyPressed == "x":                                
+                                if keyPressed == "x":
                                     actionItem = "\033[31mEnding turn..."
                                     clear()
                                     print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
@@ -1888,7 +2061,7 @@ def gameLoop(level):
                     actionItem += f"\033[33mYour armor is now {level[0][6][playerIndexTurn][3][2]}\033[0m\n"
                     clear()
                     print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
-                    time.sleep(2)                
+                    time.sleep(2)
                 elif enemy[0][5] == True:
                     if hypotenuse_los(level[1], [enemy[1], enemy[2]], level[0][6][playerIndexTurn][0], enemy[0][8]):
                         trueDmg = 0
@@ -1966,7 +2139,7 @@ while True:
             clear()
             print("You have entered the Super Destroyer customization menu")
             print("What would you like to customize?\n\t1:Ship Name\n\t2:Ship Modules")
-            Current_Decision = int(input("Enter your choice: "))        
+            Current_Decision = int(input("Enter your choice: "))
             if Current_Decision is 1:
                 clear()
                 print("You have chosen to customize the ship name")
@@ -1993,7 +2166,7 @@ while True:
                                 print_centered("\nHand Carts: Reduces Backpack Stratagem cooldown")
                                 print_centered("\nSuperior Packing Methodology: Resupply Boxes fill support weapons to maximum ammo")
                                 print_centered("\nPayroll Management System: Reduces reload time for Support Weapons")
-                                
+
                             elif(Ship_Mods[0] is 1):
                                 next_mod = "Streamlined Request Process"
                                 print_centered("\n✓ Donation Access License: Support Weapons deploy with an extra magazine. ✓")
@@ -2078,7 +2251,7 @@ while True:
                                 next_mod = "More Guns"
                                 print_centered("\n✓ Exploding Shrapnel: Increases damage of Orbital Stratagems ✓")
                                 print_centered("\nMore Guns: Barrage Orbital Stratagems fire more shots")
-                                print_centered("\nZero-G Breech Loading: Reduces Orbital Stratagem cooldown")                                
+                                print_centered("\nZero-G Breech Loading: Reduces Orbital Stratagem cooldown")
                                 print_centered("\nAtmospheric Monitoring: Increases accuracy of Orbital Stratagems.")
                                 print_centered("\nNuclear Radar: Increases damage radius of Orbital Stratagems")
                                 print_centered("\nHigh-Density Explosives: Explosive Orbital Stratagems deal more damage and have increased blast radius")
@@ -2092,7 +2265,7 @@ while True:
                                 print_centered("\nHigh-Density Explosives: Explosive Orbital Stratagems deal more damage and have increased blast radius")
                             elif(Ship_Mods[1] is 3):
                                 next_mod = "Atmospheric Monitoring"
-                                print_centered("\n✓ Exploding Shrapnel: Increases damage of Orbital Stratagems ✓")                                
+                                print_centered("\n✓ Exploding Shrapnel: Increases damage of Orbital Stratagems ✓")
                                 print_centered("\n✓ More Guns: Barrage Orbital Stratagems fire more shots ✓")
                                 print_centered("\n✓ Zero-G Breech Loading: Reduces Orbital Stratagem cooldown ✓")
                                 print_centered("\nAtmospheric Increases accuracy of Orbital Stratagems.")
@@ -2266,7 +2439,7 @@ while True:
                                 print_centered("\nEnhanced Combustion: Fire damage from Stratagems increased")
                                 print_centered('\nMorale Augmentation: Reduces cooldown time for all Stratagems')
                             elif(Ship_Mods[3] is 3):
-                                next_mod = "Enhanced Combustion"                                                                                                                                                                                                                                                                                                                                                                                                                       
+                                next_mod = "Enhanced Combustion"
                                 print_centered("\n✓ Targeting Software Upgrade: Reduces cooldown of all Orbital Stratagems ✓")
                                 print_centered("\n✓ Nuclear Radar: Increases accuracy of Orbital Stratagems ✓")
                                 print_centered("\n✓ Power Steering: Decreases call-in time of all Eagle Stratagems ✓")
@@ -2399,7 +2572,7 @@ while True:
                                     if keyboard.read_event().event_type is keyboard.KEY_DOWN:
                                         break
                                 show_cursor()
-                                break        
+                                break
                     elif Current_Decision is 6:
                         while True:
                             clear()
@@ -2586,7 +2759,7 @@ while n<4:
     elif Chosen_Stratagems is 33:
         Stratagem = list(copy.deepcopy(Orbital_Precision_Strike))
         if Ship_Mods[3] is 0:
-            Stratagem[6] = 2  
+            Stratagem[6] = 2
     elif Chosen_Stratagems is 11:
         Stratagem = list(copy.deepcopy(Cluster_Bomb))
     elif Chosen_Stratagems is 12:
@@ -2595,31 +2768,31 @@ while n<4:
         Stratagem = list(copy.deepcopy(Eagle_Airstrike))
     elif Chosen_Stratagems is 14:
         Stratagem = list(copy.deepcopy(Rocket_Pods))
-        
+
     elif Chosen_Stratagems is 15:
         Stratagem = list(copy.deepcopy(Orbital_Gatling))
         if Ship_Mods[3] is 0:
-            Stratagem[6] = 2  
+            Stratagem[6] = 2
     elif Chosen_Stratagems is 16:
         Stratagem = list(copy.deepcopy(Orbital_Gas))
         if Ship_Mods[3] is 0:
-            Stratagem[6] = 2  
+            Stratagem[6] = 2
     elif Chosen_Stratagems is 17:
         Stratagem = list(copy.deepcopy(Gatling_Sentry))
         if Ship_Mods[4] is 1 or 2 or 3 or 4:
-            Stratagem[9] = 100               
+            Stratagem[9] = 100
     elif Chosen_Stratagems is 18:
         Stratagem = list(copy.deepcopy(Machine_Gun_Sentry))
         if Ship_Mods[4] is 1 or 2 or 3 or 4:
-            Stratagem[9] = 100 
+            Stratagem[9] = 100
     elif Chosen_Stratagems is 19:
         Stratagem = list(copy.deepcopy(Rocket_Sentry))
         if Ship_Mods[4] is 1 or 2 or 3 or 4:
-            Stratagem[9] = 100 
+            Stratagem[9] = 100
     elif Chosen_Stratagems is 20:
         Stratagem = list(copy.deepcopy(Autocannon_Sentry))
         if Ship_Mods[4] is 1 or 2 or 3 or 4:
-            Stratagem[9] = 100 
+            Stratagem[9] = 100
     elif Chosen_Stratagems is 21:
         Stratagem = list(copy.deepcopy(Anti_Tank_Emplacement))
     elif Chosen_Stratagems is 22:
@@ -2633,31 +2806,31 @@ while n<4:
     elif Chosen_Stratagems is 26:
         Stratagem = list(copy.deepcopy(Supply_Pack))
         if Ship_Mods[0] is 0:
-            Stratagem[3] = 4 
+            Stratagem[3] = 4
     elif Chosen_Stratagems is 27:
         Stratagem = list(copy.deepcopy(Shield_Generator_Pack))
         if Ship_Mods[0] is 0:
-            Stratagem[3] = 4 
+            Stratagem[3] = 4
     elif Chosen_Stratagems is 28:
         Stratagem = list(copy.deepcopy(Hellbomb_Backpack))
         if Ship_Mods[0] is 0:
-            Stratagem[3] = 4 
+            Stratagem[3] = 4
     elif Chosen_Stratagems is 29:
         Stratagem = list(copy.deepcopy(Balistic_Shield))
         if Ship_Mods[0] is 0:
-            Stratagem[3] = 4 
+            Stratagem[3] = 4
     elif Chosen_Stratagems is 30:
         Stratagem = list(copy.deepcopy(Guard_Dog))
         if Ship_Mods[0] is 0:
-            Stratagem[3] = 4 
+            Stratagem[3] = 4
     elif Chosen_Stratagems is 31:
         Stratagem = list(copy.deepcopy(Guard_Dog_Rover))
         if Ship_Mods[0] is 0:
-            Stratagem[3] = 4 
+            Stratagem[3] = 4
     elif Chosen_Stratagems is 32:
         Stratagem = list(copy.deepcopy(Guard_Dog_Breath))
         if Ship_Mods[0] is 0:
-            Stratagem[3] = 4 
+            Stratagem[3] = 4
 
     All_Stratagems[n]=Stratagem
     n+=1
