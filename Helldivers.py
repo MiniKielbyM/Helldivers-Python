@@ -24,7 +24,7 @@ import copy
 import asyncio
 import websockets
 import socket
-
+jghygfjhf
 # Regex to strip ANSI escape sequences
 ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
@@ -1945,7 +1945,7 @@ def gameLoop(level):
                                         continue
                                 break
             level[0][3] = "player 0"
-gameLoop()
+gameLoop(level_training_2)
 clear()
 gameLoop(level_training_2)
 print_slow("ALERT: ENCRYPTED TRANSMISSION RECEIVED\n\nDECRYPTING...\n.\n.\n.\nCLASSIFICATION: TOP SECRET\n\nMINISTRY OF DEFENSE\nDIRECTORY OF HELLDIVER READINESS\nORIGINATING STATION: MARS\n\nMEMORANDUM FOR: Helldiver Readiness Command\nSUBJECT: Daily Incoming Recruit Report\n\nTotal Incoming Trainees: 48,736\nAvg. Age(Years): 18.7\nAvg. Combat Readiness Rating: 27.1%\nAvg. Patriotism Rating: 97.4%\n\nExpected Survival Rate: 21.3%\nProjected Helldiver Production: WITHIN QUOTA\n\nEND TRANSMISSION ")
