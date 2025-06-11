@@ -25,6 +25,7 @@ import asyncio
 import websockets
 import socket
 
+
 # Regex to strip ANSI escape sequences
 ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
@@ -1147,7 +1148,7 @@ level_flag_1 = [
             [list(Scavenger.copy()), 12, 10],
             [list(Pouncer.copy()), 19, 14],
             [list(Pouncer.copy()), 21, 13],
-            [list(Scavenger.copy()), 14, 18],
+            [list(Hive_Guard.copy()), 14, 18],
             [list(Scavenger.copy()), 13, 20],
             [list(Pouncer.copy()), 3, 21],
             [list(Scavenger.copy()), 2, 24],
@@ -1186,6 +1187,148 @@ level_flag_1 = [
     ],
     list(copy.deepcopy(Raise_Flag_1))
 ]
+level_destroy_outposts_1 = [
+    [
+        [
+            [list(Scavenger.copy()), 18, 22],
+            [list(Bile_Titan.copy()), 23, 21],
+            [list(Hunter.copy()), 26, 21],
+            [list(Hunter.copy()), 22, 24],
+            [list(Hunter.copy()), 17, 24],
+            [list(Bile_Spewer.copy()), 16, 27],
+            [list(Bile_Spewer.copy()), 24, 27],
+            [list(Bile_Spewer.copy()), 24, 28],
+            [list(Scavenger.copy()), 25, 28],
+            [list(Scavenger.copy()), 26, 26],
+            [list(Charger.copy()), 28, 24],
+            [list(Charger.copy()), 28, 25],
+            [list(Charger.copy()), 9, 24],
+            [list(Bile_Titan.copy()), 9, 22],
+            [list(Bile_Titan.copy()), 5, 21],
+            [list(Hive_Guard.copy()), 6, 23],
+            [list(Hive_Guard.copy()), 2, 6],
+            [list(Hive_Guard.copy()), 7, 5],
+            [list(Hive_Guard.copy()), 7, 2],
+            [list(Hive_Guard.copy()), 3, 2],
+            [list(Hunter.copy()), 1, 3],
+            [list(Hunter.copy()), 9, 2],
+            [list(Hunter.copy()), 23, 4],
+            [list(Pouncer.copy()), 24, 5],
+            [list(Pouncer.copy()), 25, 6],
+            [list(Pouncer.copy()), 24, 7]
+                        ],
+        [
+        ["Objective.closeholes",0, "Destroy Outposts: ", 12 ]
+        ],
+        [
+        [["spawner"], [4,25],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [6,26],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [22,26],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [27,26],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [28,21],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [25,29],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [28,29],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [24,19],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [24,7],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [23,5],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [1,5],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [1,2],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [2,1],["condition",["Objective.closeholes","Add",1]]]
+        ], 
+        
+        "player 0",
+        math.inf,
+        "",
+        [ ##players
+            [[16,16], list(Liberator_Penetrator.copy()), list(P_19_Redeemer.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
+        ],
+        bugs
+    ],
+    
+    list(copy.deepcopy(Destroy_Outposts_1))
+]
+level_destroy_outposts_2 = [
+    [
+        [
+            [list(Scavenger.copy()), 17, 24],
+            [list(Scavenger.copy()), 16, 27],
+            [list(Scavenger.copy()), 9, 24],
+            [list(Bile_Titan.copy()), 9, 22],
+            [list(Bile_Titan.copy()), 6, 23],
+            [list(Bile_Spewer.copy()), 5, 21],
+            [list(Bile_Spewer.copy()), 13, 15],
+            [list(Bile_Spewer.copy()), 15, 14],
+            [list(Hive_Guard.copy()), 15, 12],
+            [list(Hive_Guard.copy()), 13, 12],
+            [list(Hive_Guard.copy()), 21, 11],
+            [list(Hunter.copy()), 27, 8],
+            [list(Hunter.copy()), 24, 4],
+            [list(Hunter.copy()), 20, 2],
+            [list(Hunter.copy()), 12, 3],
+            [list(Pouncer.copy()), 10, 2],
+            [list(Pouncer.copy()), 6, 11],
+            [list(Pouncer.copy()), 4, 9],
+            [list(Pouncer.copy()), 2, 8],
+            [list(Pouncer.copy()), 3, 12],
+            [list(Pouncer.copy()), 5, 12],
+            [list(Charger.copy()), 24, 24],
+            [list(Charger.copy()), 22, 24],
+            [list(Charger.copy()), 26, 26],
+            [list(Scavenger.copy()), 18, 22],
+            [list(Scavenger.copy()), 28, 24],
+            [list(Scavenger.copy()), 28, 25],
+            [list(Scavenger.copy()), 24, 27],
+            [list(Scavenger.copy()), 24, 28],
+            [list(Scavenger.copy()), 25, 28]
+                        ],
+        [
+        ["Objective.closeholes",0, "Destroy Outposts: ", 12 ]
+        ],
+        [
+        [["spawner"], [13,14],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [15,12],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [12,4],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [11,5],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [8,3],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [24,7],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [23,5],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [2,11],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [25,24],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [25,27],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [25,29],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [28,27],["condition",["Objective.closeholes","Add",1]]],
+        [["spawner"], [28,29],["condition",["Objective.closeholes","Add",1]]]
+        ], 
+        
+        "player 0",
+        math.inf,
+        "",
+        [ ##players
+            [[16,16], list(Liberator_Penetrator.copy()), list(P_19_Redeemer.copy()), list(SR_24_Street_Scout.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy())]
+        ],
+        bugs
+    ],
+    list(copy.deepcopy(Destroy_Outposts_2))
+]
+    
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Enemy = [list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
 # Condition = ["name", value]
 
@@ -2127,7 +2270,7 @@ def gameLoop(level):
                                         continue
                                 break
             level[0][3] = "player 0"
-gameLoop(level_training_2)
+gameLoop(level_destroy_outposts_1)
 clear()
 gameLoop(level_training_2)
 print_slow("ALERT: ENCRYPTED TRANSMISSION RECEIVED\n\nDECRYPTING...\n.\n.\n.\nCLASSIFICATION: TOP SECRET\n\nMINISTRY OF DEFENSE\nDIRECTORY OF HELLDIVER READINESS\nORIGINATING STATION: MARS\n\nMEMORANDUM FOR: Helldiver Readiness Command\nSUBJECT: Daily Incoming Recruit Report\n\nTotal Incoming Trainees: 48,736\nAvg. Age(Years): 18.7\nAvg. Combat Readiness Rating: 27.1%\nAvg. Patriotism Rating: 97.4%\n\nExpected Survival Rate: 21.3%\nProjected Helldiver Production: WITHIN QUOTA\n\nEND TRANSMISSION ")
