@@ -119,7 +119,11 @@ def center_text_x(text, width):
 def print_centered(text):
     print(center_text_x(text, x))
 def parse_level(level,enemies=[], actionItem="", debug=False, turn = 0):
-    final = "\033[33m\n" + level[0][5] + "\n\n\033[0m"
+    final = "\033[33m\n" + level[0][5]
+    if level[0][8][1] == True:
+        final += f"| Extraction shuttle arriving in {str(level[0][8][0])} turns |\n\n\033[0m"
+    else:
+        final += "\n\n\033[0m"
     yAt = 0
     xAt = 0
     for yL in level[1]:
@@ -404,6 +408,9 @@ def parseActions(levelMeta, gridMap, action, conditions):
                     if conditions[conditions.index(condition)][1] == action[1][2]:
                         action = parseActions(levelMeta, gridMap, action[1][3], conditions)[1]
             return[gridMap, action, conditions, levelMeta]
+    elif action[0] == "extraction":
+        levelMeta[8][1] = True
+        return[gridMap, action, conditions, levelMeta]
     elif action[0] == "resupply":
         player = levelMeta[6][int(str(levelMeta[3])[-1])]
         if Ship_Mods[0] >= 4:
@@ -1044,10 +1051,13 @@ level_training_2 = [
     [
         ##[list(EnemyType.copy()), x, y, ["killAction", [KillActionMetadata]]]
         ## []
-        [[list(Charger.copy()), 3, 3, ["condition", ["killedBug1", "set", True]]],[list(Scavenger.copy()), 2, 5],[list(Scavenger.copy()), 1, 2]], ##enemies
-        [["killedBugs", False], ["closedHole1", False], ["stimmed", False]], ## conditions
+        [[list(Charger.copy()), 3, 3, ["condition", ["killedBugs", "add", 1]]],[list(Charger.copy()), 2, 5, ["condition", ["killedBugs", "add", 1]]],[list(Charger.copy()), 1, 2, ["condition", ["killedBugs", "add", 1]]]], ##enemies
         [
-
+            ["killedBugs", 0]
+        ], ## conditions
+        [
+            [["condition", ["killedBugs", "check", 3 ,["clear", [[6,6],[6,7],[6,8]], 7]]], [5, 9]]
+            [["extraction"], [8, 1]]
         ], ## points of interest
         "player 0", ##turn
         math.inf, ##base moves
@@ -1057,6 +1067,7 @@ level_training_2 = [
             [[9,2], list(Liberator_Penetrator.copy()), list(P_2_Peacemaker.copy()), list(AF_02_Haz_Master.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [[list(Resupply.copy()), 0],[list(Bomb_500kg.copy()), 0]], ""],
         ],
         bugs
+        [2, False]
     ],
     list(copy.deepcopy(training_4))
 ]
@@ -1448,7 +1459,7 @@ def gameLoop(level):
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
                             level[0][4] -= 1
                         elif level[0][6][playerIndexTurn][0][1]-1 < 0:
-                            return None
+                            return True
                     elif keyPressed == "down" or keyPressed == "s":
                         if level[1][level[0][6][playerIndexTurn][0][1]+1][level[0][6][playerIndexTurn][0][0]] == 0 and level[0][4] > 0:
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
@@ -1456,7 +1467,7 @@ def gameLoop(level):
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
                             level[0][4] -= 1
                         elif level[0][6][playerIndexTurn][0][1]+1 >= len(level[1]):
-                            return None
+                            return True
                     elif keyPressed == "left" or keyPressed == "a":
                         if level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]-1] == 0 and level[0][4] > 0:
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
@@ -1464,7 +1475,7 @@ def gameLoop(level):
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
                             level[0][4] -= 1
                         elif level[0][6][playerIndexTurn][0][0]-1 < 0:
-                            return None
+                            return True
                     elif keyPressed == "right" or keyPressed == "d":
                         if level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]+1] == 0 and level[0][4] > 0:
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 0
@@ -1472,7 +1483,7 @@ def gameLoop(level):
                             level[1][level[0][6][playerIndexTurn][0][1]][level[0][6][playerIndexTurn][0][0]] = 5
                             level[0][4] -= 1
                         elif level[0][6][playerIndexTurn][0][0]+1 >= len(level[1][level[0][6][playerIndexTurn][0][1]]):
-                            return None
+                            return True
                     elif keyPressed == "1":
                         level[0][6][playerIndexTurn][4] = 1
                     elif keyPressed == "2":
@@ -2391,10 +2402,41 @@ def gameLoop(level):
                                         continue
                                 break
             level[0][3] = "player 0"
-gameLoop(level_training_2)
-clear()
-gameLoop(level_training_2)
+            if level[0][8][1] == True:
+                if level[0][8][0] - 1 <= 1:
+                    actionItem = ""
+                    clear()
+                    print_centered(f"{parse_level(level=level,enemies=level[0][0], actionItem = actionItem)}")
+                    return True
+                else:
+                    level[0][8][0] -= 1
+print("\033[33m", end="")
 print_slow("ALERT: ENCRYPTED TRANSMISSION RECEIVED\n\nDECRYPTING...\n.\n.\n.\nCLASSIFICATION: TOP SECRET\n\nMINISTRY OF DEFENSE\nDIRECTORY OF HELLDIVER READINESS\nORIGINATING STATION: MARS\n\nMEMORANDUM FOR: Helldiver Readiness Command\nSUBJECT: Daily Incoming Recruit Report\n\nTotal Incoming Trainees: 48,736\nAvg. Age(Years): 18.7\nAvg. Combat Readiness Rating: 27.1%\nAvg. Patriotism Rating: 97.4%\n\nExpected Survival Rate: 21.3%\nProjected Helldiver Production: WITHIN QUOTA\n\nEND TRANSMISSION ")
+time.sleep(1)
+while True:
+    clear()
+    if gameLoop(level_training_1) == True:
+        break
+while True:
+    clear()
+    if gameLoop(level_training_2) == True:
+        break
+clear()
+print("\033[33m")
+print_centered("         ______   _    _   _        _            _____              __  __   ______      ")
+print_centered("        |██████| |█|  |█| |█|      |█|          /█████|     /\\     |█▚\\/▞█| |██████|     ")
+print_centered("        |█|__    |█|  |█| |█|      |█|         |█|  __     /▞▚\\    |█\\▚▞/█| |█|__        ")
+print_centered("        |████|   |█|  |█| |█|      |█|         |█| |██|   /▞/\\▚\\   |█|\\/|█| |████|       ")
+print_centered("        |█|      |█|__|█| |█|____  |█|____     |█|__|█|  /▞████▚\\  |█|  |█| |█|____      ")
+print_centered("  _____ |█|____   \\████/_ |██████| |██████|  ___\\█████| /▞/___ \\▚\\_|█|  |█|_|██████|   _ ")
+print_centered(" /█████|  /████\\  |█▚\\/▞█| |█████| |█\\ |█|  /█████|     /█████|  /████\\   /████\\  |█\\ |█|")
+print_centered("|█|      |█|  |█| |█\\▚▞/█|   |█|   |█▚\\|█| |█|  __     |█(___   |█|  |█| |█|  |█| |█▚\\|█|")
+print_centered("|█|      |█|  |█| |█|\\/|█|   |█|   |█.▚`█| |█| |██|     \\████\\  |█|  |█| |█|  |█| |█.▚`█|")
+print_centered("|█|____  |█|__|█| |█|  |█|  _|█|_  |█|\\▚█| |█|__|█|     ____)█| |█|__|█| |█|__|█| |█|\\▚█|")
+print_centered(" \\█████|  \\████/  |█|  |█| |█████| |█| \\█|  \\█████|    |█████/   \\████/   \\████/  |█| \\█|")
+print_centered("Press any key to exit")
+input()
+sys.exit()
 print("You step out of your cryopod, shivering from the cold. The super destroyer awaits your command.")
 print("What is your name, helldiver?")
 Name = input("Enter your name: ")
