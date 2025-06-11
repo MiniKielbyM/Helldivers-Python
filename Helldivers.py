@@ -1677,28 +1677,37 @@ def gameLoop(level):
                                                     player[3][2] = 0
                                                 if player[3][2] - level[0][6][playerIndexTurn][14][1] < 0:
                                                     player[5] +=  player[3][2] - level[0][6][playerIndexTurn][14][1]
-                                                if player[5] <= 0:
-                                                    if player[3][3].lower() == "democracy protects" and random.randint(1, 100) <= 50:
-                                                        player[5] = 1
-                                                    else:
-                                                        player[5] = 0
-                                                        if player[3][3].lower() == "integrated explosives":
-                                                            for enemy in list(level[0][0].copy()):
-                                                                if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], 1, grenade=True):
-                                                                    enemy[0][12] -= 10
-                                                                    if enemy[0][12] <= 0:
-                                                                        enemy[0][12] = 0
-                                                                        enemy[0][11] -= 20
-                                                                    if enemy[0][11] <= 0:
-                                                                        level[1][enemy[2]][enemy[1]] = 0
-                                                                        if len(enemy) > 3:
-                                                                            i = parseActions(level[0], level[1], enemy[3], level[0][1])
-                                                                            level[1] = i[0]
-                                                                            enemy[3] = i[1]
-                                                                            level[0][1] = i[2]
-                                                                        level[1][enemy[2]][enemy[1]] = 0
-                                                                        level[0][0].remove(enemy)
-                                                        sys.exit(0)
+                                                print(player[5])
+                                                time.sleep(2)
+                                                if player[5] <= 0 and player[3][3].lower() == "democracy protects" and random.randint(1, 100) <= 50:
+                                                    print(player[5])
+                                                    time.sleep(2)
+                                                    player[5] = 1
+                                                elif player[5] <= 0 and player[3][3].lower() != "democracy protects":
+                                                    print(player[5])
+                                                    time.sleep(2)
+                                                    player[5] = 0
+                                                    print(player[5])
+                                                    time.sleep(2)
+                                                    if player[3][3].lower() == "integrated explosives":
+                                                        for enemy in list(level[0][0].copy()):
+                                                            if hypotenuse_los(level[1], [enemy[1], enemy[2]], [grenadeX, grenadeY], 1, grenade=True):
+                                                                enemy[0][12] -= 10
+                                                                if enemy[0][12] <= 0:
+                                                                    enemy[0][12] = 0
+                                                                    enemy[0][11] -= 20
+                                                                if enemy[0][11] <= 0:
+                                                                    level[1][enemy[2]][enemy[1]] = 0
+                                                                    if len(enemy) > 3:
+                                                                        i = parseActions(level[0], level[1], enemy[3], level[0][1])
+                                                                        level[1] = i[0]
+                                                                        enemy[3] = i[1]
+                                                                        level[0][1] = i[2]
+                                                                    level[1][enemy[2]][enemy[1]] = 0
+                                                                    level[0][0].remove(enemy)
+                                                    sys.exit(0)
+                                                else:
+                                                    continue
                                         break
                                     else:
                                         level[1][grenadeY][grenadeX] = actual
