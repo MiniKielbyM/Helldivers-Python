@@ -561,14 +561,13 @@ if True: #hides all the stats, remove before release
     Arcthrower = [1, "Arc Thrower", 15, math.inf, False, math.inf, 1, 0, 4, 1, True, 4, "SDSWAA"]
 
     Bomb_500kg = [4, "Eagle 500kg Bomb", 150, 50, True, 1, 2, 2, 0, 0, 0, "WDSSS"]
-    Barrage_380mm = [4, "Orbital 380mm Barrage", 100, 50, True, math.inf, 5, 3, 100, 50, 3, "regular", "DSWWASS"]
+    Barrage_380mm = [4, "Orbital 380mm Barrage", 100, 50, True, math.inf, 5, 4, 0, 0, 0, "DSWWASS"]
     Orbital_Precision_Strike = [4, "Orbital Precision Strike", 25, 50, True, math.inf, 2, 1, 0, 0, 0, "DDW"]
     Cluster_Bomb = [4, "Eagle Cluster Bomb", 30, 10, True, 3, 1, 2, 0, 0, 0, "WDSSD"]
     Strafing_Run = [4, "Eagle Strafing Run", 30, 20, False, 3, 1, 1, 0, 0, 0, "WDD"]
     Eagle_Airstrike = [4, "Eagle Airstrike", 50, 10, True, 2, 1, 1, 0, 0, 0, "WDSD"]
     Rocket_Pods = [4, "Eagle Rocket Pods", 35, 30, True, 4, 1, 1, 0, 0, 0, "WDWA"]
     Orbital_Gatling = [4, "Orbital Gatling Barrage", 50, 10, False, math.inf, 3, 1, 0, 0, 0, "DSAWW"]
-    Orbital_Gas = [4, "Orbital Gas Strike", 0, 0, False, math.inf, 3, 2, 10, math.inf, 2, "gas", "DDSD"]
 
     Gatling_Sentry = [5, "Gatling Sentry", 10, 0, False, math.inf, 1, False, 3, 50, 25, False, 0, "SWDA"]
     Machine_Gun_Sentry = [5, "Machine Gun Sentry", 5, 2, False, math.inf, 2, False, 3, 50, 25, False, 0, "SWDDW"]
@@ -1055,7 +1054,7 @@ level_training_2 = [
         "| Helldivers Training |\n| Use WASD or arrow keys to move |\n| Space to attack |\n| E to interact |\n| G to throw grenade |\n| V to heal |\n| 1/2 to change weapon |\n| Ctrl to use stratagems |", ## header
         [ ##players
             #position, primary, secondary, armor, equipped weapon, health, max health, grenades, max grenades, stims, max stims, reload time remaining, stim time remaining, name, grenade, [[stratagem, cooldown remaining, uses remaining]], effects
-            [[9,2], list(Liberator_Penetrator.copy()), list(P_2_Peacemaker.copy()), list(AF_02_Haz_Master.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [[list(Resupply.copy()), 0],[list(Orbital_Gas.copy()), 0]], ""],
+            [[9,2], list(Liberator_Penetrator.copy()), list(P_2_Peacemaker.copy()), list(AF_02_Haz_Master.copy()), 1, 100, 100, 4, 4, 4, 4, 0, 0, Name, list(G_6_Frag.copy()), [[list(Resupply.copy()), 0],[list(Bomb_500kg.copy()), 0]], ""],
         ],
         bugs
     ],
@@ -1441,63 +1440,6 @@ def gameLoop(level):
             print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem)}")
             while True:
                 if keyboard.read_event().event_type is keyboard.KEY_DOWN:
-                    for poi in level[0][2]:
-                        if poi[0][0] == "special":
-                            if level[1][poi[1][1]][poi[1][0]] == 8:
-                                level[1][poi[1][1]][poi[1][0]] = poi[0][2]
-                            if poi[0][1][0] == "aoe":
-                                if poi[0][1][4] > 0:
-                                    for enemy in list(level[0][0].copy()):
-                                        if hypotenuse_los(level[1], [poi[1][0], poi[1][1]], [enemy[1], enemy[2]], 1, grenade=True):
-                                            enemy[0][12] -= poi[0][1][3]
-                                            if enemy[0][12] <= 0:
-                                                enemy[0][12] = 0
-                                                enemy[0][11] -= poi[0][1][2]
-                                            if enemy[0][11] <= 0:
-                                                level[1][enemy[2]][enemy[1]] = 0
-                                                if len(enemy) > 3:
-                                                    i = parseActions(level[0], level[1], enemy[3], level[0][1])
-                                                    level[1] = i[0]
-                                                    enemy[3] = i[1]
-                                                    level[0][1] = i[2]
-                                                level[1][enemy[2]][enemy[1]] = 0
-                                                level[0][0].remove(enemy)
-                                    for player in level[0][6]:
-                                        if hypotenuse_los(level[1], [player[0][0], player[0][1]], [stratX, stratY], stratagem[0][7], grenade=True):
-                                            if player[3][3].lower() == "advanced filtration":
-                                                player[3][2] -= poi[0][1][3] * Fraction(1,5)
-                                                if player[3][2] <= 0:
-                                                    player[3][2] = 0
-                                                if player[3][2] - poi[0][1][2] < 0:
-                                                    player[5] +=  player[3][2] - (poi[0][1][2] * Fraction(1,5))
-                                            if player[5] <= 0:
-                                                if player[3][3].lower() == "democracy protects" and random.randint(1, 100) <= 50:
-                                                    player[5] = 1
-                                                else:
-                                                    player[5] = 0
-                                                    if player[3][3].lower() == "integrated explosives":
-                                                        for enemy in list(level[0][0].copy()):
-                                                            if hypotenuse_los(level[1], [enemy[1], enemy[2]], [stratX, stratY], 1, grenade=True):
-                                                                enemy[0][12] -= 10
-                                                                if enemy[0][12] <= 0:
-                                                                    enemy[0][12] = 0
-                                                                    enemy[0][11] -= 20
-                                                                if enemy[0][11] <= 0:
-                                                                    level[1][enemy[2]][enemy[1]] = 0
-                                                                    if len(enemy) > 3:
-                                                                        i = parseActions(level[0], level[1], enemy[3], level[0][1])
-                                                                        level[1] = i[0]
-                                                                        enemy[3] = i[1]
-                                                                        level[0][1] = i[2]
-                                                                    level[1][enemy[2]][enemy[1]] = 0
-                                                                    level[0][0].remove(enemy)
-                                                    level[0][6].remove(player)
-                                                    continue
-                                            if poi[0][1][5] == "gas":
-                                                player[16] = "☣"
-                                    poi[0][1][4] -= 1
-                                else:
-                                    level[0][2].remove(poi)
                     keyPressed = keyboard.read_event().name
                     if keyPressed == "up" or keyPressed == "w":
                         if level[1][level[0][6][playerIndexTurn][0][1]-1][level[0][6][playerIndexTurn][0][0]] == 0 and level[0][4] > 0:
@@ -1685,7 +1627,6 @@ def gameLoop(level):
                                                                                     targets[targetIndex][0][11] -= trueDmg
                                                                                     targets[targetIndex][0][12] = maxArmor
                                                                                     if targets[targetIndex][0][11] <= 0:
-
                                                                                         level[1][targets[targetIndex][2]][targets[targetIndex][1]] = 0
                                                                                         if len(targets[targetIndex]) > 3:
                                                                                             i = parseActions(level[0], level[1], targets[targetIndex][3], level[0][1])
@@ -2112,6 +2053,7 @@ def gameLoop(level):
                                                         clear()
                                                         print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem, turn = playerIndexTurn)}")
                                                         if InputIndex >= len(code):
+                                                            level[1][stratY][stratX] = actual
                                                             if stratagem[0][0] == 4:
                                                                 for poi in level[0][2]:
                                                                     if hypotenuse_los()(level[1], [stratX, stratY], [poi[1][0], poi[1][1]],  stratagem[7], grenade=True):
@@ -2178,8 +2120,6 @@ def gameLoop(level):
                                                                     level[0][2].append([["special", ["aoe", stratagem[0][7], stratagem[0][8], stratagem[0][9], stratagem[0][10], stratagem[0][11]], 0], [stratX, stratY]])
                                                                 for poi in level[0][2]:
                                                                     if poi[0][0] == "special":
-                                                                        if level[1][poi[1][1]][poi[1][0]] == 8:
-                                                                            level[1][poi[1][1]][poi[1][0]] = poi[0][2]
                                                                         if poi[0][1][0] == "aoe":
                                                                             if poi[0][1][4] > 0:
                                                                                 for enemy in list(level[0][0].copy()):
@@ -2233,7 +2173,6 @@ def gameLoop(level):
                                                                                 poi[0][1][4] -= 1
                                                                             else:
                                                                                 level[0][2].remove(poi)
-                                                            level[1][stratY][stratX] = actual
                                                             clear()
                                                             print_centered(f"{parse_level(level,enemies=level[0][0], actionItem = actionItem, turn = playerIndexTurn)}")
                                                             break
@@ -3052,7 +2991,7 @@ Mission=random.randint(0,Max_Maps)
 
 print("It's time to equip the most important tools in your arsenal. You have stratagems that are Support Weapons, Offensive, and Defensive. Choose wisely, your choices will have an impact on your mission success, that is also based upon your enemy chosen.")
 
-print("Choose Stratagems\n \tSupport Weapons: \n 1.) Quasar Cannon \n 2.) EAT \n 3.) Recoilless Rifle (no backpack slot) \n 4.) Spear (no backback slot) \n 5.) Machine Gun \n 6.) Grenade Launcher \n 7.) Flamethrower \n 8.) Arc Thrower \n \tOffensive: \n 9.) 500 kg bomb \n 10.) 380mm Barrage \n 11.) Cluster Bomb \n 12.) Strafing Run \n 13.) Eagle Airstrike \n 14.) Rocket Pods \n 15.) Orbital Gatling \n 16.) Orbital Gas Strike \n \tDefensive: \n 17.)\n Gatling Sentry \n 18.) Machine Gun Sentry \n 19.) Rocket Sentry \n 20.) Autocannon Sentry \n 21.) Anti-Tank Emplacement \n 22.) Gas Mines \n 23.) Incendiary Mines \n 24.) Explosive Mines \n 25.) Anti-Tank Mines \n Backpacks: \n 26.) Supply Pack \n 27.) Shield Generator Pack \n 28.) Hellbomb Backpack \n 29.) Ballistic Shield \n 30.) Guard-Dog Regular \n 31.) Guard-Dog Laser \n 32.) Guard-Dog Gas")
+print("Choose Stratagems\n \tSupport Weapons: \n 1.) Quasar Cannon \n 2.) EAT \n 3.) Recoilless Rifle (no backpack slot) \n 4.) Spear (no backback slot) \n 5.) Machine Gun \n 6.) Grenade Launcher \n 7.) Flamethrower \n 8.) Arc Thrower \n \tOffensive: \n 9.) 500 kg bomb \n 10.) 380mm Barrage \n 11.) Cluster Bomb \n 12.) Strafing Run \n 13.) Eagle Airstrike \n 14.) Rocket Pods \n 15.) Orbital Gatling \n \tDefensive: \n 16.)\n Gatling Sentry \n 17.) Machine Gun Sentry \n 18.) Rocket Sentry \n 19.) Autocannon Sentry \n 20.) Anti-Tank Emplacement \n 21.) Gas Mines \n 22.) Incendiary Mines \n 23.) Explosive Mines \n 24.) Anti-Tank Mines \n Backpacks: \n 25.) Supply Pack \n 26.) Shield Generator Pack \n 27.) Hellbomb Backpack \n 28.) Ballistic Shield \n 29.) Guard-Dog Regular \n 30.) Guard-Dog Laser \n 31.) Guard-Dog Gas")
 Stratagem=0
 n=0
 All_Stratagems=[]
@@ -3107,61 +3046,59 @@ while n<4:
         Stratagem = list(copy.deepcopy(Orbital_Gatling))
         if Ship_Mods[3] is 0:
             Stratagem[6] = 2
-    elif Chosen_Stratagems is 16:
-        Stratagem = list(copy.deepcopy(Orbital_Gas))
         if Ship_Mods[3] is 0:
             Stratagem[6] = 2
-    elif Chosen_Stratagems is 17:
+    elif Chosen_Stratagems is 16:
         Stratagem = list(copy.deepcopy(Gatling_Sentry))
         if Ship_Mods[4] is 1 or 2 or 3 or 4:
             Stratagem[9] = 100
-    elif Chosen_Stratagems is 18:
+    elif Chosen_Stratagems is 1:
         Stratagem = list(copy.deepcopy(Machine_Gun_Sentry))
         if Ship_Mods[4] is 1 or 2 or 3 or 4:
             Stratagem[9] = 100
-    elif Chosen_Stratagems is 19:
+    elif Chosen_Stratagems is 18:
         Stratagem = list(copy.deepcopy(Rocket_Sentry))
         if Ship_Mods[4] is 1 or 2 or 3 or 4:
             Stratagem[9] = 100
-    elif Chosen_Stratagems is 20:
+    elif Chosen_Stratagems is 19:
         Stratagem = list(copy.deepcopy(Autocannon_Sentry))
         if Ship_Mods[4] is 1 or 2 or 3 or 4:
             Stratagem[9] = 100
-    elif Chosen_Stratagems is 21:
+    elif Chosen_Stratagems is 20:
         Stratagem = list(copy.deepcopy(Anti_Tank_Emplacement))
-    elif Chosen_Stratagems is 22:
+    elif Chosen_Stratagems is 21:
         Stratagem = list(copy.deepcopy(Gas_Mines))
-    elif Chosen_Stratagems is 23:
+    elif Chosen_Stratagems is 22:
         Stratagem = list(copy.deepcopy(Incendiary_Mines))
-    elif Chosen_Stratagems is 24:
+    elif Chosen_Stratagems is 23:
         Stratagem = list(copy.deepcopy(Regular_Mines))
-    elif Chosen_Stratagems is 25:
+    elif Chosen_Stratagems is 24:
         Stratagem = list(copy.deepcopy(Anti_Tank_Mines))
-    elif Chosen_Stratagems is 26:
+    elif Chosen_Stratagems is 25:
         Stratagem = list(copy.deepcopy(Supply_Pack))
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4
-    elif Chosen_Stratagems is 27:
+    elif Chosen_Stratagems is 26:
         Stratagem = list(copy.deepcopy(Shield_Generator_Pack))
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4
-    elif Chosen_Stratagems is 28:
+    elif Chosen_Stratagems is 27:
         Stratagem = list(copy.deepcopy(Hellbomb_Backpack))
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4
-    elif Chosen_Stratagems is 29:
+    elif Chosen_Stratagems is 28:
         Stratagem = list(copy.deepcopy(Balistic_Shield))
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4
-    elif Chosen_Stratagems is 30:
+    elif Chosen_Stratagems is 29:
         Stratagem = list(copy.deepcopy(Guard_Dog))
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4
-    elif Chosen_Stratagems is 31:
+    elif Chosen_Stratagems is 30:
         Stratagem = list(copy.deepcopy(Guard_Dog_Rover))
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4
-    elif Chosen_Stratagems is 32:
+    elif Chosen_Stratagems is 31:
         Stratagem = list(copy.deepcopy(Guard_Dog_Breath))
         if Ship_Mods[0] is 0:
             Stratagem[3] = 4
